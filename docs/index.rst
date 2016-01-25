@@ -1,5 +1,5 @@
-Welcome to skeleton documentation!
-========================================
+Welcome to rwt documentation!
+=============================
 
 .. toctree::
    :maxdepth: 1
@@ -7,7 +7,7 @@ Welcome to skeleton documentation!
    history
 
 
-.. automodule:: skeleton
+.. automodule:: rwt
     :members:
     :undoc-members:
     :show-inheritance:
