@@ -15,6 +15,4 @@ RWT (Run With This) provides on-demand dependency resolution.
 Testing
 -------
 
-For now, a simple example can be run with::
-
-    python -m rwt cython -- import-cython.py
+Invoke tests with ``setup.py test``.
