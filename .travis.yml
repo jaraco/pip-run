@@ -6,3 +6,4 @@ python:
 script:
  - pip install -U pytest
  - python setup.py test
+cache: pip
