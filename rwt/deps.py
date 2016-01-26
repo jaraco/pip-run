@@ -1,6 +1,5 @@
 from __future__ import print_function
 
-import os
 import sys
 import contextlib
 import subprocess
@@ -9,23 +8,21 @@ import shutil
 
 
 @contextlib.contextmanager
-def on_sys_path(reqs_file):
+def on_sys_path(*args):
 	"""
-	Install the dependencies in reqs_file and ensure they have precedence
+	Install dependencies via args to pip and ensure they have precedence
 	on sys.path.
 	"""
-	root = os.path.expanduser('~/.rwt')
-	os.path.exists(root) or os.mkdir(root)
-	target = tempfile.mkdtemp(dir=root)
-	print("Loading requirements from", reqs_file)
-	cmd = [
+	target = tempfile.mkdtemp(prefix='rwt-')
+	cmdline = subprocess.list2cmdline(args)
+	print("Loading requirements using", cmdline)
+	cmd = (
 		sys.executable,
 		'-m', 'pip',
 			'install',
 			'-q',
-			'-r', reqs_file,
 			'-t', target,
-	]
+	) + args
 	subprocess.check_call(cmd)
 	sys.path.insert(0, target)
 	try:
