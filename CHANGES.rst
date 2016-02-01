@@ -1,3 +1,8 @@
+2.1
+---
+
+Add support for pkg_resources entry points in added modules.
+
 2.0
 ---
 
