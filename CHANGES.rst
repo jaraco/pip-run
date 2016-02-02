@@ -1,3 +1,9 @@
+2.3
+---
+
+New technique uses PYTHONPATH and subprocess to launch any
+arbitrary Python process.
+
 2.2
 ---
 

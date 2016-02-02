@@ -28,11 +28,7 @@ def _update_working_set():
 
 
 @contextlib.contextmanager
-def on_sys_path(*args):
-	"""
-	Install dependencies via args to pip and ensure they have precedence
-	on sys.path.
-	"""
+def load(*args):
 	target = tempfile.mkdtemp(prefix='rwt-')
 	cmdline = subprocess.list2cmdline(args)
 	print("Loading requirements using", cmdline)
@@ -44,13 +40,25 @@ def on_sys_path(*args):
 			'-t', target,
 	) + args
 	subprocess.check_call(cmd)
-	sys.path.insert(0, target)
 	try:
-		with _update_working_set():
-			yield target
+		yield target
 	finally:
-		sys.path.remove(target)
 		shutil.rmtree(target)
+
+
+@contextlib.contextmanager
+def on_sys_path(*args):
+	"""
+	Install dependencies via args to pip and ensure they have precedence
+	on sys.path.
+	"""
+	with load(*args) as target:
+		sys.path.insert(0, target)
+		try:
+			with _update_working_set():
+				yield target
+		finally:
+			sys.path.remove(target)
 
 
 # from setuptools 19.6.2

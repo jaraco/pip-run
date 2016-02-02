@@ -24,9 +24,6 @@ Usage
 
 - as script launcher
 - as runtime dependency context manager
-
-Planned usage includes
-
 - as interactive interpreter in dependency context
 - as module launcher (akin to `python -m`)
 
