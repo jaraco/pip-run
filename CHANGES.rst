@@ -1,3 +1,8 @@
+2.2
+---
+
+Add support for entry points on older versions of setuptools.
+
 2.1
 ---
 
