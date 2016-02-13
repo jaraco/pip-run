@@ -12,6 +12,17 @@ RWT (Run With This) provides on-demand dependency resolution.
 - Supersedes installed packages when required.
 - Re-uses the pip tool chain for package installation and pkg_resources for working set management.
 
+RWT is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
+
+- build setup
+- test runners
+- just in time script running
+- interactive development
+
+RWT is a compliment to Pip and Virtualenv and Setuptools, intended to more
+readily address the on-demand needs and supersede some
+features like ``setup_requires``.
+
 Status
 ------
 
