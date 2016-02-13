@@ -38,6 +38,13 @@ Usage
 - as interactive interpreter in dependency context
 - as module launcher (akin to `python -m`)
 
+Examples
+--------
+
+The ``examples`` folder in this project includes some examples demonstrating
+the power and usefulness of the project. Read the docs on those examples
+for instructions.
+
 Versioning
 ----------
 
