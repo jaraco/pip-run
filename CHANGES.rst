@@ -1,3 +1,9 @@
+2.4
+---
+
+Added support for resolving dependencies declared in
+``__requires__`` in the script.
+
 2.3
 ---
 
