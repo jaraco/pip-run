@@ -3,31 +3,47 @@ import ast
 import tokenize
 
 
-def read_deps(script, var_name='__requires__'):
+class DepsReader:
 	"""
-	Given a script path, read the dependencies from the
+	Given a Python script, read the dependencies from the
 	indicated variable (default __requires__). Does not
 	execute the script, so expects the var_name to be
 	assigned a static list of strings.
 	"""
-	with open(script) as stream:
-		return _read_deps(stream.read())
+	def __init__(self, script):
+		self.script = script
 
+	@classmethod
+	def load(cls, script_path):
+		with open(script_path) as stream:
+			return cls(stream.read())
 
-def _read_deps(script, var_name='__requires__'):
-	"""
-	>>> _read_deps("__requires__=['foo']")
-	['foo']
-	"""
-	mod = ast.parse(script)
-	node, = (
-		node
-		for node in mod.body
-		if isinstance(node, ast.Assign)
-		and len(node.targets) == 1
-		and node.targets[0].id == var_name
-	)
-	return ast.literal_eval(node.value)
+	@classmethod
+	def try_read(cls, script_path):
+		"""
+		Attempt to load the dependencies from the script,
+		but return an empty list if unsuccessful.
+		"""
+		try:
+			reader = cls.load(script_path)
+			return reader.read()
+		except Exception:
+			return []
+
+	def read(self, var_name='__requires__'):
+		"""
+		>>> DepsReader("__requires__=['foo']").read()
+		['foo']
+		"""
+		mod = ast.parse(self.script)
+		node, = (
+			node
+			for node in mod.body
+			if isinstance(node, ast.Assign)
+			and len(node.targets) == 1
+			and node.targets[0].id == var_name
+		)
+		return ast.literal_eval(node.value)
 
 
 def run(cmdline):
