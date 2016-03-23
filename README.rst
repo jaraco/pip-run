@@ -45,6 +45,17 @@ The ``examples`` folder in this project includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
 
+Interactive Interpreter
+~~~~~~~~~~~~~~~~~~~~~~~
+
+RWT also offers a painless way to run a Python interactive
+interpreter in the context of certain dependencies.
+
+    $ /clean-install/python -m rwt boto
+    Loading requirements using boto
+    >>> import boto
+    >>>
+
 Versioning
 ----------
 
