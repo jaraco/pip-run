@@ -1,3 +1,9 @@
+2.4.2
+-----
+
+Fixed issue in ``__requires__`` parsing when script
+contained attribute assignment.
+
 2.4.1
 -----
 
