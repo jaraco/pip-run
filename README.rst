@@ -49,7 +49,7 @@ Interactive Interpreter
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 RWT also offers a painless way to run a Python interactive
-interpreter in the context of certain dependencies.
+interpreter in the context of certain dependencies::
 
     $ /clean-install/python -m rwt boto
     Loading requirements using boto
