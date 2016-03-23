@@ -4,6 +4,8 @@ import textwrap
 import sys
 import subprocess
 
+from rwt import scripts
+
 
 def test_pkg_imported(tmpdir):
 	"""
@@ -20,3 +22,12 @@ def test_pkg_imported(tmpdir):
 
 	out = subprocess.check_output(cmd, universal_newlines=True)
 	assert 'Successfully imported cython' in out
+
+
+class TestDepsReader:
+	def test_reads_files_with_attribute_assignment(self):
+		script = textwrap.dedent('''
+			__requires__=['foo']
+			x.a = 'bar'
+			''')
+		assert scripts.DepsReader(script).read() == ['foo']
