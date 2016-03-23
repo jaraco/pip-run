@@ -41,6 +41,7 @@ class DepsReader:
 			for node in mod.body
 			if isinstance(node, ast.Assign)
 			and len(node.targets) == 1
+			and isinstance(node.targets[0], ast.Name)
 			and node.targets[0].id == var_name
 		)
 		return ast.literal_eval(node.value)
