@@ -2,6 +2,11 @@ import os
 import sys
 import ast
 import tokenize
+import itertools
+
+
+if sys.version_info < (3,):
+	filter = itertools.ifilter
 
 
 class DepsReader:
