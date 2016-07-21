@@ -1,3 +1,4 @@
+import os
 import sys
 import ast
 import tokenize
@@ -29,6 +30,17 @@ class DepsReader:
 			return reader.read()
 		except Exception:
 			return []
+
+	@classmethod
+	def search(cls, params):
+		"""
+		Given a (possibly-empty) series of parameters to a
+		Python interpreter, return any dependencies discovered
+		in a script indicated in the parameters. Only honor the
+		first file found.
+		"""
+		files = filter(os.path.isfile, params)
+		return cls.try_read(next(files, None))
 
 	def read(self, var_name='__requires__'):
 		"""

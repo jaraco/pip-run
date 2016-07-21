@@ -1,3 +1,12 @@
+2.5
+---
+
+Allow dependencies to be declared in the file in the
+parameters to the Python interpreter, even if other
+parameters are supplied. Allows for invocation like::
+
+    rwt -- -i myscript.py
+
 2.4.2
 -----
 
