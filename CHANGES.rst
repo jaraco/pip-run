@@ -1,3 +1,9 @@
+2.6
+---
+
+Issue #3: ``rwt`` now relies on ``execve`` to overlay
+the child process over the current one.
+
 2.5
 ---
 
