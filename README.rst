@@ -5,6 +5,16 @@ rwt
 
 RWT (Run With This) provides on-demand dependency resolution.
 
+.. image:: https://img.shields.io/pypi/v/rwt.svg
+   :target: https://pypi.io/project/rwt
+
+.. image:: https://img.shields.io/pypi/pyversions/rwt.svg
+
+.. image:: https://img.shields.io/pypi/dm/rwt.svg
+
+.. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
+   :target: http://travis-ci.org/jaraco/rwt
+
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
