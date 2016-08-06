@@ -18,7 +18,7 @@ RWT (Run With This) provides on-demand dependency resolution.
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
-- Keeps a cache of such packages for reuse.
+- Relies on pip to cache downloads of such packages for reuse.
 - Supersedes installed packages when required.
 - Re-uses the pip tool chain for package installation and pkg_resources for working set management.
 
@@ -36,9 +36,8 @@ features like ``setup_requires``.
 Status
 ------
 
-The project is currently still experimental and liable
-to undergo substantial revision. Do feel free to try
-it out and give your feedback at the project page.
+The project is stable. Please try it in your day-to-day
+workflow and give your feedback at the project page.
 
 Usage
 -----
@@ -55,6 +54,45 @@ The ``examples`` folder in this project includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
 
+Script Runner
+~~~~~~~~~~~~~
+
+Let's say you have a script that has a one-off purpose. It's either not
+part of a library, where dependencies are normally declared, or it is
+normally executed outside the context of that library. Still, that script
+probably has dependencies, say on `requests
+<https://pypi.io/project/requests>`_. Here's how you can use rwt to
+declare the dependencies and launch the script in a context where
+those dependencies have been resolved.
+
+First, add a ``__requires__`` directive at the head of the script::
+
+    #!/usr/bin/env python
+
+    __requires__ = ['requests']
+
+    import requests
+
+    req = requests.get('https://pypi.io/project/rwt')
+    print(req.status_code)
+
+Then, simply invoke that script with rwt::
+
+    $ python -m rwt -- myscript.py
+    Loading requirements using requests
+    200
+
+Command Runner
+~~~~~~~~~~~~~~
+
+Note that everything after the -- is passed to the python invocation,
+so it's possible to have a one-liner that runs under a dependency
+context::
+
+    $ python -m rwt requests -- -c "import requests; print(requests.get('https://pypi.io/project/rwt').status_code)"
+    Loading requirements using requests
+    200
+
 Interactive Interpreter
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -65,6 +103,64 @@ interpreter in the context of certain dependencies::
     Loading requirements using boto
     >>> import boto
     >>>
+
+Replacing setup_requires
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Following the script example, you can make your setup.py file
+compatible with ``rwt`` by declaring your depenedencies in
+the ``__requires__`` directive::
+
+    #!/usr/bin/env python
+
+    __requires__ = ['setuptools', 'setuptools_scm']
+
+    import setuptools
+
+    setuptools.setup(
+        ...
+        setup_requires=__requires__,
+    )
+
+When invoked with rwt, the dependencies will be assured before
+the script is run, or if run with setuptools, the dependencies
+will be loaded using the older technique, so the script is
+backward compatible.
+
+Replacing tests_require
+~~~~~~~~~~~~~~~~~~~~~~~
+
+You can also replace tests_require. Consider a package that
+runs tests using ``setup.py test`` and relies on the
+``tests_require`` directive to resolve dependencies needed
+during testing. Simply declare your dependencies in a
+separate file, "test requirements.txt"::
+
+    # test requirements.txt
+    pytest
+
+For compatibility, expose those same requirements as
+tests_require in setup.py::
+
+    with open('test requirements.txt') as tr:
+        tests_require = [
+        	line.rstrip()
+        	for line in tr
+        	if re.match('\w+', line)
+        ]
+
+    setuptools.setup(
+        ...
+        tests_require=tests_require,
+    )
+
+Then invoke tests with rwt::
+
+    $ python -m rwt -r "test requirements.txt" -- setup.py test
+
+While still supporting the old technique::
+
+    $ python setup.py test
 
 Versioning
 ----------
