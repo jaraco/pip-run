@@ -9,7 +9,10 @@ def with_path(target, params):
 	"""
 	env = dict(os.environ)
 	env['PYTHONPATH'] = target
-	subprocess.Popen([sys.executable] + params, env=env).wait()
+	try:
+		subprocess.Popen([sys.executable] + params, env=env).wait()
+	except KeyboardInterrupt:
+		pass
 
 
 def with_path_overlay(target, params):

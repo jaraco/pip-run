@@ -1,3 +1,11 @@
+2.7
+---
+
+Issue #4: No longer use execve because it will suppress
+the cleanup code after the child exits. Instead, trap
+KeyboardInterrupt in the parent process and suppress
+it.
+
 2.6
 ---
 
