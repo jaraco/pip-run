@@ -1,3 +1,8 @@
+2.7.1
+-----
+
+Issue #6: Only augment but don't replace PYTHONPATH.
+
 2.7
 ---
 
