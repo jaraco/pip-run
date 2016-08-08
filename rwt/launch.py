@@ -4,6 +4,12 @@ import sys
 import signal
 
 
+def _build_env(target):
+	env = dict(os.environ)
+	env['PYTHONPATH'] = target
+	return env
+
+
 def with_path(target, params):
 	"""
 	Launch Python with target on the path and params
@@ -12,15 +18,13 @@ def with_path(target, params):
 		pass
 
 	signal.signal(signal.SIGINT, null_handler)
-	env = dict(os.environ)
-	env['PYTHONPATH'] = target
-	subprocess.Popen([sys.executable] + params, env=env).wait()
+	cmd = [sys.executable] + params
+	subprocess.Popen(cmd, env=_build_env(target)).wait()
 
 
 def with_path_overlay(target, params):
 	"""
 	Overlay Python with target on the path and params
 	"""
-	env = dict(os.environ)
-	env['PYTHONPATH'] = target
-	os.execve(sys.executable, [sys.executable] + params, env)
+	cmd = [sys.executable] + params
+	os.execve(sys.executable, cmd, _build_env(target))
