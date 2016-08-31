@@ -1,6 +1,3 @@
-rwt
-===
-
 /ruːt/
 
 RWT (Run With This) provides on-demand dependency resolution.
