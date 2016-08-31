@@ -6,24 +6,27 @@ import glob
 import itertools
 
 
-def _read_pth_file(filename):
-	root = os.path.dirname(filename)
-	return (
-		os.path.join(root, path.rstrip())
-		for path in open(filename)
-		if path.strip()
-		and not path.startswith('#')
-		and not path.startswith('import ')
-	)
+class PathReader:
+	@staticmethod
+	def _read_file(filename):
+		root = os.path.dirname(filename)
+		return (
+			os.path.join(root, path.rstrip())
+			for path in open(filename)
+			if path.strip()
+			and not path.startswith('#')
+			and not path.startswith('import ')
+		)
 
-
-def _read_pth_files(target):
-	"""
-	As .pth files aren't honored except in site dirs,
-	read the paths indicated by them.
-	"""
-	pth_files = glob.glob(os.path.join(target, '*.pth'))
-	return itertools.chain.from_iterable(map(_read_pth_file, pth_files))
+	@classmethod
+	def _read(cls, target):
+		"""
+		As .pth files aren't honored except in site dirs,
+		read the paths indicated by them.
+		"""
+		pth_files = glob.glob(os.path.join(target, '*.pth'))
+		file_items = map(cls._read_file, pth_files)
+		return itertools.chain.from_iterable(file_items)
 
 
 def _build_env(target):
@@ -35,7 +38,7 @@ def _build_env(target):
 	prefix = target,
 	items = itertools.chain(
 		prefix,
-		_read_pth_files(target),
+		PathReader._read(target),
 		(suffix,) if suffix else (),
 	)
 	joined = os.pathsep.join(items)
