@@ -1,3 +1,10 @@
+2.8
+---
+
+Issue #7: Extract entries from .pth files in the
+temporary install folder and include those values
+in PYTHONPATH when launching the subprocess.
+
 2.7.1
 -----
 
