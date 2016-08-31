@@ -2,16 +2,21 @@ import os
 import subprocess
 import sys
 import signal
+import itertools
 
 
 def _build_env(target):
 	"""
-	Prepend target to PYTHONPATH
+	Prepend target and .pth references in target to PYTHONPATH
 	"""
 	env = dict(os.environ)
-	suffix = env.get('PYTHONPATH', '')
-	prefix = target
-	joined = os.pathsep.join([prefix, suffix]).rstrip(os.pathsep)
+	suffix = env.get('PYTHONPATH')
+	prefix = target,
+	items = itertools.chain(
+		prefix,
+		(suffix,) if suffix else (),
+	)
+	joined = os.pathsep.join(items)
 	env['PYTHONPATH'] = joined
 	return env
 
