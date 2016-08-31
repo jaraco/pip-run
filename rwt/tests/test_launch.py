@@ -29,18 +29,24 @@ def test_with_path_overlay(tmpdir, capfd):
 	assert str(tmpdir) in out
 	assert "cleanup" in out
 
-def test_build_env(monkeypatch):
-	monkeypatch.setitem(os.environ, 'PYTHONPATH', 'something')
+
+@pytest.fixture
+def clean_pythonpath(monkeypatch):
+	monkeypatch.delitem(os.environ, 'PYTHONPATH', raising=False)
+
+
+def test_build_env(clean_pythonpath):
+	os.environ['PYTHONPATH'] = 'something'
 	env = launch._build_env('else')
 	expected = os.pathsep.join(('else', 'something'))
 	assert env['PYTHONPATH'] == expected
 
-	monkeypatch.setitem(os.environ, 'PYTHONPATH', '')
+	os.environ['PYTHONPATH'] = ''
 	env = launch._build_env('something')
 	assert env['PYTHONPATH'] == 'something'
 
 	initial = os.pathsep.join(['something', 'else'])
-	monkeypatch.setitem(os.environ, 'PYTHONPATH', initial)
+	os.environ['PYTHONPATH'] = initial
 	env = launch._build_env('a')
 	expected = os.pathsep.join(['a', 'something', 'else'])
 	assert env['PYTHONPATH'] == expected
