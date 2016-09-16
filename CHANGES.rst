@@ -1,3 +1,9 @@
+2.10
+----
+
+Issue #9: Intercept the ``--help`` argument if specified
+rather than passing that to pip install.
+
 2.9
 ---
 
