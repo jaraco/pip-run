@@ -3,7 +3,7 @@
 RWT (Run With This) provides on-demand dependency resolution.
 
 .. image:: https://img.shields.io/pypi/v/rwt.svg
-   :target: https://pypi.io/project/rwt
+   :target: https://pypi.org/project/rwt
 
 .. image:: https://img.shields.io/pypi/pyversions/rwt.svg
 
@@ -58,7 +58,7 @@ Let's say you have a script that has a one-off purpose. It's either not
 part of a library, where dependencies are normally declared, or it is
 normally executed outside the context of that library. Still, that script
 probably has dependencies, say on `requests
-<https://pypi.io/project/requests>`_. Here's how you can use rwt to
+<https://pypi.org/project/requests>`_. Here's how you can use rwt to
 declare the dependencies and launch the script in a context where
 those dependencies have been resolved.
 
@@ -70,7 +70,7 @@ First, add a ``__requires__`` directive at the head of the script::
 
     import requests
 
-    req = requests.get('https://pypi.io/project/rwt')
+    req = requests.get('https://pypi.org/project/rwt')
     print(req.status_code)
 
 Then, simply invoke that script with rwt::
