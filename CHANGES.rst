@@ -1,3 +1,11 @@
+2.11
+----
+
+Issue #1: Inject a sitecustomize into the install path
+to work around the lack of -nspkg.pth execution. Skip the
+execution on Python 3.3 and later, as it will degrade the
+behavior in those environments as indicated in #5.
+
 2.10
 ----
 

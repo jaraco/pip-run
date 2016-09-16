@@ -1,3 +1,4 @@
+import textwrap
 import os
 import subprocess
 import sys
@@ -29,10 +30,30 @@ class PathReader:
 		return itertools.chain.from_iterable(file_items)
 
 
+def _inject_sitecustomize(target):
+	"""
+	Create a sitecustomize file in the target that will install
+	the target as a sitedir.
+
+	Only needed on Python 3.2 and earlier to workaround #1.
+	"""
+	if sys.version_info > (3, 3):
+		return
+
+	hook = textwrap.dedent("""
+		import site
+		site.addsitedir({target!r})
+		""").lstrip().format(**locals())
+	sc_fn = os.path.join(target, 'sitecustomize.py')
+	with open(sc_fn, 'w') as strm:
+		strm.write(hook)
+
+
 def _build_env(target):
 	"""
 	Prepend target and .pth references in target to PYTHONPATH
 	"""
+	_inject_sitecustomize(target)
 	env = dict(os.environ)
 	suffix = env.get('PYTHONPATH')
 	prefix = target,
