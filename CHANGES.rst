@@ -1,3 +1,9 @@
+2.9
+---
+
+Issue #8: Add a console entrypoint, so one can
+invoke simply ``rwt``.
+
 2.8
 ---
 

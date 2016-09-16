@@ -139,7 +139,7 @@ separate file, "test requirements.txt"::
 For compatibility, expose those same requirements as
 tests_require in setup.py::
 
-    with open('test requirements.txt') as tr:
+    with io.open('test requirements.txt') as tr:
         tests_require = [
         	line.rstrip()
         	for line in tr

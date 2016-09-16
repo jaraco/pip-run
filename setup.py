@@ -49,6 +49,9 @@ setup_params = dict(
 		"Programming Language :: Python :: 3",
 	],
 	entry_points={
+		'console_scripts': [
+			'rwt = rwt:run',
+		],
 	},
 )
 if __name__ == '__main__':
