@@ -1,3 +1,8 @@
+2.12
+----
+
+Allow args to ``rwt.run`` function to be passed directly.
+
 2.11
 ----
 
