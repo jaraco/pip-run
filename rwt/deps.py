@@ -30,13 +30,10 @@ def _update_working_set():
 @contextlib.contextmanager
 def load(*args):
 	target = tempfile.mkdtemp(prefix='rwt-')
-	cmdline = subprocess.list2cmdline(args)
-	print("Loading requirements using", cmdline)
 	cmd = (
 		sys.executable,
 		'-m', 'pip',
 			'install',
-			'-q',
 			'-t', target,
 	) + args
 	subprocess.check_call(cmd)
