@@ -80,7 +80,8 @@ def with_path(target, params):
 
 	signal.signal(signal.SIGINT, null_handler)
 	cmd = [sys.executable] + params
-	subprocess.Popen(cmd, env=_setup_env(target)).wait()
+	code = subprocess.Popen(cmd, env=_setup_env(target)).wait()
+	raise SystemExit(code)
 
 
 def with_path_overlay(target, params):

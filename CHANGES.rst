@@ -1,3 +1,9 @@
+2.13
+----
+
+Issue #10: When launching the target subprocess, pass through
+the exit code.
+
 2.12
 ----
 
