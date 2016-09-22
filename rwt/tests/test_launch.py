@@ -12,9 +12,19 @@ from rwt import launch
 
 def test_with_path(tmpdir, capfd):
 	params = ['-c', 'import sys; print(sys.path)']
-	launch.with_path(str(tmpdir), params)
+	res = launch.with_path(str(tmpdir), params)
+	assert res == 0
 	out, err = capfd.readouterr()
 	assert str(tmpdir) in out
+
+
+def test_with_path_result_code(tmpdir):
+	"""
+	result code should be non-zero on error
+	"""
+	params = ['-c', "raise ValueError()"]
+	res = launch.with_path(str(tmpdir), params)
+	assert res > 0
 
 
 @pytest.mark.xfail(reason="cleanup can't occur with execv; #4")
