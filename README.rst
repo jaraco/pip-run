@@ -12,6 +12,10 @@ RWT (Run With This) provides on-demand dependency resolution.
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
    :target: http://travis-ci.org/jaraco/rwt
 
+License is indicated in the project metadata (typically one or more
+of the Trove classifiers). For more details, see `this explanation
+<https://github.com/jaraco/skeleton/issues/1>`_.
+
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
