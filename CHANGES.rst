@@ -4,6 +4,8 @@
 Issue #10: When launching the target subprocess, pass through
 the exit code.
 
+Now renders normal output from ``pip install``.
+
 2.12
 ----
 
