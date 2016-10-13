@@ -12,10 +12,6 @@ RWT (Run With This) provides on-demand dependency resolution.
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
    :target: http://travis-ci.org/jaraco/rwt
 
-License is indicated in the project metadata (typically one or more
-of the Trove classifiers). For more details, see `this explanation
-<https://github.com/jaraco/skeleton/issues/1>`_.
-
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
@@ -39,6 +35,10 @@ Status
 
 The project is stable. Please try it in your day-to-day
 workflow and give your feedback at the project page.
+
+License is indicated in the project metadata (typically one or more
+of the Trove classifiers). For more details, see `this explanation
+<https://github.com/jaraco/skeleton/issues/1>`_.
 
 Usage
 -----
@@ -162,6 +162,17 @@ Then invoke tests with rwt::
 While still supporting the old technique::
 
     $ python setup.py test
+
+How Does It Work
+----------------
+
+RWT effectively does the following:
+
+- ``pip install -t $TMPDIR``
+- ``PYTHONPATH=$TMPDIR python``
+- cleanup
+
+For specifics, see ``rwt.run()``.
 
 Versioning
 ----------
