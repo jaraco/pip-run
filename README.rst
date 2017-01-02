@@ -36,6 +36,10 @@ Status
 The project is stable. Please try it in your day-to-day
 workflow and give your feedback at the project page.
 
+
+License
+=======
+
 License is indicated in the project metadata (typically one or more
 of the Trove classifiers). For more details, see `this explanation
 <https://github.com/jaraco/skeleton/issues/1>`_.
