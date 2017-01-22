@@ -132,15 +132,15 @@ You can also replace tests_require. Consider a package that
 runs tests using ``setup.py test`` and relies on the
 ``tests_require`` directive to resolve dependencies needed
 during testing. Simply declare your dependencies in a
-separate file, "test requirements.txt"::
+separate file, e.g. "tests/requirements.txt"::
 
-    # test requirements.txt
+    cat > tests/requiremenst.txt
     pytest
 
 For compatibility, expose those same requirements as
 tests_require in setup.py::
 
-    with io.open('test requirements.txt') as tr:
+    with io.open('tests/requirements.txt') as tr:
         tests_require = [
         	line.rstrip()
         	for line in tr
@@ -154,7 +154,7 @@ tests_require in setup.py::
 
 Then invoke tests with rwt::
 
-    $ python -m rwt -r "test requirements.txt" -- setup.py test
+    $ python -m rwt -r tests/requirements.txt -- setup.py test
 
 While still supporting the old technique::
 
