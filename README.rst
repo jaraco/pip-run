@@ -30,13 +30,6 @@ RWT is a compliment to Pip and Virtualenv and Setuptools, intended to more
 readily address the on-demand needs and supersede some
 features like ``setup_requires``.
 
-Status
-------
-
-The project is stable. Please try it in your day-to-day
-workflow and give your feedback at the project page.
-
-
 License
 =======
 
@@ -45,7 +38,7 @@ of the Trove classifiers). For more details, see `this explanation
 <https://github.com/jaraco/skeleton/issues/1>`_.
 
 Usage
------
+=====
 
 - as script launcher
 - as runtime dependency context manager
@@ -53,14 +46,14 @@ Usage
 - as module launcher (akin to `python -m`)
 
 Examples
---------
+========
 
 The ``examples`` folder in this project includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
 
 Script Runner
-~~~~~~~~~~~~~
+-------------
 
 Let's say you have a script that has a one-off purpose. It's either not
 part of a library, where dependencies are normally declared, or it is
@@ -88,7 +81,7 @@ Then, simply invoke that script with rwt::
     200
 
 Command Runner
-~~~~~~~~~~~~~~
+--------------
 
 Note that everything after the -- is passed to the python invocation,
 so it's possible to have a one-liner that runs under a dependency
@@ -99,7 +92,7 @@ context::
     200
 
 Interactive Interpreter
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 RWT also offers a painless way to run a Python interactive
 interpreter in the context of certain dependencies::
@@ -110,7 +103,7 @@ interpreter in the context of certain dependencies::
     >>>
 
 Replacing setup_requires
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 Following the script example, you can make your setup.py file
 compatible with ``rwt`` by declaring your depenedencies in
@@ -133,7 +126,7 @@ will be loaded using the older technique, so the script is
 backward compatible.
 
 Replacing tests_require
-~~~~~~~~~~~~~~~~~~~~~~~
+-----------------------
 
 You can also replace tests_require. Consider a package that
 runs tests using ``setup.py test`` and relies on the
@@ -168,7 +161,7 @@ While still supporting the old technique::
     $ python setup.py test
 
 How Does It Work
-----------------
+================
 
 RWT effectively does the following:
 
@@ -179,13 +172,13 @@ RWT effectively does the following:
 For specifics, see ``rwt.run()``.
 
 Versioning
-----------
+==========
 
 RWT uses semver, so you can use this library with
 confidence about the stability of the interface, even
 during periods of great flux.
 
 Testing
--------
+=======
 
 Invoke tests with ``setup.py test``.
