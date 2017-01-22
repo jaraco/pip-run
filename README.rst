@@ -169,7 +169,8 @@ RWT effectively does the following:
 - ``PYTHONPATH=$TMPDIR python``
 - cleanup
 
-For specifics, see ``rwt.run()``.
+For specifics, see `rwt.run()
+<https://github.com/jaraco/rwt/blob/master/rwt/__init__.py#L9-L16>`_.
 
 Versioning
 ==========
