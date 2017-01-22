@@ -181,4 +181,4 @@ during periods of great flux.
 Testing
 =======
 
-Invoke tests with ``setup.py test``.
+Invoke tests with ``tox``.
