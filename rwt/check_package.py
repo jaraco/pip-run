@@ -72,5 +72,5 @@ def installed(package, version, pipdict):
     if comparator == '<=':
         return result <= 0
 
-pipdict = get_installed_packages()
-print(installed("pandas", ">= 2.8", pipdict))
+    else:
+    	return False
