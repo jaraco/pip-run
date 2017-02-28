@@ -1,3 +1,10 @@
+2.14
+----
+
+Added support for excluding already installed packages, but
+only when requirements are not specified in a requirements.txt
+file. Inspired by conversations at HackIllinois and Issue #13.
+
 2.13
 ----
 

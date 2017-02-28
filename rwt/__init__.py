@@ -12,5 +12,5 @@ def run(args=None):
 	pip_args, params = commands.parse_script_args(args)
 	commands.intercept(pip_args)
 	pip_args.extend(scripts.DepsReader.search(params))
-	with deps.load(*pip_args) as home:
+	with deps.load(*deps.not_installed(pip_args)) as home:
 		raise SystemExit(launch.with_path(home, params))
