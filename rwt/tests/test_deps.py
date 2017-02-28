@@ -1,3 +1,5 @@
+import copy
+
 import pkg_resources
 
 from rwt import deps
@@ -30,7 +32,7 @@ class TestInstallCheck:
 			'not_a_package',
 			'rwt==0.0',
 		]
-		expected = args.copy()
+		expected = copy.copy(args)
 		expected.remove('rwt')
 		filtered = deps.not_installed(args)
 		assert list(filtered) == expected
