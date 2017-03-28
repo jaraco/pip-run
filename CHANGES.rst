@@ -1,3 +1,10 @@
+2.15
+----
+
+Issue #14: Added workaround for pip #4106 such that rwt now
+runs on Homebrew Python and other environments where a distutils
+prefix is defined.
+
 2.14
 ----
 
