@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import os
 import sys
 import contextlib
 import subprocess
@@ -42,7 +43,8 @@ def load(*args):
 		sys.executable,
 		'-m', 'pip',
 	) + args
-	subprocess.check_call(cmd)
+	with _patch_prefix():
+		subprocess.check_call(cmd)
 	try:
 		yield target
 	finally:
@@ -53,11 +55,42 @@ def load(*args):
 def load_direct(*args):
 	target = tempfile.mkdtemp(prefix='rwt-')
 	args = ('install', '-t', target) + args
-	__import__('pip').main(list(args))
+	with _patch_prefix():
+		__import__('pip').main(list(args))
 	try:
 		yield target
 	finally:
 		shutil.rmtree(target)
+
+
+@contextlib.contextmanager
+def _patch_prefix():
+	"""
+	To workaround pypa/pip#4106, override the system prefix with
+	a user prefix, restoring the original file after.
+	"""
+	cfg_fn = os.path.expanduser('~/.pydistutils.cfg')
+	with _save_file(cfg_fn):
+		with open(cfg_fn, 'w') as cfg:
+			cfg.write('[install]\nprefix=\n')
+		yield
+
+
+@contextlib.contextmanager
+def _save_file(filename):
+	"""
+	Capture the state of filename and restore it after the context
+	exits.
+	"""
+	# For now, only supports a missing filename.
+	if os.path.exists(filename):
+		tmpl = "Unsupported with extant {filename}"
+		raise NotImplementedError(tmpl.format(**locals()))
+	try:
+		yield
+	finally:
+		if os.path.exists(filename):
+			os.remove(filename)
 
 
 @contextlib.contextmanager
