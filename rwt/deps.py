@@ -9,7 +9,10 @@ import shutil
 import itertools
 import functools
 
-from pip._vendor import pkg_resources
+try:
+	from pip._vendor import pkg_resources
+except ImportError:
+	import pkg_resources
 
 
 filterfalse = getattr(itertools, 'filterfalse', None) or itertools.ifilterfalse

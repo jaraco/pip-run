@@ -1,3 +1,10 @@
+2.15.1
+------
+
+Issue #15: Fixed issue where rwt would crash in environments
+where pip's vendored dependencies (namely pkg_resources)
+were unbundled.
+
 2.15
 ----
 
