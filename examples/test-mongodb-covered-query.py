@@ -3,21 +3,39 @@ This script demonstrates how RWT facilitates the
 simple execution of complex tasks with their
 dependencies.
 
-Run this example with ``python -m rwt -- $script``.
+Run this example with ``rwt -- $script``.
 
 It creates a MongoDB instance, and then runs some
 assertions against it.
 
-MongoDB must be installed to a typical location or
-available on PATH.
-
-As it uses jaraco.mongodb, set MONGODB_HOME to
+As it uses `jaraco.mongodb
+<https://pypi.org/project/jaraco.mongodb>`_, MongoDB
+must be installed to a typical location or
+available on PATH; set MONGODB_HOME to
 specify the MongoDB version to use for the ephemeral
 instance.
 
 Running this script with RWT leaves no trace of its
 execution, other than adding packages to the pip
-cache (if available).
+cache (if available), so feel free to give it a try.
+
+This script gets read three times:
+
+- First ``rwt`` reads it statically to determine the
+  dependencies found in ``__requires__`` and
+  installs those dependencies in a temp dir.
+- Then, the script is executed by a Python interpreter
+  which executes the script up to the __main__ block,
+  which invokes pytest with the script name as the
+  first argument.
+- ``py.test`` then runs the test, using the plugins
+  from jaraco.mongodb to satisfy the ``mongodb_instance``
+  fixture for the test.
+
+Alternately, the script could be
+invoked thus:  ``rwt -- -m pytest $script``, which would
+eliminate the need for the ``__main__`` block and
+would skip the second processing of the script.
 """
 
 __requires__ = [
