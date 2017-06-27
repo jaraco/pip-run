@@ -5,6 +5,12 @@ import tokenize
 import itertools
 
 
+try:
+	from pip._vendor import pkg_resources
+except ImportError:
+	import pkg_resources
+
+
 if sys.version_info < (3,):
 	filter = itertools.ifilter
 
@@ -61,7 +67,8 @@ class DepsReader:
 			and isinstance(node.targets[0], ast.Name)
 			and node.targets[0].id == var_name
 		)
-		return ast.literal_eval(node.value)
+		requirements = ast.literal_eval(node.value)
+		return [str(r) for r in pkg_resources.parse_requirements(requirements)]
 
 
 def run(cmdline):
