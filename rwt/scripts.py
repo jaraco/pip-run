@@ -18,6 +18,10 @@ if sys.version_info < (3,):
 class Dependencies(list):
 	index_url = None
 
+	def params(self):
+		prefix = ['--index-url', self.index_url] if self.index_url else []
+		return prefix + self
+
 
 class DepsReader:
 	"""
@@ -54,7 +58,7 @@ class DepsReader:
 		first file found.
 		"""
 		files = filter(os.path.isfile, params)
-		return cls.try_read(next(files, None))
+		return cls.try_read(next(files, None)).params()
 
 	def read(self):
 		"""
