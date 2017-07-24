@@ -38,3 +38,9 @@ class TestDepsReader:
 			x, a = [a, x]
 			''')
 		assert scripts.DepsReader(script).read() == ['foo']
+
+	def test_single_dep(self):
+		script = textwrap.dedent('''
+			__requires__='foo'
+			''')
+		assert scripts.DepsReader(script).read() == ['foo']
