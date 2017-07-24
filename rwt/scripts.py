@@ -16,6 +16,14 @@ if sys.version_info < (3,):
 	map = itertools.imap
 
 
+class Dependencies(list):
+	index_url = None
+
+	def params(self):
+		prefix = ['--index-url', self.index_url] if self.index_url else []
+		return prefix + self
+
+
 class DepsReader:
 	"""
 	Given a Python script, read the dependencies it declares.
@@ -40,7 +48,7 @@ class DepsReader:
 			reader = cls.load(script_path)
 			return reader.read()
 		except Exception:
-			return []
+			return Dependencies()
 
 	@classmethod
 	def search(cls, params):
@@ -51,7 +59,7 @@ class DepsReader:
 		first file found.
 		"""
 		files = filter(os.path.isfile, params)
-		return cls.try_read(next(files, None))
+		return cls.try_read(next(files, None)).params()
 
 	def read(self):
 		"""
@@ -59,7 +67,13 @@ class DepsReader:
 		['foo']
 		"""
 		reqs_raw = self._read('__requires__')
-		return list(map(str, pkg_resources.parse_requirements(reqs_raw)))
+		strings = map(str, pkg_resources.parse_requirements(reqs_raw))
+		deps = Dependencies(strings)
+		try:
+			deps.index_url = self._read('__index_url__')
+		except Exception:
+			pass
+		return deps
 
 	def _read(self, var_name):
 		mod = ast.parse(self.script)
