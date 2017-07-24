@@ -13,6 +13,7 @@ except ImportError:
 
 if sys.version_info < (3,):
 	filter = itertools.ifilter
+	map = itertools.imap
 
 
 class DepsReader:
