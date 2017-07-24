@@ -4,6 +4,10 @@
 Minor incompatibilty - ``DepsReader.read`` no longer accepts a
 ``var_name`` parameter.
 
+#19: DepsReader.read and DepsReader.try_read now return a
+scripts.Dependencies instance, which always has an
+``index_url`` attribute (may be None).
+
 2.16
 ----
 
