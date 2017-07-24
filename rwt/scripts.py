@@ -63,7 +63,12 @@ class DepsReader:
 		"""
 		reqs_raw = self._read('__requires__')
 		strings = map(str, pkg_resources.parse_requirements(reqs_raw))
-		return Dependencies(strings)
+		deps = Dependencies(strings)
+		try:
+			deps.index_url = self._read('__index_url__')
+		except Exception:
+			pass
+		return deps
 
 	def _read(self, var_name):
 		mod = ast.parse(self.script)
