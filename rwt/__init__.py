@@ -11,6 +11,8 @@ def run(args=None):
 		args = sys.argv[1:]
 	pip_args, params = commands.parse_script_args(args)
 	commands.intercept(pip_args)
-	pip_args.extend(scripts.DepsReader.search(params))
+	reqs = scripts.DepsReader.search(params)
+	reqs.index_url and pip_args.extend(['--index-url', reqs.index_url])
+	pip_args.extend(reqs)
 	with deps.load(*deps.not_installed(pip_args)) as home:
 		raise SystemExit(launch.with_path(home, params))

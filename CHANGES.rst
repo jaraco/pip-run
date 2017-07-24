@@ -10,6 +10,9 @@ scripts.Dependencies instance, which always has an
 the value of ``__index_url__`` from the script (if present)
 or None otherwise.
 
+#19: For standalone scripts, if ``__index_url__`` is indicated,
+it will be used to resolve dependencies.
+
 2.16
 ----
 
