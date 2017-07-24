@@ -15,11 +15,18 @@ if sys.version_info < (3,):
 	filter = itertools.ifilter
 
 
+class Dependencies(list):
+	index_url = None
+
+	def params(self):
+		prefix = ['--index-url', self.index_url] if self.index_url else []
+		return prefix + self
+
+
 class DepsReader:
 	"""
-	Given a Python script, read the dependencies from the
-	indicated variable (default __requires__). Does not
-	execute the script, so expects the var_name to be
+	Given a Python script, read the dependencies it declares.
+	Does not execute the script, so expects __requires__ to be
 	assigned a static list of strings.
 	"""
 	def __init__(self, script):
@@ -40,7 +47,7 @@ class DepsReader:
 			reader = cls.load(script_path)
 			return reader.read()
 		except Exception:
-			return []
+			return Dependencies()
 
 	@classmethod
 	def search(cls, params):
@@ -51,13 +58,23 @@ class DepsReader:
 		first file found.
 		"""
 		files = filter(os.path.isfile, params)
-		return cls.try_read(next(files, None))
+		return cls.try_read(next(files, None)).params()
 
-	def read(self, var_name='__requires__'):
+	def read(self):
 		"""
 		>>> DepsReader("__requires__=['foo']").read()
 		['foo']
 		"""
+		reqs_raw = self._read('__requires__')
+		strings = map(str, pkg_resources.parse_requirements(reqs_raw))
+		deps = Dependencies(strings)
+		try:
+			deps.index_url = self._read('__index_url__')
+		except Exception:
+			pass
+		return deps
+
+	def _read(self, var_name):
 		mod = ast.parse(self.script)
 		node, = (
 			node
@@ -67,8 +84,7 @@ class DepsReader:
 			and isinstance(node.targets[0], ast.Name)
 			and node.targets[0].id == var_name
 		)
-		requirements = ast.literal_eval(node.value)
-		return [str(r) for r in pkg_resources.parse_requirements(requirements)]
+		return ast.literal_eval(node.value)
 
 
 def run(cmdline):
