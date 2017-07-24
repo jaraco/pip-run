@@ -52,3 +52,23 @@ class TestDepsReader:
 			''')
 		reqs = scripts.DepsReader(script).read()
 		assert reqs.index_url == 'https://my.private.index/'
+
+
+def test_pkg_loaded_from_alternate_index(tmpdir):
+	"""
+	Create a script that loads cython from an alternate index
+	and ensure it runs.
+	"""
+	body = textwrap.dedent("""
+		__requires__ = ['cython']
+		__index_url__ = 'https://devpi.net/root/pypi/+simple/'
+		import cython
+		print("Successfully imported cython")
+		""").lstrip()
+	script_file = tmpdir / 'script'
+	script_file.write_text(body, 'utf-8')
+	cmd = [sys.executable, '-m', 'rwt', '--', str(script_file)]
+
+	out = subprocess.check_output(cmd, universal_newlines=True)
+	assert 'Successfully imported cython' in out
+	assert 'devpi.net' in out
