@@ -1,3 +1,9 @@
+3.0
+---
+
+Minor incompatibilty - ``DepsReader.read`` no longer accepts a
+``var_name`` parameter.
+
 2.16
 ----
 

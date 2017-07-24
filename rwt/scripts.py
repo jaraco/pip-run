@@ -17,9 +17,8 @@ if sys.version_info < (3,):
 
 class DepsReader:
 	"""
-	Given a Python script, read the dependencies from the
-	indicated variable (default __requires__). Does not
-	execute the script, so expects the var_name to be
+	Given a Python script, read the dependencies it declares.
+	Does not execute the script, so expects __requires__ to be
 	assigned a static list of strings.
 	"""
 	def __init__(self, script):
@@ -53,11 +52,15 @@ class DepsReader:
 		files = filter(os.path.isfile, params)
 		return cls.try_read(next(files, None))
 
-	def read(self, var_name='__requires__'):
+	def read(self):
 		"""
 		>>> DepsReader("__requires__=['foo']").read()
 		['foo']
 		"""
+		reqs_raw = self._read('__requires__')
+		return list(map(str, pkg_resources.parse_requirements(reqs_raw)))
+
+	def _read(self, var_name):
 		mod = ast.parse(self.script)
 		node, = (
 			node
@@ -67,8 +70,7 @@ class DepsReader:
 			and isinstance(node.targets[0], ast.Name)
 			and node.targets[0].id == var_name
 		)
-		requirements = ast.literal_eval(node.value)
-		return [str(r) for r in pkg_resources.parse_requirements(requirements)]
+		return ast.literal_eval(node.value)
 
 
 def run(cmdline):
