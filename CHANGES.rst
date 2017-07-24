@@ -1,3 +1,11 @@
+2.16
+----
+
+#18: More fully support ``__requires__`` syntax as supported
+by pkg_resources.
+
+Updated package from skeleton.
+
 2.15.1
 ------
 
