@@ -44,3 +44,11 @@ class TestDepsReader:
 			__requires__='foo'
 			''')
 		assert scripts.DepsReader(script).read() == ['foo']
+
+	def test_index_url(self):
+		script = textwrap.dedent('''
+			__requires__ = ['foo']
+			__index_url__ = 'https://my.private.index/'
+			''')
+		reqs = scripts.DepsReader(script).read()
+		assert reqs.index_url == 'https://my.private.index/'
