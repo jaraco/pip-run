@@ -85,6 +85,19 @@ Then, simply invoke that script with rwt::
     Loading requirements using requests
     200
 
+``rwt`` also recognizes a global ``__index_url__`` attribute. If present,
+this value will supply ``--index-url`` to pip with the attribute value,
+allowing a script to specify a custom package index::
+
+    #!/usr/bin/env python
+
+    __requires__ = ['my_private_package']
+    __index_url__ = 'https://my.private.index/'
+
+    import my_private_package
+    ...
+
+
 Command Runner
 --------------
 
