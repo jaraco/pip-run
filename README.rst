@@ -41,12 +41,49 @@ Usage
 - as interactive interpreter in dependency context
 - as module launcher (akin to `python -m`)
 
+Invoke ``rwt`` from the command-line using the console entry
+script (simply ``rwt``) or using the module executable (
+``python -m rwt``).
+
+Parameters following rwt are passed directly to ``pip install``,
+so ``rwt numpy`` will install ``numpy`` (reporting any work done
+during the install) and ``rwt -q -r requirements.txt`` will quietly
+install all the requirements listed in a file called requirements.txt.
+
+Following the parameters to ``pip install``, one may optionally
+include a ``--`` after which any parameters will be passed
+to a Python interpreter in the context.
+
 Examples
 ========
 
 The ``examples`` folder in this project includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
+
+In many of these examples, the option ``-q`` is passed to ``rwt``
+to suppress the output from pip.
+
+Interactive Interpreter
+-----------------------
+
+RWT also offers a painless way to run a Python interactive
+interpreter in the context of certain dependencies::
+
+    $ /clean-install/python -m rwt -q boto
+    >>> import boto
+    >>>
+
+
+Command Runner
+--------------
+
+Note that everything after the -- is passed to the python invocation,
+so it's possible to have a one-liner that runs under a dependency
+context::
+
+    $ python -m rwt -q requests -- -c "import requests; print(requests.get('https://pypi.io/project/rwt').status_code)"
+    200
 
 Script Runner
 -------------
@@ -72,8 +109,7 @@ First, add a ``__requires__`` directive at the head of the script::
 
 Then, simply invoke that script with rwt::
 
-    $ python -m rwt -- myscript.py
-    Loading requirements using requests
+    $ python -m rwt -q -- myscript.py
     200
 
 ``rwt`` also recognizes a global ``__index_url__`` attribute. If present,
@@ -87,29 +123,6 @@ allowing a script to specify a custom package index::
 
     import my_private_package
     ...
-
-
-Command Runner
---------------
-
-Note that everything after the -- is passed to the python invocation,
-so it's possible to have a one-liner that runs under a dependency
-context::
-
-    $ python -m rwt requests -- -c "import requests; print(requests.get('https://pypi.io/project/rwt').status_code)"
-    Loading requirements using requests
-    200
-
-Interactive Interpreter
------------------------
-
-RWT also offers a painless way to run a Python interactive
-interpreter in the context of certain dependencies::
-
-    $ /clean-install/python -m rwt boto
-    Loading requirements using boto
-    >>> import boto
-    >>>
 
 Replacing setup_requires
 ------------------------
@@ -136,6 +149,11 @@ backward compatible.
 
 Replacing tests_require
 -----------------------
+
+Although this example is included for completeness,
+because the technique is somewhat clumsy, the
+author currently recommends using ``tox`` for running
+tests except in extremely lean environments.
 
 You can also replace tests_require. Consider a package that
 runs tests using ``setup.py test`` and relies on the
