@@ -9,8 +9,6 @@ session.
 
 .. image:: https://img.shields.io/pypi/pyversions/rwt.svg
 
-.. image:: https://img.shields.io/pypi/dm/rwt.svg
-
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
    :target: http://travis-ci.org/jaraco/rwt
 
@@ -34,13 +32,6 @@ readily address the on-demand needs and supersede some
 features like ``setup_requires``.
 
 .. [1] Except when a requirements file is used.
-
-License
-=======
-
-License is indicated in the project metadata (typically one or more
-of the Trove classifiers). For more details, see `this explanation
-<https://github.com/jaraco/skeleton/issues/1>`_.
 
 Usage
 =====
