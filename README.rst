@@ -199,6 +199,17 @@ RWT effectively does the following:
 For specifics, see `rwt.run()
 <https://github.com/jaraco/rwt/blob/master/rwt/__init__.py#L9-L16>`_.
 
+Integration
+===========
+
+The author created this package with the intention of demonstrating
+the capability before integrating it directly with pip in a command
+such as ``pip run``. After proposing the change, the idea was largely
+rejected in `pip 3971 <https://github.com/pypa/pip/issues/3971>`_.
+
+If you would like to see this functionality made available in pip,
+please upvote or comment in that ticket.
+
 Versioning
 ==========
 
