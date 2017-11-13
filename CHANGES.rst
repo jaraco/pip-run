@@ -17,7 +17,9 @@ it will be used to resolve dependencies.
 ----
 
 #18: More fully support ``__requires__`` syntax as supported
-by pkg_resources.
+by pkg_resources. This change had the unintended side-effect
+of disallowing full dependency links (URLs) in ``__requires__``.
+See #22 for details.
 
 Updated package from skeleton.
 
