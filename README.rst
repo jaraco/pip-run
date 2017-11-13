@@ -85,7 +85,7 @@ Note that everything after the -- is passed to the python invocation,
 so it's possible to have a one-liner that runs under a dependency
 context::
 
-    $ python -m rwt -q requests -- -c "import requests; print(requests.get('https://pypi.io/project/rwt').status_code)"
+    $ python -m rwt -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/rwt').status_code)"
     200
 
 Script Runner
