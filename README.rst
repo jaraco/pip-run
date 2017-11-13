@@ -1,9 +1,3 @@
-/ruːt/
-
-RWT (Run With This) provides on-demand dependency resolution,
-making packages available for the duration of an interpreter
-session.
-
 .. image:: https://img.shields.io/pypi/v/rwt.svg
    :target: https://pypi.org/project/rwt
 
@@ -11,6 +5,15 @@ session.
 
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
    :target: http://travis-ci.org/jaraco/rwt
+
+.. image:: https://readthedocs.org/projects/rwt/badge/?version=latest
+   :target: http://rwt.readthedocs.io/en/latest/?badge=latest
+
+/ruːt/
+
+RWT (Run With This) provides on-demand dependency resolution,
+making packages available for the duration of an interpreter
+session.
 
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
