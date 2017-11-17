@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+import os
 import textwrap
 import sys
 import subprocess
@@ -53,6 +54,14 @@ class TestDepsReader:
 		reqs = scripts.DepsReader(script).read()
 		assert reqs.index_url == 'https://my.private.index/'
 
+	def test_dependency_links(self):
+		script = textwrap.dedent('''
+			__requires__ = ['foo==0.42']
+			__dependency_links__ = ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
+			''')
+		reqs = scripts.DepsReader(script).read()
+		assert reqs.dependency_links == ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
+
 
 def test_pkg_loaded_from_alternate_index(tmpdir):
 	"""
@@ -72,3 +81,37 @@ def test_pkg_loaded_from_alternate_index(tmpdir):
 	out = subprocess.check_output(cmd, universal_newlines=True)
 	assert 'Successfully imported path.py' in out
 	assert 'devpi.net' in out
+
+
+def test_pkg_loaded_from_dependency_links(tmpdir):
+	"""
+	Create a script whose dependency is only installable
+	from a custom dependency link and ensure it runs.
+	"""
+	dependency = tmpdir.ensure_dir('barbazquux-1.0')
+	(dependency / 'setup.py').write_text(textwrap.dedent(
+		'''
+		from setuptools import setup
+		setup(
+			name='barbazquux', version='1.0',
+			py_modules=['barbazquux'],
+		)
+		'''
+	), 'utf-8')
+	(dependency / 'barbazquux.py').write_text('', 'utf-8')
+	dependency_link = 'file://%s#egg=barbazquux-1.0' % (
+		dependency.strpath.replace(os.path.sep, '/'),
+	)
+	body = textwrap.dedent("""
+		__requires__ = ['barbazquux']
+		__dependency_links__ = [{dependency_link!r}]
+		import barbazquux
+		print("Successfully imported barbazquux.py")
+		""").lstrip().format(
+			dependency_link=dependency_link
+		)
+	script_file = tmpdir.ensure_dir('script_dir') / 'script'
+	script_file.write_text(body, 'utf-8')
+	cmd = [sys.executable, '-m', 'rwt', '--no-index', '--', str(script_file)]
+	out = subprocess.check_output(cmd, universal_newlines=True)
+	assert 'Successfully imported barbazquux.py' in out
