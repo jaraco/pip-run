@@ -1,3 +1,10 @@
+3.1
+---
+
+#24: Add support for ``__dependency_links__``.
+
+#23: Fix test failures on Windows.
+
 3.0
 ---
 
