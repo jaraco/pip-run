@@ -203,6 +203,21 @@ While still supporting the old technique::
 
     $ python setup.py test
 
+Supplying parameters to Pip
+---------------------------
+
+If you've been using ``rwt``, you may have defined some requirements
+in the ``__requires__`` of a script, but now you wish to install those
+to a more permanent environment. rwt provides a routine to facilitate
+this case:
+
+    $ python -m rwt.read-deps script.py
+    my_dependency
+
+If you're on Unix, you may pipe this result directly to pip:
+
+    $ pip install $(python -m rwt.read-deps script.py)
+
 How Does It Work
 ================
 

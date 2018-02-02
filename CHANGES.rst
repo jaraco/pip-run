@@ -1,3 +1,8 @@
+3.2
+---
+
+Added ``rwt.read-deps`` command.
+
 3.1
 ---
 
