@@ -4,10 +4,10 @@
 .. image:: https://img.shields.io/pypi/pyversions/rwt.svg
 
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
-   :target: http://travis-ci.org/jaraco/rwt
+   :target: https://travis-ci.org/jaraco/rwt
 
 .. image:: https://readthedocs.org/projects/rwt/badge/?version=latest
-   :target: http://rwt.readthedocs.io/en/latest/?badge=latest
+   :target: https://rwt.readthedocs.io/en/latest/?badge=latest
 
 /ruːt/
 
