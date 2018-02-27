@@ -218,6 +218,11 @@ If you're on Unix, you may pipe this result directly to pip:
 
     $ pip install $(python -m rwt.read-deps script.py)
 
+And since `pipenv <https://docs.pipenv.org/>`_ uses the same syntax,
+the same technique works for pipenv:
+
+    $ pipenv install $(python -m rwt.read-deps script.py)
+
 How Does It Work
 ================
 
