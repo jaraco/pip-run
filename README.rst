@@ -6,6 +6,9 @@
 .. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
    :target: https://travis-ci.org/jaraco/rwt
 
+.. image:: https://img.shields.io/appveyor/ci/jaraco/rwt/master.svg
+   :target: https://ci.appveyor.com/project/jaraco/rwt/branch/master
+
 .. image:: https://readthedocs.org/projects/rwt/badge/?version=latest
    :target: https://rwt.readthedocs.io/en/latest/?badge=latest
 
