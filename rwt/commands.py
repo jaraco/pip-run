@@ -16,7 +16,7 @@ def parse_script_args(args):
 		pivot = args.index('--')
 	except ValueError:
 		pivot = len(args)
-	return args[:pivot], args[pivot+1:]
+	return args[:pivot], args[pivot + 1:]
 
 
 help_doc = textwrap.dedent("""
@@ -25,7 +25,7 @@ help_doc = textwrap.dedent("""
 	Arguments to rwt prior to `--` are used to specify the requirements
 	to make available, just as arguments to pip install. For example,
 
-	    rwt -r requirements.txt "requests>=2.0"
+		rwt -r requirements.txt "requests>=2.0"
 
 	That will launch python after installing the deps in requirements.txt
 	and also a late requests. Packages are always installed to a temporary
@@ -34,13 +34,13 @@ help_doc = textwrap.dedent("""
 	Arguments after `--` are passed to the Python interpreter. So to launch
 	`script.py`:
 
-	    rwt -- script.py
+		rwt -- script.py
 
 	If the `--` is ommitted or nothing is passed, the python interpreter
 	will be launched in interactive mode:
 
-	    rwt
-	    >>>
+		rwt
+		>>>
 
 	For more examples and details, see https://pypi.org/project/rwt.
 	""").lstrip()

@@ -60,7 +60,8 @@ class TestDepsReader:
 			__dependency_links__ = ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
 			''')
 		reqs = scripts.DepsReader(script).read()
-		assert reqs.dependency_links == ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
+		assert reqs.dependency_links == [
+			'git+ssh://git@example.com/repo.git#egg=foo-0.42']
 
 
 def test_pkg_loaded_from_alternate_index(tmpdir):
@@ -108,8 +109,8 @@ def test_pkg_loaded_from_dependency_links(tmpdir):
 		import barbazquux
 		print("Successfully imported barbazquux.py")
 		""").lstrip().format(
-			dependency_link=dependency_link
-		)
+		dependency_link=dependency_link
+	)
 	script_file = tmpdir.ensure_dir('script_dir') / 'script'
 	script_file.write_text(body, 'utf-8')
 	cmd = [sys.executable, '-m', 'rwt', '--no-index', '--', str(script_file)]
