@@ -36,3 +36,13 @@ class TestInstallCheck:
 		expected.remove('rwt')
 		filtered = deps.not_installed(args)
 		assert list(filtered) == expected
+
+
+class TestLoad:
+	def test_no_args_passes(self):
+		"""
+		If called with no arguments, load() should still provide
+		a context.
+		"""
+		with deps.load():
+			pass
