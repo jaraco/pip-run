@@ -41,13 +41,14 @@ def _update_working_set():
 @contextlib.contextmanager
 def load(*args):
 	target = tempfile.mkdtemp(prefix='rwt-')
-	args = ('install', '-t', target) + args
 	cmd = (
 		sys.executable,
 		'-m', 'pip',
+		'install',
+		'-t', target,
 	) + args
 	with _patch_prefix():
-		subprocess.check_call(cmd)
+		args and subprocess.check_call(cmd)
 	try:
 		yield target
 	finally:
