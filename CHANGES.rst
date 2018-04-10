@@ -1,3 +1,10 @@
+3.3
+---
+
+Added support for pip 10, including addressing #25. As a
+side benefit, warnings are no longer issued when no
+requirements are supplied.
+
 3.2
 ---
 
