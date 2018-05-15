@@ -10,7 +10,7 @@ import shlex
 
 def main():
 	subprocess.check_call(shlex.split(
-		'python -m pip install git+https://github.com/pypa/pip@release/10.0.0'
+		'python -m pip install pip>=10'
 	))
 	subprocess.check_call(shlex.split(
 		'python -m pip install') + sys.argv[1:])
