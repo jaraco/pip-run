@@ -4,6 +4,9 @@
 Dropped support for injecting modules to sys.path when
 Setuptools is older than 19.6.2 (presumed unused).
 
+Package now uses Setuptools declarative config and thus
+will not install from sdist without Setuptools 30.3 or later.
+
 3.3
 ---
 
