@@ -1,3 +1,9 @@
+4.0
+---
+
+Dropped support for injecting modules to sys.path when
+Setuptools is older than 19.6.2 (presumed unused).
+
 3.3
 ---
 
