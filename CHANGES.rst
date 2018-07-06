@@ -1,3 +1,9 @@
+4.1
+---
+
+Added support for Jython by using JYTHONPATH instead
+of PYTHONPATH when on Jython.
+
 4.0.1
 -----
 

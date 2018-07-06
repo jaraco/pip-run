@@ -49,12 +49,17 @@ def _inject_sitecustomize(target):
 		strm.write(hook)
 
 
+def _pythonpath():
+	return 'JYTHONPATH' if sys.platform.startswith('java') else 'PYTHONPATH'
+
+
 def _build_env(target):
 	"""
 	Prepend target and .pth references in target to PYTHONPATH
 	"""
+	key = _pythonpath()
 	env = dict(os.environ)
-	suffix = env.get('PYTHONPATH')
+	suffix = env.get(key)
 	prefix = target,
 	items = itertools.chain(
 		prefix,
@@ -62,7 +67,7 @@ def _build_env(target):
 		(suffix,) if suffix else (),
 	)
 	joined = os.pathsep.join(items)
-	env['PYTHONPATH'] = joined
+	env[key] = joined
 	return env
 
 
