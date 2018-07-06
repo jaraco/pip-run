@@ -1,3 +1,10 @@
+4.0.1
+-----
+
+Use ``io.open`` in ``scripts`` reader for better Jython
+compatibility. See `Jython 2696
+<http://bugs.jython.org/issue2696>`_ for more info.
+
 4.0
 ---
 

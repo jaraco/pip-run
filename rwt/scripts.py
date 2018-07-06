@@ -3,6 +3,7 @@ import sys
 import ast
 import tokenize
 import itertools
+import io
 
 
 try:
@@ -38,7 +39,7 @@ class DepsReader:
 
 	@classmethod
 	def load(cls, script_path):
-		with open(script_path) as stream:
+		with io.open(script_path) as stream:
 			return cls(stream.read())
 
 	@classmethod
