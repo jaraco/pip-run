@@ -54,18 +54,6 @@ def load(*args):
 
 
 @contextlib.contextmanager
-def load_direct(*args):
-	target = tempfile.mkdtemp(prefix='rwt-')
-	args = ('install', '-t', target) + args
-	with _patch_prefix():
-		__import__('pip').main(list(args))
-	try:
-		yield target
-	finally:
-		shutil.rmtree(target)
-
-
-@contextlib.contextmanager
 def _patch_prefix():
 	"""
 	To workaround pypa/pip#4106, override the system prefix with
