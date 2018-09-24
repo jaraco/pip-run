@@ -34,12 +34,7 @@ def _inject_sitecustomize(target):
 	"""
 	Create a sitecustomize file in the target that will install
 	the target as a sitedir.
-
-	Only needed on Python 3.2 and earlier to workaround #1.
 	"""
-	if sys.version_info > (3, 3):
-		return
-
 	hook = textwrap.dedent("""
 		import site
 		site.addsitedir({target!r})

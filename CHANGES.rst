@@ -1,3 +1,9 @@
+4.3
+---
+
+#29: Unconditionally honor ``.pth`` files in installed
+packages.
+
 4.2
 ---
 
