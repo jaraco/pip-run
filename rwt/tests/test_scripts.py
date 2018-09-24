@@ -63,6 +63,18 @@ class TestDepsReader:
 		assert reqs.dependency_links == [
 			'git+ssh://git@example.com/repo.git#egg=foo-0.42']
 
+	def test_fstrings_allowed(self):
+		"""
+		It should be possible to read dependencies from a script
+		with f-strings on all Pythons.
+		"""
+		script = textwrap.dedent('''
+			__requires__ = 'foo'
+			f'boo'
+			''')
+		reqs = scripts.DepsReader(script).read()
+		assert reqs == ['foo']
+
 
 def test_pkg_loaded_from_alternate_index(tmpdir):
 	"""
