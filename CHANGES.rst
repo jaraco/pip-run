@@ -1,3 +1,9 @@
+4.2
+---
+
+#28: Avoid error when arguments to ``pip install``
+existed but did not indicate any packages to install.
+
 4.1
 ---
 
