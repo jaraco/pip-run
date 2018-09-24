@@ -1,3 +1,9 @@
+4.4
+---
+
+#30: Support reading deps from scripts with f-strings
+on older Pythons.
+
 4.3
 ---
 
