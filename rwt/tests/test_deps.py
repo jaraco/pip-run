@@ -46,3 +46,11 @@ class TestLoad:
 		"""
 		with deps.load():
 			pass
+
+	def test_only_options_passes(self):
+		"""
+		If called with only options, but no installable targets,
+		load() should still provide a context.
+		"""
+		with deps.load('-q'):
+			pass
