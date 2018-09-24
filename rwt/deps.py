@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import os
 import sys
+import re
 import contextlib
 import subprocess
 import tempfile
@@ -36,6 +37,19 @@ def _update_working_set():
 	yield
 
 
+def _installable(args):
+	"""
+	Return True only if the args to pip install
+	indicate something to install.
+	"""
+	return any(
+		re.match(r'\w+', arg)
+		or arg.startswith('-r')
+		or arg.startswith('--requirement')
+		for arg in args
+	)
+
+
 @contextlib.contextmanager
 def load(*args):
 	target = tempfile.mkdtemp(prefix='rwt-')
@@ -46,7 +60,7 @@ def load(*args):
 		'-t', target,
 	) + args
 	with _patch_prefix():
-		args and subprocess.check_call(cmd)
+		_installable(args) and subprocess.check_call(cmd)
 	try:
 		yield target
 	finally:
