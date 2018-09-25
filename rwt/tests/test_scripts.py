@@ -68,10 +68,12 @@ class TestDepsReader:
 		It should be possible to read dependencies from a script
 		with f-strings on all Pythons.
 		"""
-		script = textwrap.dedent('''# coding: future_fstrings
+		script = textwrap.dedent('''
+			# coding: future_fstrings
 			__requires__ = 'foo'
 			f'boo'
-			''')
+			f'coo'
+			''').lstrip()
 		reqs = scripts.DepsReader(script).read()
 		assert reqs == ['foo']
 
