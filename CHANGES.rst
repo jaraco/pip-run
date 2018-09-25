@@ -1,3 +1,9 @@
+4.4.1
+-----
+
+Fixed issue with file encoding declaration in future
+f-string handling.
+
 4.4
 ---
 
