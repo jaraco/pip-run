@@ -103,9 +103,16 @@ class DepsReader:
 		if sys.version_info > (3, 6):
 			return script
 
-		def repl(match):
+		removed = re.sub(
+			r'^\s*#.*coding:\s*future_fstrings.*$',
+			'',
+			script,
+			flags=re.MULTILINE,
+		)
+
+		def strip_f(match):
 			return match.group(0)[1:]
-		return re.sub(r'\bf[\'"]', repl, script)
+		return re.sub(r'\bf[\'"]', strip_f, removed)
 
 
 def run(cmdline):
