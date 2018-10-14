@@ -52,6 +52,8 @@ def _installable(args):
 	True
 	>>> _installable(['projects/inflect'])
 	True
+	>>> _installable(['~/projects/inflect'])
+	True
 	"""
 	return any(
 		re.match(r'\w+', arg)
