@@ -41,6 +41,17 @@ def _installable(args):
 	"""
 	Return True only if the args to pip install
 	indicate something to install.
+
+	>>> _installable(['inflect'])
+	True
+	>>> _installable(['-q'])
+	False
+	>>> _installable(['-q', 'inflect'])
+	True
+	>>> _installable(['-rfoo.txt'])
+	True
+	>>> _installable(['projects/inflect'])
+	True
 	"""
 	return any(
 		re.match(r'\w+', arg)
