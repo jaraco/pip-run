@@ -2,7 +2,6 @@ from __future__ import print_function
 
 import os
 import sys
-import re
 import contextlib
 import subprocess
 import tempfile
@@ -56,7 +55,7 @@ def _installable(args):
 	True
 	"""
 	return any(
-		re.match(r'\w+', arg)
+		not arg.startswith('-')
 		or arg.startswith('-r')
 		or arg.startswith('--requirement')
 		for arg in args
