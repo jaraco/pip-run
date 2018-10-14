@@ -1,3 +1,9 @@
+4.4.2
+-----
+
+#32: Fix regression in the 4.2 release where ``rwt``
+sometimes fails to install some local packages.
+
 4.4.1
 -----
 
