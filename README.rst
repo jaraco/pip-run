@@ -238,6 +238,18 @@ RWT effectively does the following:
 For specifics, see `rwt.run()
 <https://github.com/jaraco/rwt/blob/master/rwt/__init__.py#L9-L16>`_.
 
+Limitations
+===========
+
+- Due to limitations with ``pip``, RWT cannot run with "editable"
+  (``-e``) requirements.
+
+- RWT uses a ``sitecustomize`` module to ensure that ``.pth`` files
+  in the requirements are installed. As a result, any environment
+  that has a ``sitecustomize`` module will find that module masked
+  when running under RWT.
+
+
 Integration
 ===========
 
