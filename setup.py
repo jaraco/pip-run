@@ -4,8 +4,5 @@
 
 import setuptools
 
-params = dict(
-	use_scm_version=True,
-)
 if __name__ == '__main__':
-	setuptools.setup(**params)
+	setuptools.setup(use_scm_version=True)
