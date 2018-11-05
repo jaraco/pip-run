@@ -22,10 +22,10 @@ def parse_script_args(args):
 help_doc = textwrap.dedent("""
 	Usage:
 
-	Arguments to rwt prior to `--` are used to specify the requirements
+	Arguments to pip-run prior to `--` are used to specify the requirements
 	to make available, just as arguments to pip install. For example,
 
-		rwt -r requirements.txt "requests>=2.0"
+		pip-run -r requirements.txt "requests>=2.0"
 
 	That will launch python after installing the deps in requirements.txt
 	and also a late requests. Packages are always installed to a temporary
@@ -34,15 +34,15 @@ help_doc = textwrap.dedent("""
 	Arguments after `--` are passed to the Python interpreter. So to launch
 	`script.py`:
 
-		rwt -- script.py
+		pip-run -- script.py
 
 	If the `--` is ommitted or nothing is passed, the python interpreter
 	will be launched in interactive mode:
 
-		rwt
+		pip-run
 		>>>
 
-	For more examples and details, see https://pypi.org/project/rwt.
+	For more examples and details, see https://pypi.org/project/pip-run.
 	""").lstrip()
 
 

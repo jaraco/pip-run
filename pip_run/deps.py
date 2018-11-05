@@ -64,7 +64,7 @@ def _installable(args):
 
 @contextlib.contextmanager
 def load(*args):
-	target = tempfile.mkdtemp(prefix='rwt-')
+	target = tempfile.mkdtemp(prefix='pip-run-')
 	cmd = (
 		sys.executable,
 		'-m', 'pip',

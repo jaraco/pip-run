@@ -2,7 +2,7 @@ import copy
 
 import pkg_resources
 
-from rwt import deps
+from pip_run import deps
 
 
 def test_entry_points():
@@ -16,24 +16,24 @@ def test_entry_points():
 
 class TestInstallCheck:
 	def test_installed(self):
-		assert deps.pkg_installed('rwt')
+		assert deps.pkg_installed('pip-run')
 
 	def test_not_installed(self):
 		assert not deps.pkg_installed('not_a_package')
 
 	def test_installed_version(self):
-		assert not deps.pkg_installed('rwt==0.0')
+		assert not deps.pkg_installed('pip-run==0.0')
 
 	def test_not_installed_args(self):
 		args = [
 			'-i', 'https://devpi.net',
 			'-r', 'requirements.txt',
-			'rwt',
+			'pip-run',
 			'not_a_package',
-			'rwt==0.0',
+			'pip-run==0.0',
 		]
 		expected = copy.copy(args)
-		expected.remove('rwt')
+		expected.remove('pip-run')
 		filtered = deps.not_installed(args)
 		assert list(filtered) == expected
 
