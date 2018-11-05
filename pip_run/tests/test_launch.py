@@ -7,7 +7,7 @@ import os
 
 import pytest
 
-from rwt import launch
+from pip_run import launch
 
 
 def test_with_path(tmpdir, capfd):
@@ -32,8 +32,8 @@ def test_with_path_overlay(tmpdir, capfd):
 	params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
 	# launch subprocess so as not to overlay the test process
 	script = textwrap.dedent("""
-		import rwt.launch
-		rwt.launch.with_path_overlay({tmpdir!r}, {params!r})
+		import pip_run.launch
+		pip_run.launch.with_path_overlay({tmpdir!r}, {params!r})
 		print("cleanup")
 	""").strip().replace('\n', '; ').format(tmpdir=str(tmpdir), params=params)
 	subprocess.Popen([sys.executable, '-c', script]).wait()

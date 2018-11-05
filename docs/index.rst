@@ -1,4 +1,4 @@
-Welcome to rwt documentation!
+Welcome to pip-run documentation!
 =============================
 
 .. toctree::
@@ -7,7 +7,7 @@ Welcome to rwt documentation!
    history
 
 
-.. automodule:: rwt
+.. automodule:: pip_run
     :members:
     :undoc-members:
     :show-inheritance:

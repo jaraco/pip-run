@@ -1,20 +1,18 @@
-.. image:: https://img.shields.io/pypi/v/rwt.svg
-   :target: https://pypi.org/project/rwt
+.. image:: https://img.shields.io/pypi/v/pip-run.svg
+   :target: https://pypi.org/project/pip-run
 
-.. image:: https://img.shields.io/pypi/pyversions/rwt.svg
+.. image:: https://img.shields.io/pypi/pyversions/pip-run.svg
 
-.. image:: https://img.shields.io/travis/jaraco/rwt/master.svg
-   :target: https://travis-ci.org/jaraco/rwt
+.. image:: https://img.shields.io/travis/jaraco/pip-run/master.svg
+   :target: https://travis-ci.org/jaraco/pip-run
 
-.. image:: https://img.shields.io/appveyor/ci/jaraco/rwt/master.svg
-   :target: https://ci.appveyor.com/project/jaraco/rwt/branch/master
+.. image:: https://img.shields.io/appveyor/ci/jaraco/pip-run/master.svg
+   :target: https://ci.appveyor.com/project/jaraco/pip-run/branch/master
 
-.. image:: https://readthedocs.org/projects/rwt/badge/?version=latest
-   :target: https://rwt.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
+   :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
 
-/ruːt/
-
-RWT (Run With This) provides on-demand dependency resolution,
+``pip-run`` provides on-demand dependency resolution,
 making packages available for the duration of an interpreter
 session.
 
@@ -26,14 +24,14 @@ session.
 - Relies on packages already satisfied [1]_.
 - Re-uses the pip tool chain for package installation.
 
-RWT is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
+``pip-run`` is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
 
 - build setup
 - test runners
 - just in time script running
 - interactive development
 
-RWT is a compliment to Pip and Virtualenv and Setuptools, intended to more
+``pip-run`` is a compliment to Pip and Virtualenv and Setuptools, intended to more
 readily address the on-demand needs and supersede some
 features like ``setup_requires``.
 
@@ -47,13 +45,13 @@ Usage
 - as interactive interpreter in dependency context
 - as module launcher (akin to `python -m`)
 
-Invoke ``rwt`` from the command-line using the console entry
-script (simply ``rwt``) or using the module executable (
-``python -m rwt``).
+Invoke ``pip-run`` from the command-line using the console entry
+script (simply ``pip-run``) or using the module executable (
+``python -m pip-run``).
 
-Parameters following rwt are passed directly to ``pip install``,
-so ``rwt numpy`` will install ``numpy`` (reporting any work done
-during the install) and ``rwt -q -r requirements.txt`` will quietly
+Parameters following pip-run are passed directly to ``pip install``,
+so ``pip-run numpy`` will install ``numpy`` (reporting any work done
+during the install) and ``pip-run -q -r requirements.txt`` will quietly
 install all the requirements listed in a file called requirements.txt.
 
 Following the parameters to ``pip install``, one may optionally
@@ -67,16 +65,16 @@ The ``examples`` folder in this project includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
 
-In many of these examples, the option ``-q`` is passed to ``rwt``
+In many of these examples, the option ``-q`` is passed to ``pip-run``
 to suppress the output from pip.
 
 Interactive Interpreter
 -----------------------
 
-RWT also offers a painless way to run a Python interactive
+``pip-run`` also offers a painless way to run a Python interactive
 interpreter in the context of certain dependencies::
 
-    $ /clean-install/python -m rwt -q boto
+    $ /clean-install/python -m pip-run -q boto
     >>> import boto
     >>>
 
@@ -88,7 +86,7 @@ Note that everything after the -- is passed to the python invocation,
 so it's possible to have a one-liner that runs under a dependency
 context::
 
-    $ python -m rwt -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/rwt').status_code)"
+    $ python -m pip-run -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/pip-run').status_code)"
     200
 
 Script Runner
@@ -98,7 +96,7 @@ Let's say you have a script that has a one-off purpose. It's either not
 part of a library, where dependencies are normally declared, or it is
 normally executed outside the context of that library. Still, that script
 probably has dependencies, say on `requests
-<https://pypi.org/project/requests>`_. Here's how you can use rwt to
+<https://pypi.org/project/requests>`_. Here's how you can use pip-run to
 declare the dependencies and launch the script in a context where
 those dependencies have been resolved.
 
@@ -110,17 +108,17 @@ First, add a ``__requires__`` directive at the head of the script::
 
     import requests
 
-    req = requests.get('https://pypi.org/project/rwt')
+    req = requests.get('https://pypi.org/project/pip-run')
     print(req.status_code)
 
-Then, simply invoke that script with rwt::
+Then, simply invoke that script with pip-run::
 
-    $ python -m rwt -q -- myscript.py
+    $ python -m pip-run -q -- myscript.py
     200
 
 The format for requirements must follow `PEP 508 <https://www.python.org/dev/peps/pep-0508/>`_.
 
-Note that URLs specifiers are not supported by pip, but ``rwt`` supports a
+Note that URLs specifiers are not supported by pip, but ``pip-run`` supports a
 global ``__dependency_links__`` attribute which can be used, for example, to
 install requirement from a project VCS URL::
 
@@ -131,7 +129,7 @@ install requirement from a project VCS URL::
 
     [...]
 
-``rwt`` also recognizes a global ``__index_url__`` attribute. If present,
+``pip-run`` also recognizes a global ``__index_url__`` attribute. If present,
 this value will supply ``--index-url`` to pip with the attribute value,
 allowing a script to specify a custom package index::
 
@@ -147,7 +145,7 @@ Replacing setup_requires
 ------------------------
 
 Following the script example, you can make your setup.py file
-compatible with ``rwt`` by declaring your depenedencies in
+compatible with ``pip-run`` by declaring your depenedencies in
 the ``__requires__`` directive::
 
     #!/usr/bin/env python
@@ -161,7 +159,7 @@ the ``__requires__`` directive::
         setup_requires=__requires__,
     )
 
-When invoked with rwt, the dependencies will be assured before
+When invoked with pip-run, the dependencies will be assured before
 the script is run, or if run with setuptools, the dependencies
 will be loaded using the older technique, so the script is
 backward compatible.
@@ -198,9 +196,9 @@ tests_require in setup.py::
         tests_require=tests_require,
     )
 
-Then invoke tests with rwt::
+Then invoke tests with pip-run::
 
-    $ python -m rwt -r tests/requirements.txt -- setup.py test
+    $ python -m pip-run -r tests/requirements.txt -- setup.py test
 
 While still supporting the old technique::
 
@@ -209,45 +207,45 @@ While still supporting the old technique::
 Supplying parameters to Pip
 ---------------------------
 
-If you've been using ``rwt``, you may have defined some requirements
+If you've been using ``pip-run``, you may have defined some requirements
 in the ``__requires__`` of a script, but now you wish to install those
-to a more permanent environment. rwt provides a routine to facilitate
+to a more permanent environment. pip-run provides a routine to facilitate
 this case:
 
-    $ python -m rwt.read-deps script.py
+    $ python -m pip_run.read-deps script.py
     my_dependency
 
 If you're on Unix, you may pipe this result directly to pip:
 
-    $ pip install $(python -m rwt.read-deps script.py)
+    $ pip install $(python -m pip_run.read-deps script.py)
 
 And since `pipenv <https://docs.pipenv.org/>`_ uses the same syntax,
 the same technique works for pipenv:
 
-    $ pipenv install $(python -m rwt.read-deps script.py)
+    $ pipenv install $(python -m pip_run.read-deps script.py)
 
 How Does It Work
 ================
 
-RWT effectively does the following:
+``pip-run`` effectively does the following:
 
 - ``pip install -t $TMPDIR``
 - ``PYTHONPATH=$TMPDIR python``
 - cleanup
 
-For specifics, see `rwt.run()
-<https://github.com/jaraco/rwt/blob/master/rwt/__init__.py#L9-L16>`_.
+For specifics, see `pip_run.run()
+<https://github.com/jaraco/pip-run/blob/master/pip_run/__init__.py#L9-L16>`_.
 
 Limitations
 ===========
 
-- Due to limitations with ``pip``, RWT cannot run with "editable"
+- Due to limitations with ``pip``, ``pip-run`` cannot run with "editable"
   (``-e``) requirements.
 
-- RWT uses a ``sitecustomize`` module to ensure that ``.pth`` files
+- ``pip-run`` uses a ``sitecustomize`` module to ensure that ``.pth`` files
   in the requirements are installed. As a result, any environment
   that has a ``sitecustomize`` module will find that module masked
-  when running under RWT.
+  when running under ``pip-run``.
 
 
 Integration
@@ -264,7 +262,7 @@ please upvote or comment in that ticket.
 Versioning
 ==========
 
-RWT uses semver, so you can use this library with
+``pip-run`` uses semver, so you can use this library with
 confidence about the stability of the interface, even
 during periods of great flux.
 

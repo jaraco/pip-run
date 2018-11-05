@@ -5,7 +5,7 @@ import textwrap
 import sys
 import subprocess
 
-from rwt import scripts
+from pip_run import scripts
 
 
 def test_pkg_imported(tmpdir):
@@ -19,7 +19,7 @@ def test_pkg_imported(tmpdir):
 	script_file = tmpdir / 'script'
 	script_file.write_text(body, 'utf-8')
 	pip_args = ['path.py']
-	cmd = [sys.executable, '-m', 'rwt'] + pip_args + ['--', str(script_file)]
+	cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script_file)]
 
 	out = subprocess.check_output(cmd, universal_newlines=True)
 	assert 'Successfully imported path.py' in out
@@ -91,7 +91,7 @@ def test_pkg_loaded_from_alternate_index(tmpdir):
 		""").lstrip()
 	script_file = tmpdir / 'script'
 	script_file.write_text(body, 'utf-8')
-	cmd = [sys.executable, '-m', 'rwt', '--', str(script_file)]
+	cmd = [sys.executable, '-m', 'pip-run', '--', str(script_file)]
 
 	out = subprocess.check_output(cmd, universal_newlines=True)
 	assert 'Successfully imported path.py' in out
@@ -127,6 +127,6 @@ def test_pkg_loaded_from_dependency_links(tmpdir):
 	)
 	script_file = tmpdir.ensure_dir('script_dir') / 'script'
 	script_file.write_text(body, 'utf-8')
-	cmd = [sys.executable, '-m', 'rwt', '--no-index', '--', str(script_file)]
+	cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', str(script_file)]
 	out = subprocess.check_output(cmd, universal_newlines=True)
 	assert 'Successfully imported barbazquux.py' in out

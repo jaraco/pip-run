@@ -1,3 +1,8 @@
+5.0
+---
+
+#34: Renamed project from ``rwt`` to ``pip-run``.
+
 4.4.2
 -----
 

@@ -1,9 +1,9 @@
 """
-This script demonstrates how RWT facilitates the
+This script demonstrates how ``pip-run`` facilitates the
 simple execution of complex tasks with their
 dependencies.
 
-Run this example with ``rwt -- $script``.
+Run this example with ``pip-run -- $script``.
 
 It creates a MongoDB instance, and then runs some
 assertions against it.
@@ -15,13 +15,13 @@ available on PATH; set MONGODB_HOME to
 specify the MongoDB version to use for the ephemeral
 instance.
 
-Running this script with RWT leaves no trace of its
+Running this script with ``pip-run``` leaves no trace of its
 execution, other than adding packages to the pip
 cache (if available), so feel free to give it a try.
 
 This script gets read three times:
 
-- First ``rwt`` reads it statically to determine the
+- First ``pip-run`` reads it statically to determine the
   dependencies found in ``__requires__`` and
   installs those dependencies in a temp dir.
 - Then, the script is executed by a Python interpreter
@@ -33,7 +33,7 @@ This script gets read three times:
   fixture for the test.
 
 Alternately, the script could be
-invoked thus:  ``rwt -- -m pytest $script``, which would
+invoked thus:  ``pip-run -- -m pytest $script``, which would
 eliminate the need for the ``__main__`` block and
 would skip the second processing of the script.
 """
