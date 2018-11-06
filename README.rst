@@ -16,6 +16,19 @@
 making packages available for the duration of an interpreter
 session.
 
+It replaces this series of commands (or their Windows equivalent)::
+
+    $ virtualenv --python pythonX.X --system-site-packages $temp/env
+    $ $temp/env/bin/pip install pkg1 pkg2 -r reqs.txt
+    $ $temp/env/bin/python ...
+    $ rm -rf $temp/env
+
+With this single-line command::
+
+    $ pythonX.X -m pip-run pkg1 pkg2 -r reqs.txt -- ...
+
+Features include
+
 - Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
@@ -30,12 +43,19 @@ session.
 - test runners
 - just in time script running
 - interactive development
+- bug triage
 
 ``pip-run`` is a compliment to Pip and Virtualenv and Setuptools, intended to more
 readily address the on-demand needs and supersede some
 features like ``setup_requires``.
 
 .. [1] Except when a requirements file is used.
+
+Installation
+============
+
+``pip-run`` is meant to be installed in the system site packages
+alongside pip, though it can also be installed in a virtualenv.
 
 Usage
 =====
@@ -47,7 +67,8 @@ Usage
 
 Invoke ``pip-run`` from the command-line using the console entry
 script (simply ``pip-run``) or using the module executable (
-``python -m pip-run``).
+``python -m pip-run``). This latter usage is particularly convenient
+for testing a command across various Python versions.
 
 Parameters following pip-run are passed directly to ``pip install``,
 so ``pip-run numpy`` will install ``numpy`` (reporting any work done
@@ -61,7 +82,9 @@ to a Python interpreter in the context.
 Examples
 ========
 
-The ``examples`` folder in this project includes some examples demonstrating
+The `examples folder in this project
+<https://github.com/jaraco/pip-run/tree/master/examples>`_
+includes some examples demonstrating
 the power and usefulness of the project. Read the docs on those examples
 for instructions.
 
@@ -88,6 +111,16 @@ context::
 
     $ python -m pip-run -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/pip-run').status_code)"
     200
+
+As long as ``pip-run`` is installed in each of Python environments
+on the system, this command can be readily repeated on the other
+python environments by specifying the relevant interpreter::
+
+    $ python2.7 -m pip-run ...
+
+or on Windows::
+
+    $ py -2.7 -m pip-run ...
 
 Script Runner
 -------------
