@@ -7,6 +7,9 @@ from . import scripts
 
 
 def run(args=None):
+	"""
+	Main entry point for pip-run.
+	"""
 	if args is None:
 		args = sys.argv[1:]
 	pip_args, params = commands.parse_script_args(args)
