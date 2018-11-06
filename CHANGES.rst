@@ -1,3 +1,8 @@
+5.1
+---
+
+* Updated documentation.
+
 5.0
 ---
 
