@@ -1,3 +1,9 @@
+5.2
+---
+
+#36: Allow bypass of workaround for pip #4106
+by setting ``PIP_RUN_NO_PATCH_PREFIX``.
+
 5.1
 ---
 

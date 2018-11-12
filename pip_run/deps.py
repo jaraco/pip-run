@@ -85,6 +85,9 @@ def _patch_prefix():
 	To workaround pypa/pip#4106, override the system prefix with
 	a user prefix, restoring the original file after.
 	"""
+	if os.environ.get('PIP_RUN_NO_PATCH_PREFIX'):
+		yield
+		return
 	cfg_fn = os.path.expanduser('~/.pydistutils.cfg')
 	with _save_file(cfg_fn):
 		with open(cfg_fn, 'w') as cfg:
