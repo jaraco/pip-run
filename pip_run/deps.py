@@ -79,13 +79,24 @@ def load(*args):
 		shutil.rmtree(target)
 
 
+def _needs_pip_4106_workaround():
+	"""
+	Detect if the environment is configured with a prefix, as
+	the workaround is only required under those conditions.
+	"""
+	import distutils.dist
+	dist = distutils.dist.Distribution()
+	dist.parse_config_files()
+	return 'prefix' in dist.get_option_dict('install')
+
+
 @contextlib.contextmanager
 def _patch_prefix():
 	"""
 	To workaround pypa/pip#4106, override the system prefix with
 	a user prefix, restoring the original file after.
 	"""
-	if os.environ.get('PIP_RUN_NO_PATCH_PREFIX'):
+	if not _needs_pip_4106_workaround():
 		yield
 		return
 	cfg_fn = os.path.expanduser('~/.pydistutils.cfg')

@@ -1,3 +1,10 @@
+5.3
+---
+
+#36: Instead of soliciting the environment variable,
+the workaround for pip #4106 is now automatically
+applied, but only when it is needed.
+
 5.2
 ---
 
