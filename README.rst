@@ -12,6 +12,9 @@
 .. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
    :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
 
+.. image:: https://dev.azure.com/jaraco/pip-run/_apis/build/status/jaraco.pip-run?branchName=master
+   :target: https://dev.azure.com/jaraco/pip-run/_build/latest?definitionId=1&branchName=master
+
 ``pip-run`` provides on-demand dependency resolution,
 making packages available for the duration of an interpreter
 session.
