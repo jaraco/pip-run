@@ -33,7 +33,7 @@ jobs:
     displayName: 'Install tox'
 
   - script: |
-      tox
+      tox -- --junit-xml=test-results.xml
     displayName: 'run tests'
 
   - task: PublishTestResults@2
