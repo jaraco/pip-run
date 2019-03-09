@@ -41,3 +41,21 @@ jobs:
       testResultsFiles: '**/test-results.xml'
       testRunTitle: 'Python $(python.version)'
     condition: succeededOrFailed()
+
+- job: 'Publish'
+  pool:
+    vmImage: 'Ubuntu-16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.7'
+      architecture: 'x64'
+
+  - script: python -m pip install tox
+    displayName: 'Install tox'
+
+  - script: |
+      tox -e release
+    displayName: 'publish to PyPI'
+    condition: contains($(Build.SourceBranch), 'tags')
