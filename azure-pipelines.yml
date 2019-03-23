@@ -58,4 +58,4 @@ jobs:
   - script: |
       tox -e release
     displayName: 'publish to PyPI'
-    condition: contains($(Build.SourceBranch), 'tags')
+    condition: contains(variables['Build.SourceBranch'], 'tags')
