@@ -36,6 +36,7 @@ Features include
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
 - Relies on pip to cache downloads of such packages for reuse.
+- Leaves no trace of its invocation (except files in pip's cache).
 - Supersedes installed packages when required.
 - Relies on packages already satisfied [1]_.
 - Re-uses the pip tool chain for package installation.
@@ -77,6 +78,9 @@ Parameters following pip-run are passed directly to ``pip install``,
 so ``pip-run numpy`` will install ``numpy`` (reporting any work done
 during the install) and ``pip-run -q -r requirements.txt`` will quietly
 install all the requirements listed in a file called requirements.txt.
+Any `environment variables honored by pip
+<https://pip.pypa.io/en/stable/user_guide/#environment-variables>`_
+are also honored.
 
 Following the parameters to ``pip install``, one may optionally
 include a ``--`` after which any parameters will be passed
@@ -93,6 +97,25 @@ for instructions.
 
 In many of these examples, the option ``-q`` is passed to ``pip-run``
 to suppress the output from pip.
+
+Module Script Runner
+--------------------
+
+Perhaps the most powerful usage of ``pip-run`` is its ability to invoke
+executable modules and packages via
+`runpy <https://docs.python.org/3/library/runpy.html>`_ (aka
+``python -m``)::
+
+    $ pip-run -q pycowsay -- -m pycowsay "moove over, pip-run"
+
+      -------------------
+    < moove over, pip-run >
+      -------------------
+       \   ^__^
+        \  (oo)\_______
+           (__)\       )\/\
+               ||----w |
+               ||     ||
 
 Interactive Interpreter
 -----------------------
@@ -283,6 +306,50 @@ Limitations
   that has a ``sitecustomize`` module will find that module masked
   when running under ``pip-run``.
 
+Comparison with pipx
+====================
+
+The `pipx project <https://pypi.org/project/pipx/>`_ is another mature
+project with similar goals. Both projects expose a project and its
+dependencies in ephemeral environments. The main difference is pipx
+primarily exposes Python binaries (console scripts) from those
+environments whereas pip-run exposes a Python context (including
+runpy scripts).
+
+.. list-table::
+   :widths: 30 10 10
+   :header-rows: 1
+
+   * - Feature
+     - pip-run
+     - pipx
+   * - user-mode operation
+     - ✓
+     - ✓
+   * - invoke console scripts
+     -
+     - ✓
+   * - invoke runpy modules
+     - ✓
+     -
+   * - run standalone scripts
+     - ✓
+     -
+   * - interactive interpreter with deps
+     - ✓
+     -
+   * - ephemeral environments
+     - ✓
+     - ✓
+   * - persistent environments
+     -
+     - ✓
+   * - PEP 582 support
+     -
+     - ✓
+   * - Python 2 support
+     - ✓
+     -
 
 Integration
 ===========
