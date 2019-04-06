@@ -1,4 +1,5 @@
 import copy
+import textwrap
 
 import pkg_resources
 
@@ -54,3 +55,18 @@ class TestLoad:
 		"""
 		with deps.load('-q'):
 			pass
+
+
+class TestReplaceBuildDeps:
+	def test_requirements_built(self, tmpdir):
+		target = tmpdir / 'build-reqs.txt'
+		pip_args = ('--build-reqs', 'pyproject.toml')
+		replaced = deps.replace_build_deps(pip_args, str(tmpdir))
+		expected = '--requirement', str(target)
+		assert replaced == expected
+		with target.open() as strm:
+			assert strm.read() == textwrap.dedent("""
+				setuptools>=34.4
+				wheel
+				setuptools_scm>=1.15
+				""").lstrip()

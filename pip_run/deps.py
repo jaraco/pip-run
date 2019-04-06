@@ -1,5 +1,6 @@
 from __future__ import print_function
 
+import io
 import os
 import sys
 import contextlib
@@ -8,6 +9,8 @@ import tempfile
 import shutil
 import itertools
 import functools
+
+import pytoml
 
 try:
 	from pip._vendor import pkg_resources
@@ -65,14 +68,15 @@ def _installable(args):
 @contextlib.contextmanager
 def load(*args):
 	target = tempfile.mkdtemp(prefix='pip-run-')
+	spec = replace_build_deps(args, target)
 	cmd = (
 		sys.executable,
 		'-m', 'pip',
 		'install',
 		'-t', target,
-	) + args
+	) + spec
 	with _patch_prefix():
-		_installable(args) and subprocess.check_call(cmd)
+		_installable(spec) and subprocess.check_call(cmd)
 	try:
 		yield target
 	finally:
@@ -147,3 +151,26 @@ def pkg_installed(spec):
 
 
 not_installed = functools.partial(filterfalse, pkg_installed)
+
+
+def replace_build_deps(args, target):
+	"""
+	Given arguments to pip, replace '--build-reqs <tomlfile>' with
+	'--requirement <temp build reqs.txt>' with 'temp build reqs'
+	built from the build-system.requires option in the tomlfile.
+	"""
+	while '--build-reqs' in args:
+		tempfile = os.path.join(target, 'build-reqs.txt')
+		pivot = args.index('--build-reqs')
+		tomlfile = args[pivot + 1]
+		append_requirements(tempfile, tomlfile)
+		args = args[:pivot] + ('--requirement', tempfile) + args[pivot + 2:]
+	return args
+
+
+def append_requirements(tempfile, tomlfile):
+	with io.open(tomlfile) as strm:
+		data = pytoml.load(strm)
+	reqs = data['build-system']['requires']
+	with io.open(tempfile, 'w+') as out:
+		out.writelines(line + '\n' for line in reqs)
