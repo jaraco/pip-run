@@ -347,6 +347,9 @@ runpy scripts).
    * - PEP 582 support
      -
      - ✓
+   * - Specify optional dependencies
+     - ✓
+     -
    * - Python 2 support
      - ✓
      -
