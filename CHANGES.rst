@@ -1,3 +1,5 @@
+.. Change notes should be added using `reno`.
+
 5.3
 ---
 

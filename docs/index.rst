@@ -1,5 +1,5 @@
 Welcome to pip-run documentation!
-=============================
+=================================
 
 .. toctree::
    :maxdepth: 1

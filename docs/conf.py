@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-extensions = ["sphinx.ext.autodoc", "jaraco.packaging.sphinx", "rst.linker"]
+extensions = [
+    "sphinx.ext.autodoc", "jaraco.packaging.sphinx", "rst.linker",
+    "reno.sphinxext",
+]
 
 master_doc = "index"
 

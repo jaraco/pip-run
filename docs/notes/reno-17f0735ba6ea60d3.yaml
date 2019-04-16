@@ -1,0 +1,5 @@
+---
+features:
+  - |
+    Project now uses `reno <https://pypi.org/project/reno>`_ to render
+    release notes.

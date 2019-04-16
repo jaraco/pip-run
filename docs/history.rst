@@ -5,4 +5,7 @@
 History
 *******
 
+.. release-notes::
+   :relnotessubdir: docs
+
 .. include:: ../CHANGES (links).rst
