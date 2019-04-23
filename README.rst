@@ -338,6 +338,9 @@ runpy scripts).
    * - interactive interpreter with deps
      - ✓
      -
+   * - re-use existing environment
+     - ✓
+     -
    * - ephemeral environments
      - ✓
      - ✓
