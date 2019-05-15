@@ -6,6 +6,10 @@
 .. image:: https://img.shields.io/travis/jaraco/pip-run/master.svg
    :target: https://travis-ci.org/jaraco/pip-run
 
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/ambv/black
+   :alt: Code style: Black
+
 .. image:: https://img.shields.io/appveyor/ci/jaraco/pip-run/master.svg
    :target: https://ci.appveyor.com/project/jaraco/pip-run/branch/master
 
