@@ -36,7 +36,6 @@ With this single-line command::
 
 Features include
 
-- Allows declaration of dependencies at runtime.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
 - Relies on pip to cache downloads of such packages for reuse.
