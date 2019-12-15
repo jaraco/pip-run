@@ -119,6 +119,9 @@ executable modules and packages via
                ||----w |
                ||     ||
 
+.. image:: docs/cowsay.svg
+   :alt: cowsay example animation
+
 Interactive Interpreter
 -----------------------
 

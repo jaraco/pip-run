@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="terminal" baseProfile="full" viewBox="0 0 616 325" width="616" version="1.1">
+    <defs>
+        <termtosvg:template_settings xmlns:termtosvg="https://github.com/nbedos/termtosvg">
+            <termtosvg:screen_geometry columns="77" rows="19"/>
+            <termtosvg:animation type="css"/>
+        </termtosvg:template_settings>
+        <style type="text/css" id="generated-style"><![CDATA[#screen {
+                font-family: 'DejaVu Sans Mono', monospace;
+                font-style: normal;
+                font-size: 14px;
+            }
+
+        text {
+            dominant-baseline: text-before-edge;
+            white-space: pre;
+        }
+    
+            :root {
+                --animation-duration: 10686ms;
+            }
+
+            @keyframes roll {
+                0.000%{transform:translateY(0px)}
+0.009%{transform:translateY(-340px)}
+0.047%{transform:translateY(-680px)}
+0.449%{transform:translateY(-1020px)}
+10.724%{transform:translateY(-1360px)}
+10.743%{transform:translateY(-1700px)}
+12.409%{transform:translateY(-2040px)}
+12.437%{transform:translateY(-2380px)}
+13.981%{transform:translateY(-2720px)}
+14.000%{transform:translateY(-3060px)}
+15.254%{transform:translateY(-3400px)}
+15.263%{transform:translateY(-3740px)}
+17.069%{transform:translateY(-4080px)}
+17.088%{transform:translateY(-4420px)}
+18.660%{transform:translateY(-4760px)}
+18.669%{transform:translateY(-5100px)}
+20.550%{transform:translateY(-5440px)}
+20.588%{transform:translateY(-5780px)}
+24.668%{transform:translateY(-6120px)}
+24.687%{transform:translateY(-6460px)}
+30.900%{transform:translateY(-6800px)}
+31.013%{transform:translateY(-7140px)}
+38.845%{transform:translateY(-7480px)}
+40.305%{transform:translateY(-7820px)}
+40.333%{transform:translateY(-8160px)}
+40.352%{transform:translateY(-8500px)}
+40.380%{transform:translateY(-8840px)}
+40.605%{transform:translateY(-9180px)}
+90.623%{transform:translateY(-9520px)}
+90.642%{transform:translateY(-9860px)}
+100.000%{transform:translateY(-9860px)}
+            }
+
+            #screen_view {
+                animation-duration: 10686ms;
+                animation-iteration-count:infinite;
+                animation-name:roll;
+                animation-timing-function: steps(1,end);
+                animation-fill-mode: forwards;
+            }
+        ]]></style>
+        <style type="text/css" id="user-style">
+            /* The colors defined below are the default 16 colors used for rendering text of the terminal. Adjust
+               them as needed.
+               PowerShell colors based on https://en.wikipedia.org/wiki/ANSI_escape_code#Colors */
+            .foreground {fill: #cccccc;}
+            .background {fill: #0c0c0c;}
+            .color0 {fill: #0c0c0c;}
+            .color1 {fill: #c50f1f;}
+            .color2 {fill: #13a10e;}
+            .color3 {fill: #c19c00;}
+            .color4 {fill: #0037da;}
+            .color5 {fill: #881798;}
+            .color6 {fill: #3a96dd;}
+            .color7 {fill: #cccccc;}
+            .color8 {fill: #767676;}
+            .color9 {fill: #e74856;}
+            .color10 {fill: #16c60c;}
+            .color11 {fill: #f9f1a5;}
+            .color12 {fill: #3b78ff;}
+            .color13 {fill: #b4009e;}
+            .color14 {fill: #61d6d6;}
+            .color15 {fill: #f2f2f2;}
+        </style>
+    </defs>
+    <svg id="screen" width="616" height="323" viewBox="0 0 616 323" preserveAspectRatio="xMidYMin slice">
+    <rect class="background" height="100%" width="100%" x="0" y="0"/><defs><g id="g1"><text x="0" textLength="8" class="background"> </text></g><g id="g2"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="8" class="foreground"> </text><text x="32" textLength="8" class="background"> </text><text x="40" textLength="576" class="foreground">                                                                        </text></g><g id="g3"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="16" class="foreground"> p</text><text x="40" textLength="8" class="background"> </text><text x="48" textLength="568" class="foreground">                                                                       </text></g><g id="g4"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="16" class="foreground"> p</text><text x="40" textLength="8" class="background">i</text><text x="48" textLength="432" font-weight="bold" class="color8">p-run -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g5"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="24" class="foreground"> pi</text><text x="48" textLength="8" class="background"> </text><text x="56" textLength="560" class="foreground">                                                                      </text></g><g id="g6"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="24" class="foreground"> pi</text><text x="48" textLength="8" class="background">p</text><text x="56" textLength="424" font-weight="bold" class="color8">-run -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g7"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="32" class="foreground"> pip</text><text x="56" textLength="8" class="background"> </text><text x="64" textLength="552" class="foreground">                                                                     </text></g><g id="g8"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="32" class="foreground"> pip</text><text x="56" textLength="8" class="background">-</text><text x="64" textLength="416" font-weight="bold" class="color8">run -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g9"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="40" class="foreground"> pip-</text><text x="64" textLength="8" class="background"> </text><text x="72" textLength="544" class="foreground">                                                                    </text></g><g id="g10"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="40" class="foreground"> pip-</text><text x="64" textLength="8" class="background">r</text><text x="72" textLength="408" font-weight="bold" class="color8">un -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g11"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="48" class="foreground"> pip-r</text><text x="72" textLength="8" class="background"> </text><text x="80" textLength="536" class="foreground">                                                                   </text></g><g id="g12"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="48" class="foreground"> pip-r</text><text x="72" textLength="8" class="background">u</text><text x="80" textLength="400" font-weight="bold" class="color8">n -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g13"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="56" class="foreground"> pip-ru</text><text x="80" textLength="8" class="background"> </text><text x="88" textLength="528" class="foreground">                                                                  </text></g><g id="g14"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="56" class="foreground"> pip-ru</text><text x="80" textLength="8" class="background">n</text><text x="88" textLength="392" font-weight="bold" class="color8"> -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g15"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="64" class="foreground"> pip-run</text><text x="88" textLength="8" class="background"> </text><text x="96" textLength="520" class="foreground">                                                                 </text></g><g id="g16"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="64" class="foreground"> pip-run</text><text x="88" textLength="8" class="background"> </text><text x="96" textLength="384" font-weight="bold" class="color8">-q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="136" class="foreground">                 </text></g><g id="g17"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="456" class="foreground"> pip-run -q pycowsay -- -m pycowsay "moove over, pip-run"</text><text x="480" textLength="8" class="background"> </text><text x="488" textLength="128" class="foreground">                </text></g><g id="g18"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="592" class="foreground"> pip-run -q pycowsay -- -m pycowsay "moove over, pip-run"                 </text></g><g id="g19"><text x="0" textLength="8" class="background"> </text><text x="8" textLength="608" class="foreground">                                                                            </text></g><g id="g20"><text x="0" textLength="616" class="foreground">                                                                             </text></g><g id="g21"><text x="0" textLength="168" class="foreground">  -------------------</text></g><g id="g22"><text x="0" textLength="184" class="foreground">&lt; moove over, pip-run &gt;</text></g><g id="g23"><text x="0" textLength="88" class="foreground">   \   ^__^</text></g><g id="g24"><text x="0" textLength="152" class="foreground">    \  (oo)\_______</text></g><g id="g25"><text x="0" textLength="184" class="foreground">       (__)\       )\/\</text></g><g id="g26"><text x="0" textLength="160" class="foreground">           ||----w |</text></g><g id="g27"><text x="0" textLength="160" class="foreground">           ||     ||</text></g><g id="g28"><text x="0" textLength="16" class="foreground">~ </text><text x="16" textLength="8" font-weight="bold" class="color12">$</text><text x="24" textLength="592" class="foreground">                                                                          </text></g></defs><g id="screen_view"><g><rect x="0" y="0" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="0"/></g><g><rect x="0" y="340" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="340"/></g><g><rect x="32" y="680" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="680"/></g><g><rect x="32" y="1020" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="1020"/></g><g><rect x="40" y="1360" width="8" height="17" class="foreground"/><use xlink:href="#g3" y="1360"/></g><g><rect x="40" y="1700" width="8" height="17" class="foreground"/><use xlink:href="#g4" y="1700"/></g><g><rect x="48" y="2040" width="8" height="17" class="foreground"/><use xlink:href="#g5" y="2040"/></g><g><rect x="48" y="2380" width="8" height="17" class="foreground"/><use xlink:href="#g6" y="2380"/></g><g><rect x="56" y="2720" width="8" height="17" class="foreground"/><use xlink:href="#g7" y="2720"/></g><g><rect x="56" y="3060" width="8" height="17" class="foreground"/><use xlink:href="#g8" y="3060"/></g><g><rect x="64" y="3400" width="8" height="17" class="foreground"/><use xlink:href="#g9" y="3400"/></g><g><rect x="64" y="3740" width="8" height="17" class="foreground"/><use xlink:href="#g10" y="3740"/></g><g><rect x="72" y="4080" width="8" height="17" class="foreground"/><use xlink:href="#g11" y="4080"/></g><g><rect x="72" y="4420" width="8" height="17" class="foreground"/><use xlink:href="#g12" y="4420"/></g><g><rect x="80" y="4760" width="8" height="17" class="foreground"/><use xlink:href="#g13" y="4760"/></g><g><rect x="80" y="5100" width="8" height="17" class="foreground"/><use xlink:href="#g14" y="5100"/></g><g><rect x="88" y="5440" width="8" height="17" class="foreground"/><use xlink:href="#g15" y="5440"/></g><g><rect x="88" y="5780" width="8" height="17" class="foreground"/><use xlink:href="#g16" y="5780"/></g><g><rect x="480" y="6120" width="8" height="17" class="foreground"/><use xlink:href="#g17" y="6120"/></g><g><rect x="480" y="6460" width="8" height="17" class="foreground"/><use xlink:href="#g17" y="6460"/></g><g><use xlink:href="#g18" y="6800"/><rect x="0" y="6817" width="8" height="17" class="foreground"/><use xlink:href="#g19" y="6817"/></g><g><use xlink:href="#g18" y="7140"/><rect x="0" y="7157" width="8" height="17" class="foreground"/><use xlink:href="#g19" y="7157"/></g><g><use xlink:href="#g18" y="7480"/><use xlink:href="#g20" y="7497"/><use xlink:href="#g21" y="7514"/><use xlink:href="#g22" y="7531"/><use xlink:href="#g21" y="7548"/><use xlink:href="#g23" y="7565"/><use xlink:href="#g24" y="7582"/><use xlink:href="#g25" y="7599"/><use xlink:href="#g26" y="7616"/><use xlink:href="#g27" y="7633"/><rect x="0" y="7667" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="7667"/></g><g><use xlink:href="#g18" y="7820"/><use xlink:href="#g20" y="7837"/><use xlink:href="#g21" y="7854"/><use xlink:href="#g22" y="7871"/><use xlink:href="#g21" y="7888"/><use xlink:href="#g23" y="7905"/><use xlink:href="#g24" y="7922"/><use xlink:href="#g25" y="7939"/><use xlink:href="#g26" y="7956"/><use xlink:href="#g27" y="7973"/><rect x="0" y="8007" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="8007"/></g><g><use xlink:href="#g18" y="8160"/><use xlink:href="#g20" y="8177"/><use xlink:href="#g21" y="8194"/><use xlink:href="#g22" y="8211"/><use xlink:href="#g21" y="8228"/><use xlink:href="#g23" y="8245"/><use xlink:href="#g24" y="8262"/><use xlink:href="#g25" y="8279"/><use xlink:href="#g26" y="8296"/><use xlink:href="#g27" y="8313"/><rect x="0" y="8347" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="8347"/></g><g><use xlink:href="#g18" y="8500"/><use xlink:href="#g20" y="8517"/><use xlink:href="#g21" y="8534"/><use xlink:href="#g22" y="8551"/><use xlink:href="#g21" y="8568"/><use xlink:href="#g23" y="8585"/><use xlink:href="#g24" y="8602"/><use xlink:href="#g25" y="8619"/><use xlink:href="#g26" y="8636"/><use xlink:href="#g27" y="8653"/><rect x="0" y="8687" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="8687"/></g><g><use xlink:href="#g18" y="8840"/><use xlink:href="#g20" y="8857"/><use xlink:href="#g21" y="8874"/><use xlink:href="#g22" y="8891"/><use xlink:href="#g21" y="8908"/><use xlink:href="#g23" y="8925"/><use xlink:href="#g24" y="8942"/><use xlink:href="#g25" y="8959"/><use xlink:href="#g26" y="8976"/><use xlink:href="#g27" y="8993"/><rect x="32" y="9027" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="9027"/></g><g><use xlink:href="#g18" y="9180"/><use xlink:href="#g20" y="9197"/><use xlink:href="#g21" y="9214"/><use xlink:href="#g22" y="9231"/><use xlink:href="#g21" y="9248"/><use xlink:href="#g23" y="9265"/><use xlink:href="#g24" y="9282"/><use xlink:href="#g25" y="9299"/><use xlink:href="#g26" y="9316"/><use xlink:href="#g27" y="9333"/><rect x="32" y="9367" width="8" height="17" class="foreground"/><use xlink:href="#g2" y="9367"/></g><g><use xlink:href="#g18" y="9520"/><use xlink:href="#g20" y="9537"/><use xlink:href="#g21" y="9554"/><use xlink:href="#g22" y="9571"/><use xlink:href="#g21" y="9588"/><use xlink:href="#g23" y="9605"/><use xlink:href="#g24" y="9622"/><use xlink:href="#g25" y="9639"/><use xlink:href="#g26" y="9656"/><use xlink:href="#g27" y="9673"/><use xlink:href="#g28" y="9707"/><rect x="0" y="9724" width="8" height="17" class="foreground"/><use xlink:href="#g1" y="9724"/></g><g><use xlink:href="#g18" y="9860"/><use xlink:href="#g20" y="9877"/><use xlink:href="#g21" y="9894"/><use xlink:href="#g22" y="9911"/><use xlink:href="#g21" y="9928"/><use xlink:href="#g23" y="9945"/><use xlink:href="#g24" y="9962"/><use xlink:href="#g25" y="9979"/><use xlink:href="#g26" y="9996"/><use xlink:href="#g27" y="10013"/><use xlink:href="#g28" y="10047"/><use xlink:href="#g28" y="10064"/><rect x="0" y="10081" width="8" height="17" class="foreground"/><use xlink:href="#g19" y="10081"/></g></g></svg>
+</svg>
