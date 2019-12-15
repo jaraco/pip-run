@@ -19,9 +19,8 @@
 .. image:: https://dev.azure.com/jaraco/pip-run/_apis/build/status/jaraco.pip-run?branchName=master
    :target: https://dev.azure.com/jaraco/pip-run/_build/latest?definitionId=1&branchName=master
 
-``pip-run`` provides on-demand dependency resolution,
-making packages available for the duration of an interpreter
-session.
+``pip-run`` provides on-demand temporary package installation
+for a single interpreter run.
 
 It replaces this series of commands (or their Windows equivalent)::
 
@@ -46,6 +45,7 @@ Features include
 
 ``pip-run`` is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
 
+- trials and experiments
 - build setup
 - test runners
 - just in time script running
@@ -53,8 +53,7 @@ Features include
 - bug triage
 
 ``pip-run`` is a compliment to Pip and Virtualenv and Setuptools, intended to more
-readily address the on-demand needs and supersede some
-features like ``setup_requires``.
+readily address the on-demand needs.
 
 .. [1] Except when a requirements file is used.
 
