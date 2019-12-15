@@ -50,7 +50,8 @@ The features/techniques employed by the skeleton include:
 - setuptools declarative configuration using setup.cfg
 - tox for running tests
 - A README.rst as reStructuredText with some popular badges, but with readthedocs and appveyor badges commented out
-- A CHANGES.rst file intended for publishing release notes about the project.
+- A CHANGES.rst file intended for publishing release notes about the project
+- Use of [black](https://black.readthedocs.io/en/stable/) for code formatting (disabled on unsupported Python 3.5 and earlier)
 
 ## Packaging Conventions
 
@@ -84,7 +85,7 @@ The skeleton assumes the developer has [tox](https://pypi.org/project/tox) insta
 
 Other environments (invoked with `tox -e {name}`) supplied include:
 
-  - a `build-docs` environment to build the documentation
+  - a `docs` environment to build the documentation
   - a `release` environment to publish the package to PyPI
 
 A pytest.ini is included to define common options around running tests. In particular:
@@ -97,18 +98,12 @@ A pytest.ini is included to define common options around running tests. In parti
 
 Relies a .flake8 file to correct some default behaviors:
 
-- allow tabs for indentation (legacy for jaraco projects)
-- disable mutually incompatible rules W503 and W504.
+- disable mutually incompatible rules W503 and W504
+- support for black format
 
 ## Continuous Integration
 
-The project is pre-configured to run tests in [Travis-CI](https://travis-ci.org) (.travis.yml). Any new project must be enabled either through their web site or with the `travis enable` command. In addition to running tests, an additional deploy stage is configured to automatically release tagged commits. The username and password for PyPI must be configured for each project using the `travis` command and only after the travis project is created. As releases are cut with [twine](https://pypi.org/project/twine), the two values are supplied through the `TWINE_USERNAME` and `TWINE_PASSWORD`. To configure the latter as a secret, run the following command:
-
-```
-echo "TWINE_PASSWORD={password}" | travis encrypt
-```
-
-Or disable it in the CI definition and configure it through the web UI.
+The project is pre-configured to run tests in [Travis-CI](https://travis-ci.org) (.travis.yml). Any new project must be enabled either through their web site or with the `travis enable` command.
 
 Features include:
 - test against Python 2 and 3
@@ -117,12 +112,26 @@ Features include:
 
 Also provided is a minimal template for running under Appveyor (Windows).
 
+### Continuous Deployments
+
+In addition to running tests, an additional deploy stage is configured to automatically release tagged commits to PyPI using [API tokens](https://pypi.org/help/#apitoken). The release process expects an authorized token to be configured with Travis as the TWINE_PASSWORD environment variable. After the Travis project is created, configure the token through the web UI or with a command like the following (bash syntax):
+
+```
+TWINE_PASSWORD={token} travis env copy TWINE_PASSWORD
+```
+
 ## Building Documentation
 
-Documentation is automatically built by [Read the Docs](https://readthedocs.org) when the project is registered with it, by way of the .readthedocs.yml file. To test the docs build manually, a tox env may be invoked as `tox -e build-docs`. Both techniques rely on the dependencies declared in `setup.cfg/options.extras_require.docs`.
+Documentation is automatically built by [Read the Docs](https://readthedocs.org) when the project is registered with it, by way of the .readthedocs.yml file. To test the docs build manually, a tox env may be invoked as `tox -e docs`. Both techniques rely on the dependencies declared in `setup.cfg/options.extras_require.docs`.
 
 In addition to building the sphinx docs scaffolded in `docs/`, the docs build a `history.html` file that first injects release dates and hyperlinks into the CHANGES.rst before incorporating it as history in the docs.
 
 ## Cutting releases
 
 By default, tagged commits are released through the continuous integration deploy stage.
+
+Releases may also be cut manually by invoking the tox environment `release` with the PyPI token set as the TWINE_PASSWORD:
+
+```
+TWINE_PASSWORD={token} tox -e release
+```
