@@ -1,3 +1,8 @@
+v7.0.0
+------
+
+Project now requries Python 3.6 or later.
+
 6.0
 ---
 
