@@ -153,6 +153,15 @@ or on Windows::
 
     $ py -2.7 -m pip-run ...
 
+Experiments and Testing
+-----------------------
+
+Because ``pip-run`` provides a single-command invocation, it
+is great for experiments and rapid testing of various package
+specifications.
+
+.. todo: illustrate example here
+
 Script Runner
 -------------
 
