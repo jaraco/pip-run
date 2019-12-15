@@ -362,6 +362,54 @@ runpy scripts).
      - ✓
      -
 
+Comparison with virtualenvwrapper mktmpenv
+==========================================
+
+The `mkvirtualenv project <https://pypi.org/project/mkvirtualenv/>`_
+attempts to address some of the use-cases that pip-run solves,
+especially with the ``mktmpenv`` command, which destroys the
+virtualenv after deactivation. The main difference is that ``pip-run``
+is transient only for the invocation of a single command, while
+``mktmpenv`` lasts for a session.
+
+.. list-table::
+   :widths: 40 10 10
+   :header-rows: 1
+
+   * - Feature
+     - pip-run
+     - mktmpenv
+   * - create temporary package environment
+     - ✓
+     - ✓
+   * - re-usable across python invocations
+     -
+     - ✓
+   * - portable
+     -
+     - ✓
+   * - one-line invocation
+     - ✓
+     -
+   * - multiple interpreters in session
+     - ✓
+     -
+   * - run standalone scripts
+     -
+     - ✓
+   * - interactive interpreter with deps
+     - ✓
+     - ✓
+   * - re-use existing environment
+     - ✓
+     -
+   * - ephemeral environments
+     - ✓
+     - ✓
+   * - persistent environments
+     -
+     - ✓
+
 Integration
 ===========
 
