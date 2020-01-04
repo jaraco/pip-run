@@ -54,6 +54,7 @@ stages:
       condition: succeededOrFailed()
 
 - stage: Publish
+  dependsOn: Test
   jobs:
   - job: 'Publish'
 
