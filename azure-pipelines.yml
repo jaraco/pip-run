@@ -11,6 +11,9 @@ trigger:
     include:
     - '*'
 
+variables:
+- group: Azure secrets
+
 jobs:
 
 - job: 'Test'
@@ -62,5 +65,7 @@ jobs:
 
   - script: |
       tox -e release
+    env:
+      TWINE_PASSWORD: $(PyPI-token)
     displayName: 'publish to PyPI'
     condition: contains(variables['Build.SourceBranch'], 'tags')
