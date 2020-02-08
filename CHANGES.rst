@@ -33,6 +33,11 @@ by setting ``PIP_RUN_NO_PATCH_PREFIX``.
 
 #34: Renamed project from ``rwt`` to ``pip-run``.
 
+4.4.3
+=====
+
+Update README to reflect project rename.
+
 4.4.2
 =====
 
