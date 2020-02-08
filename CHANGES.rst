@@ -1,3 +1,9 @@
+v7.0.1
+======
+
+Updated readme to remove ``setup_requires`` as a targeted
+use-case.
+
 v7.0.0
 ======
 
