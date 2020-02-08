@@ -1,7 +1,10 @@
 .. image:: https://img.shields.io/pypi/v/pip-run.svg
-   :target: https://pypi.org/project/pip-run
+   :target: `PyPI link`_
 
 .. image:: https://img.shields.io/pypi/pyversions/pip-run.svg
+   :target: `PyPI link`_
+
+.. _PyPI link: https://pypi.org/project/pip-run
 
 .. image:: https://dev.azure.com/jaraco/pip-run/_apis/build/status/jaraco.pip-run?branchName=master
    :target: https://dev.azure.com/jaraco/pip-run/_build/latest?definitionId=1&branchName=master
