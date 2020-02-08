@@ -89,7 +89,7 @@ class DepsReader:
 
     def _read(self, var_name):
         mod = ast.parse(self._fstring_compat(self.script))
-        node, = (
+        (node,) = (
             node
             for node in mod.body
             if isinstance(node, ast.Assign)
