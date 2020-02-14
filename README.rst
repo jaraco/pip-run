@@ -22,6 +22,9 @@
 .. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
    :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
 
+.. image:: https://tidelift.com/badges/package/pypi/pip-run
+   :target: https://tidelift.com/subscription/pkg/pypi-pip-run?utm_source=pypi-pip-run&utm_medium=readme
+
 ``pip-run`` provides on-demand temporary package installation
 for a single interpreter run.
 
@@ -381,3 +384,19 @@ Testing
 =======
 
 Invoke tests with ``tox``.
+
+For Enterprise
+==============
+
+Available as part of the Tidelift Subscription.
+
+This project and the maintainers of thousands of other packages are working with Tidelift to deliver one enterprise subscription that covers all of the open source you use.
+
+`Learn more <https://tidelift.com/subscription/pkg/pypi-PROJECT?utm_source=pypi-PROJECT&utm_medium=referral&utm_campaign=github>`_.
+
+Security Contact
+================
+
+To report a security vulnerability, please use the
+`Tidelift security contact <https://tidelift.com/security>`_.
+Tidelift will coordinate the fix and disclosure.
