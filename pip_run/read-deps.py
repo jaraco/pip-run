@@ -8,7 +8,7 @@ from .scripts import DepsReader
 
 
 def run():
-    script, = sys.argv[1:]
+    (script,) = sys.argv[1:]
     deps = DepsReader.load(script).read()
     print(' '.join(deps.params()))
 
