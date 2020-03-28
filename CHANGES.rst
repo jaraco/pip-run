@@ -1,5 +1,5 @@
-6.0
----
+v6.0.0
+------
 
 #39: Removed ``pip_run.deps.on_sys_path``, originally intended
 for API-use for making packages available at run time in
