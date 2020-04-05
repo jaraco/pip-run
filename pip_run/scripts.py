@@ -4,7 +4,6 @@ import ast
 import tokenize
 import itertools
 import io
-import re
 
 
 try:
@@ -88,7 +87,7 @@ class DepsReader:
         return deps
 
     def _read(self, var_name):
-        mod = ast.parse(self._fstring_compat(self.script))
+        mod = ast.parse(self.script)
         (node,) = (
             node
             for node in mod.body
@@ -98,20 +97,6 @@ class DepsReader:
             and node.targets[0].id == var_name
         )
         return ast.literal_eval(node.value)
-
-    @staticmethod
-    def _fstring_compat(script):
-        if sys.version_info > (3, 6):
-            return script
-
-        removed = re.sub(
-            r'^\s*#.*coding:\s*future_fstrings.*$', '', script, flags=re.MULTILINE
-        )
-
-        def strip_f(match):
-            return match.group(0)[1:]
-
-        return re.sub(r'\bf[\'"]', strip_f, removed)
 
 
 def run(cmdline):
