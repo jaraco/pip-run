@@ -64,18 +64,6 @@ class TestDepsReader:
         reqs = scripts.DepsReader(script).read()
         assert reqs.index_url == 'https://my.private.index/'
 
-    def test_dependency_links(self):
-        script = textwrap.dedent(
-            '''
-            __requires__ = ['foo==0.42']
-            __dependency_links__ = ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
-            '''
-        )
-        reqs = scripts.DepsReader(script).read()
-        assert reqs.dependency_links == [
-            'git+ssh://git@example.com/repo.git#egg=foo-0.42'
-        ]
-
     def test_fstrings_allowed(self):
         """
         It should be possible to read dependencies from a script
@@ -115,10 +103,10 @@ def test_pkg_loaded_from_alternate_index(tmpdir):
     assert 'devpi.net' in out
 
 
-def test_pkg_loaded_from_dependency_links(tmpdir):
+def test_pkg_loaded_from_url(tmpdir):
     """
     Create a script whose dependency is only installable
-    from a custom dependency link and ensure it runs.
+    from a custom url and ensure it runs.
     """
     dependency = tmpdir.ensure_dir('barbazquux-1.0')
     (dependency / 'setup.py').write_text(
@@ -140,8 +128,7 @@ def test_pkg_loaded_from_dependency_links(tmpdir):
     body = (
         textwrap.dedent(
             """
-        __requires__ = ['barbazquux']
-        __dependency_links__ = [{dependency_link!r}]
+        __requires__ = [{dependency_link!r}]
         import barbazquux
         print("Successfully imported barbazquux.py")
         """
