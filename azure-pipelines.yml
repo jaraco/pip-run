@@ -1,7 +1,6 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
+# Create the project in Azure with:
+# az devops project create --name $name --organization https://dev.azure.com/$org/ --visibility public
+# then configure the pipelines (through web UI)
 
 trigger:
   branches:
@@ -12,7 +11,7 @@ trigger:
     - '*'
 
 pool:
-  vmimage: 'Ubuntu-18.04'
+  vmImage: $(pool_vm_image)
 
 variables:
 - group: Azure secrets
@@ -24,14 +23,25 @@ stages:
   - job: 'Test'
     strategy:
       matrix:
-        Python27:
+        Bionic Python 2.7:
           python.version: '2.7'
-        Python35:
+          pool_vm_image: Ubuntu-18.04
+        Bionic Python 3.5:
           python.version: '3.5'
-        Python36:
+          pool_vm_image: Ubuntu-18.04
+        Bionic Python 3.6:
           python.version: '3.6'
-        Python38:
+          pool_vm_image: Ubuntu-18.04
+        Bionic Python 3.8:
           python.version: '3.8'
+          pool_vm_image: Ubuntu-18.04
+        Windows:
+          python.version: '3.8'
+          pool_vm_image: vs2017-win2016
+        MacOS:
+          python.version: '3.8'
+          pool_vm_image: macos-10.15
+
       maxParallel: 4
 
     steps:
@@ -64,7 +74,8 @@ stages:
         versionSpec: '3.8'
         architecture: 'x64'
 
-
+    - script: python -m pip install tox
+      displayName: 'Install tox'
 
     - script: |
         tox -e release
