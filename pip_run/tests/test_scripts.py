@@ -122,19 +122,17 @@ def test_pkg_loaded_from_url(tmpdir):
         'utf-8',
     )
     (dependency / 'barbazquux.py').write_text('', 'utf-8')
-    dependency_link = 'file://%s#egg=barbazquux-1.0' % (
-        dependency.strpath.replace(os.path.sep, '/'),
-    )
+    url_req = 'barbazquux @ file://%s' % (dependency.strpath.replace(os.path.sep, '/'),)
     body = (
         textwrap.dedent(
             """
-        __requires__ = [{dependency_link!r}]
+        __requires__ = [{url_req!r}]
         import barbazquux
         print("Successfully imported barbazquux.py")
         """
         )
         .lstrip()
-        .format(dependency_link=dependency_link)
+        .format(**locals())
     )
     script_file = tmpdir.ensure_dir('script_dir') / 'script'
     script_file.write_text(body, 'utf-8')
