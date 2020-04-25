@@ -194,17 +194,6 @@ Then, simply invoke that script with pip-run::
 
 The format for requirements must follow `PEP 508 <https://www.python.org/dev/peps/pep-0508/>`_.
 
-Note that URLs specifiers are not supported by pip, but ``pip-run`` supports a
-global ``__dependency_links__`` attribute which can be used, for example, to
-install requirement from a project VCS URL::
-
-    #!/usr/bin/env python
-
-    __requires__ = ['foo==0.42']
-    __dependency_links__ = ['git+ssh://git@example.com/repo.git#egg=foo-0.42']
-
-    [...]
-
 ``pip-run`` also recognizes a global ``__index_url__`` attribute. If present,
 this value will supply ``--index-url`` to pip with the attribute value,
 allowing a script to specify a custom package index::

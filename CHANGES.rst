@@ -1,3 +1,15 @@
+v6.1.0
+------
+
+* semver deviation *
+
+#41: Removed support for ``__dependency_links__``
+in scripts. Instead, use `PEP 508
+<https://www.python.org/dev/peps/pep-0508/>`_ syntax.
+For example, to run a script requiring requests at master::
+
+    __requires__ = ['requests @ git+https://github.com/requests/requests']
+
 v7.0.1
 ======
 
