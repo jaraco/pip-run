@@ -1,3 +1,9 @@
+v6.2.0
+------
+
+#43: Removed workaround for pip 4106. Project now requires
+pip 19.3 or later.
+
 v6.1.0
 ------
 
