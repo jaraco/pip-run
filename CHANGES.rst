@@ -1,3 +1,15 @@
+v8.1.0
+======
+
+#43: Removed workaround for pip 4106. Project now requires
+pip 19.3 or later.
+
+v6.2.0
+======
+
+#43: Removed workaround for pip 4106. Project now requires
+pip 19.3 or later.
+
 v8.0.0
 ======
 
