@@ -127,6 +127,13 @@ class TestNotebookDepsReader:
         reqs = scripts.DepsReader.try_read(notebook_factory.filename)
         assert reqs == ['matplotlib']
 
+    def test_jupyter_directives(self, notebook_factory):
+        notebook_factory.add_code('__requires__ = ["matplotlib"]')
+        notebook_factory.add_code("%matplotlib inline\nimport matplotlib")
+        notebook_factory.write()
+        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        assert reqs == ['matplotlib']
+
 
 def test_pkg_loaded_from_alternate_index(tmpdir):
     """

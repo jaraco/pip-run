@@ -127,7 +127,7 @@ class NotebookDepsReader(DepsReader):
             line
             for cell in doc['cells']
             for line in cell['source'] + ['\n']
-            if cell['cell_type'] == 'code'
+            if cell['cell_type'] == 'code' and not line.startswith('%')
         )
         return cls(''.join(lines))
 
