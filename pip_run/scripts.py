@@ -5,6 +5,7 @@ import tokenize
 import itertools
 import io
 import re
+import json
 
 
 try:
@@ -25,6 +26,12 @@ class Dependencies(list):
         prefix = ['--index-url', self.index_url] if self.index_url else []
         return prefix + self
 
+    def __add__(self, other):
+        res = self.__class__(super().__add__(other))
+        vars(res).update(vars(self))
+        vars(res).update(vars(other))
+        return res
+
 
 class DepsReader:
     """
@@ -37,12 +44,12 @@ class DepsReader:
         self.script = script
 
     @classmethod
-    def load(cls, script_path):
-        with io.open(script_path) as stream:
-            return cls(stream.read())
+    def try_read(cls, script_path):
+        results = (subclass._try_read(script_path) for subclass in cls.__subclasses__())
+        return sum(results, Dependencies())
 
     @classmethod
-    def try_read(cls, script_path):
+    def _try_read(cls, script_path):
         """
         Attempt to load the dependencies from the script,
         but return an empty list if unsuccessful.
@@ -103,6 +110,26 @@ class DepsReader:
             return match.group(0)[1:]
 
         return re.sub(r'\bf[\'"]', strip_f, removed)
+
+
+class SourceDepsReader(DepsReader):
+    @classmethod
+    def load(cls, script_path):
+        with io.open(script_path) as stream:
+            return cls(stream.read())
+
+
+class NotebookDepsReader(DepsReader):
+    @classmethod
+    def load(cls, script_path):
+        doc = json.load(open(script_path))
+        lines = (
+            line
+            for cell in doc['cells']
+            for line in cell['source'] + ['\n']
+            if cell['cell_type'] == 'code'
+        )
+        return cls(''.join(lines))
 
 
 def run(cmdline):

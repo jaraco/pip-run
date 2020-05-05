@@ -5,6 +5,9 @@ import textwrap
 import sys
 import subprocess
 
+import pytest
+import nbformat
+
 from pip_run import scripts
 
 
@@ -27,7 +30,7 @@ def test_pkg_imported(tmpdir):
     assert 'Successfully imported path.py' in out
 
 
-class TestDepsReader:
+class TestSourceDepsReader:
     def test_reads_files_with_attribute_assignment(self):
         script = textwrap.dedent(
             '''
@@ -79,6 +82,50 @@ class TestDepsReader:
         ).lstrip()
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo']
+
+
+class TestNotebookDepsReader:
+    @pytest.fixture
+    def notebook_factory(self, tmpdir, request):
+        class Factory:
+            def __init__(self):
+                self.nb = nbformat.v4.new_notebook()
+                self.path = tmpdir / (request.node.name + '.ipynb')
+
+            @property
+            def filename(self):
+                return str(self.path)
+
+            def write(self):
+                nbformat.write(self.nb, self.filename)
+
+            def add_code(self, code):
+                self.nb['cells'].append(nbformat.v4.new_code_cell(code))
+
+            def add_markdown(self, text):
+                self.nb['cells'].append(nbformat.v4.new_markdown_cell(text))
+
+        return Factory()
+
+    def test_one_code_block(self, notebook_factory):
+        notebook_factory.add_code('__requires__ = ["matplotlib"]')
+        notebook_factory.write()
+        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        assert reqs == ['matplotlib']
+
+    def test_multiple_code_blocks(self, notebook_factory):
+        notebook_factory.add_code('__requires__ = ["matplotlib"]')
+        notebook_factory.add_code("import matplotlib")
+        notebook_factory.write()
+        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        assert reqs == ['matplotlib']
+
+    def test_code_and_markdown(self, notebook_factory):
+        notebook_factory.add_code('__requires__ = ["matplotlib"]')
+        notebook_factory.add_markdown("Mark this down please")
+        notebook_factory.write()
+        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        assert reqs == ['matplotlib']
 
 
 def test_pkg_loaded_from_alternate_index(tmpdir):
