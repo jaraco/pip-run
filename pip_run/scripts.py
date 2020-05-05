@@ -14,6 +14,8 @@ except ImportError:
     import pkg_resources
 
 
+__metaclass__ = type
+
 if sys.version_info < (3,):
     filter = itertools.ifilter
     map = itertools.imap
