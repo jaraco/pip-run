@@ -1,3 +1,8 @@
+v6.3.0
+------
+
+Add support for reading deps from Jupyter Notebooks.
+
 v6.2.0
 ------
 
