@@ -26,12 +26,6 @@ class Dependencies(list):
         prefix = ['--index-url', self.index_url] if self.index_url else []
         return prefix + self
 
-    def __add__(self, other):
-        res = self.__class__(super().__add__(other))
-        vars(res).update(vars(self))
-        vars(res).update(vars(other))
-        return res
-
 
 class DepsReader:
     """
@@ -46,7 +40,7 @@ class DepsReader:
     @classmethod
     def try_read(cls, script_path):
         results = (subclass._try_read(script_path) for subclass in cls.__subclasses__())
-        return sum(results, Dependencies())
+        return next(filter(None, results), Dependencies())
 
     @classmethod
     def _try_read(cls, script_path):
@@ -58,7 +52,7 @@ class DepsReader:
             reader = cls.load(script_path)
             return reader.read()
         except Exception:
-            return Dependencies()
+            pass
 
     @classmethod
     def search(cls, params):
