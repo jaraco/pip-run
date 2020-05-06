@@ -5,6 +5,7 @@ import tokenize
 import itertools
 import io
 import re
+import json
 
 
 try:
@@ -12,6 +13,8 @@ try:
 except ImportError:
     import pkg_resources
 
+
+__metaclass__ = type
 
 if sys.version_info < (3,):
     filter = itertools.ifilter
@@ -37,12 +40,12 @@ class DepsReader:
         self.script = script
 
     @classmethod
-    def load(cls, script_path):
-        with io.open(script_path) as stream:
-            return cls(stream.read())
+    def try_read(cls, script_path):
+        results = (subclass._try_read(script_path) for subclass in cls.__subclasses__())
+        return next(filter(None, results), Dependencies())
 
     @classmethod
-    def try_read(cls, script_path):
+    def _try_read(cls, script_path):
         """
         Attempt to load the dependencies from the script,
         but return an empty list if unsuccessful.
@@ -51,7 +54,7 @@ class DepsReader:
             reader = cls.load(script_path)
             return reader.read()
         except Exception:
-            return Dependencies()
+            pass
 
     @classmethod
     def search(cls, params):
@@ -103,6 +106,26 @@ class DepsReader:
             return match.group(0)[1:]
 
         return re.sub(r'\bf[\'"]', strip_f, removed)
+
+
+class SourceDepsReader(DepsReader):
+    @classmethod
+    def load(cls, script_path):
+        with io.open(script_path) as stream:
+            return cls(stream.read())
+
+
+class NotebookDepsReader(DepsReader):
+    @classmethod
+    def load(cls, script_path):
+        doc = json.load(open(script_path))
+        lines = (
+            line
+            for cell in doc['cells']
+            for line in cell['source'] + ['\n']
+            if cell['cell_type'] == 'code' and not line.startswith('%')
+        )
+        return cls(''.join(lines))
 
 
 def run(cmdline):
