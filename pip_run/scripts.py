@@ -7,9 +7,9 @@ import io
 import json
 
 try:
-    from pip._vendor import pkg_resources
+    from pip._vendor import pkg_resources  # type: ignore
 except ImportError:
-    import pkg_resources
+    import pkg_resources  # type: ignore
 
 
 if sys.version_info < (3,):

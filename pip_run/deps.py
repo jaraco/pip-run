@@ -10,12 +10,9 @@ import itertools
 import functools
 
 try:
-    from pip._vendor import pkg_resources
+    from pip._vendor import pkg_resources  # type: ignore
 except ImportError:
-    import pkg_resources
-
-
-filterfalse = getattr(itertools, 'filterfalse', None) or itertools.ifilterfalse
+    import pkg_resources  # type: ignore
 
 
 def _installable(args):
@@ -80,4 +77,4 @@ def pkg_installed(spec):
     return True
 
 
-not_installed = functools.partial(filterfalse, pkg_installed)
+not_installed = functools.partial(itertools.filterfalse, pkg_installed)
