@@ -6,18 +6,13 @@
 
 .. _PyPI link: https://pypi.org/project/pip-run
 
-.. image:: https://dev.azure.com/jaraco/pip-run/_apis/build/status/jaraco.pip-run?branchName=master
-   :target: https://dev.azure.com/jaraco/pip-run/_build/latest?definitionId=1&branchName=master
-
-.. image:: https://img.shields.io/travis/jaraco/pip-run/master.svg
-   :target: https://travis-ci.org/jaraco/pip-run
+.. image:: https://github.com/jaraco/pip-run/workflows/Automated%20Tests/badge.svg
+   :target: https://github.com/jaraco/pip-run/actions?query=workflow%3A%22Automated+Tests%22
+   :alt: Automated Tests
 
 .. image:: https://img.shields.io/badge/code%20style-black-000000.svg
    :target: https://github.com/psf/black
    :alt: Code style: Black
-
-.. image:: https://img.shields.io/appveyor/ci/jaraco/pip-run/master.svg
-   :target: https://ci.appveyor.com/project/jaraco/pip-run/branch/master
 
 .. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
    :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
