@@ -1,3 +1,8 @@
+v8.2.1
+======
+
+#46: Fixed AttributeError in ``read-deps``.
+
 v8.2.0
 ======
 
