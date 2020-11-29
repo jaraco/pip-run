@@ -171,7 +171,9 @@ probably has dependencies, say on `requests
 declare the dependencies and launch the script in a context where
 those dependencies have been resolved.
 
-First, add a ``__requires__`` directive at the head of the script::
+First, add a ``__requires__`` directive at the head of the script:
+
+.. code-block:: python
 
     #!/usr/bin/env python
 
@@ -191,7 +193,9 @@ The format for requirements must follow `PEP 508 <https://www.python.org/dev/pep
 
 ``pip-run`` also recognizes a global ``__index_url__`` attribute. If present,
 this value will supply ``--index-url`` to pip with the attribute value,
-allowing a script to specify a custom package index::
+allowing a script to specify a custom package index:
+
+.. code-block:: python
 
     #!/usr/bin/env python
 
@@ -207,17 +211,17 @@ Supplying parameters to Pip
 If you've been using ``pip-run``, you may have defined some requirements
 in the ``__requires__`` of a script, but now you wish to install those
 to a more permanent environment. pip-run provides a routine to facilitate
-this case:
+this case::
 
     $ python -m pip_run.read-deps script.py
     my_dependency
 
-If you're on Unix, you may pipe this result directly to pip:
+If you're on Unix, you may pipe this result directly to pip::
 
     $ pip install $(python -m pip_run.read-deps script.py)
 
 And since `pipenv <https://docs.pipenv.org/>`_ uses the same syntax,
-the same technique works for pipenv:
+the same technique works for pipenv::
 
     $ pipenv install $(python -m pip_run.read-deps script.py)
 
