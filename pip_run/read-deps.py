@@ -13,7 +13,7 @@ def run(args=None):
     pytest jaraco.mongodb>=3.10
     """
     (script,) = args or sys.argv[1:]
-    deps = DepsReader.load(script).read()
+    deps = DepsReader.try_read(script)
     print(' '.join(deps.params()))
 
 
