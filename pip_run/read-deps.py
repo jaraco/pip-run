@@ -7,8 +7,12 @@ import sys
 from .scripts import DepsReader
 
 
-def run():
-    (script,) = sys.argv[1:]
+def run(args=None):
+    """
+    >>> run(['examples/test-mongodb-covered-query.py'])
+    pytest jaraco.mongodb>=3.10
+    """
+    (script,) = args or sys.argv[1:]
     deps = DepsReader.load(script).read()
     print(' '.join(deps.params()))
 
