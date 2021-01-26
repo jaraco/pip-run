@@ -158,6 +158,15 @@ Because ``pip-run`` provides a single-command invocation, it
 is great for experiments and rapid testing of various package
 specifications.
 
+Consider a scenario in which one wishes to create an environment
+where two different versions of the same package are installed,
+such as to replicate a broken real-world environment. Stack two
+invocations of pip-run to get two different versions installed::
+
+    $ pip-run -q keyring==21.8.0 -- -m pip-run -q keyring==22.0.0 -- -c "import importlib.metadata, pprint; pprint.pprint([dist._path for dist in importlib.metadata.distributions() if dist.metadata['name'] == 'keyring'])"
+    [PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-a3xvd267/keyring-22.0.0.dist-info'),
+    PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-1fdjsgfs/keyring-21.8.0.dist-info')]
+
 .. todo: illustrate example here
 
 Script Runner
