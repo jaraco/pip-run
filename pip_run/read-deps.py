@@ -2,7 +2,7 @@
 Emit parameters to pip extracted from a script.
 """
 
-import os
+import pathlib
 
 import autocommand
 
@@ -11,7 +11,7 @@ from .scripts import DepsReader
 
 class ExtantFile(str):
     def __init__(self, value):
-        if not os.path.isfile(value):
+        if not pathlib.Path(value).is_file():
             raise FileNotFoundError(f"{value} does not exist.")
 
 
