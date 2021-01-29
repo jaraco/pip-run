@@ -1,3 +1,8 @@
+v8.4.0
+======
+
+#40: Remove dependency on ``pkg_resources``.
+
 v8.3.0
 ======
 
