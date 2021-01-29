@@ -9,10 +9,12 @@ import shutil
 import itertools
 import functools
 
+import packaging.requirements
+
 try:
-    from pip._vendor import pkg_resources  # type: ignore
+    from importlib import metadata
 except ImportError:
-    import pkg_resources  # type: ignore
+    import importlib_metadata as metadata
 
 
 def _installable(args):
@@ -69,12 +71,30 @@ def _save_file(filename):
             os.remove(filename)
 
 
+# from jaraco.context
+class suppress(contextlib.suppress, contextlib.ContextDecorator):
+    """
+    A version of contextlib.suppress with decorator support.
+
+    >>> @suppress(KeyError)
+    ... def key_error():
+    ...     {}['']
+    >>> key_error()
+    """
+
+
+def with_prereleases(spec):
+    """
+    Allow prereleases to satisfy the spec.
+    """
+    spec.prereleases = True
+    return spec
+
+
+@suppress(packaging.requirements.InvalidRequirement, metadata.PackageNotFoundError)
 def pkg_installed(spec):
-    try:
-        pkg_resources.require(spec)
-    except Exception:
-        return False
-    return True
+    req = packaging.requirements.Requirement(spec)
+    return metadata.version(req.name) in with_prereleases(req.specifier)
 
 
 not_installed = functools.partial(itertools.filterfalse, pkg_installed)
