@@ -1,3 +1,8 @@
+v8.4.1
+======
+
+#49: Declare dependency on ``packaging``.
+
 v8.4.0
 ======
 
