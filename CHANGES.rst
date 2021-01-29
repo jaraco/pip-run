@@ -1,3 +1,8 @@
+v8.3.0
+======
+
+#47: ``read_deps`` now errors on non-existent files.
+
 v8.2.1
 ======
 
