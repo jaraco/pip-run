@@ -12,9 +12,9 @@ import functools
 import packaging.requirements
 
 try:
-    from importlib import metadata
+    from importlib import metadata  # type: ignore
 except ImportError:
-    import importlib_metadata as metadata
+    import importlib_metadata as metadata  # type: ignore
 
 
 def _installable(args):
@@ -91,7 +91,10 @@ def with_prereleases(spec):
     return spec
 
 
-@suppress(packaging.requirements.InvalidRequirement, metadata.PackageNotFoundError)
+@suppress(
+    packaging.requirements.InvalidRequirement,
+    metadata.PackageNotFoundError,  # type: ignore
+)
 def pkg_installed(spec):
     req = packaging.requirements.Requirement(spec)
     return metadata.version(req.name) in with_prereleases(req.specifier)
