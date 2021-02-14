@@ -29,7 +29,7 @@ It replaces this series of commands (or their Windows equivalent)::
 
 With this single-line command::
 
-    $ pythonX.X -m pip-run pkg1 pkg2 -r reqs.txt -- ...
+    $ pythonX.X -m pip_run pkg1 pkg2 -r reqs.txt -- ...
 
 Features include
 
@@ -71,7 +71,7 @@ Usage
 
 Invoke ``pip-run`` from the command-line using the console entry
 script (simply ``pip-run``) or using the module executable (
-``python -m pip-run``). This latter usage is particularly convenient
+``python -m pip_run``). This latter usage is particularly convenient
 for testing a command across various Python versions.
 
 Parameters following pip-run are passed directly to ``pip install``,
@@ -126,7 +126,7 @@ Interactive Interpreter
 ``pip-run`` also offers a painless way to run a Python interactive
 interpreter in the context of certain dependencies::
 
-    $ /clean-install/python -m pip-run -q boto
+    $ /clean-install/python -m pip_run -q boto
     >>> import boto
     >>>
 
@@ -138,18 +138,18 @@ Note that everything after the -- is passed to the python invocation,
 so it's possible to have a one-liner that runs under a dependency
 context::
 
-    $ python -m pip-run -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/pip-run').status_code)"
+    $ python -m pip_run -q requests -- -c "import requests; print(requests.get('https://pypi.org/project/pip-run').status_code)"
     200
 
 As long as ``pip-run`` is installed in each of Python environments
 on the system, this command can be readily repeated on the other
 python environments by specifying the relevant interpreter::
 
-    $ python2.7 -m pip-run ...
+    $ python2.7 -m pip_run ...
 
 or on Windows::
 
-    $ py -2.7 -m pip-run ...
+    $ py -2.7 -m pip_run ...
 
 Experiments and Testing
 -----------------------
@@ -163,7 +163,7 @@ where two different versions of the same package are installed,
 such as to replicate a broken real-world environment. Stack two
 invocations of pip-run to get two different versions installed::
 
-    $ pip-run -q keyring==21.8.0 -- -m pip-run -q keyring==22.0.0 -- -c "import importlib.metadata, pprint; pprint.pprint([dist._path for dist in importlib.metadata.distributions() if dist.metadata['name'] == 'keyring'])"
+    $ pip-run -q keyring==21.8.0 -- -m pip_run -q keyring==22.0.0 -- -c "import importlib.metadata, pprint; pprint.pprint([dist._path for dist in importlib.metadata.distributions() if dist.metadata['name'] == 'keyring'])"
     [PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-a3xvd267/keyring-22.0.0.dist-info'),
     PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-1fdjsgfs/keyring-21.8.0.dist-info')]
 
@@ -195,7 +195,7 @@ First, add a ``__requires__`` directive at the head of the script:
 
 Then, simply invoke that script with pip-run::
 
-    $ python -m pip-run -q -- myscript.py
+    $ python -m pip_run -q -- myscript.py
     200
 
 The format for requirements must follow `PEP 508 <https://www.python.org/dev/peps/pep-0508/>`_.
