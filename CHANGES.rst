@@ -1,3 +1,8 @@
+v8.4.1
+======
+
+Refreshed package metadata.
+
 v8.4.0
 ======
 
