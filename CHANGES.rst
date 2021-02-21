@@ -1,7 +1,12 @@
-v8.4.1
+v8.4.2
 ======
 
 Refreshed package metadata.
+
+v8.4.1
+======
+
+#49: Declare dependency on ``packaging``.
 
 v8.4.0
 ======
