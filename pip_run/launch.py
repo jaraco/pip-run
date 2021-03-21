@@ -5,6 +5,7 @@ import sys
 import signal
 import glob
 import itertools
+import pathlib
 
 
 class PathReader:
@@ -35,19 +36,14 @@ def _inject_sitecustomize(target):
     Create a sitecustomize file in the target that will install
     the target as a sitedir.
     """
-    hook = (
-        textwrap.dedent(
-            """
+    hook = textwrap.dedent(
+        f"""
         import site
         site.addsitedir({target!r})
         """
-        )
-        .lstrip()
-        .format(**locals())
-    )
-    sc_fn = os.path.join(target, 'sitecustomize.py')
-    with open(sc_fn, 'w') as strm:
-        strm.write(hook)
+    ).lstrip()
+    sc_fn = pathlib.Path(target) / 'sitecustomize.py'
+    sc_fn.write_text(hook)
 
 
 def _pythonpath():
