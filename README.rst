@@ -17,6 +17,9 @@
 .. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
    :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
 
+.. image:: https://img.shields.io/badge/skeleton-2021-informational
+   :target: https://blog.jaraco.com/skeleton
+
 .. image:: https://tidelift.com/badges/package/pypi/pip-run
    :target: https://tidelift.com/subscription/pkg/pypi-pip-run?utm_source=pypi-pip-run&utm_medium=readme
 
