@@ -1,3 +1,9 @@
+v8.5.0
+======
+
+Removed dependency on ``pkg_resources``. Just importing that
+module mucks with sys.path and causes problems.
+
 v8.4.3
 ======
 

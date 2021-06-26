@@ -2,14 +2,12 @@ import os
 import sys
 import ast
 import tokenize
-import itertools
 import io
 import json
 
-try:
-    from pip._vendor import pkg_resources  # type: ignore
-except ImportError:
-    import pkg_resources  # type: ignore
+import packaging.requirements
+
+from . import text
 
 
 class Dependencies(list):
@@ -65,8 +63,10 @@ class DepsReader:
         >>> DepsReader(r"__requires__='foo\nbar\n#baz'").read()
         ['foo', 'bar']
         """
-        reqs_raw = self._read('__requires__')
-        strings = map(str, pkg_resources.parse_requirements(reqs_raw))
+        raw_reqs = self._read('__requires__')
+        reqs_items = text.items(raw_reqs)
+        reqs = map(packaging.requirements.Requirement, reqs_items)
+        strings = map(str, reqs)
         deps = Dependencies(strings)
         try:
             deps.index_url = self._read('__index_url__')
