@@ -59,9 +59,11 @@ class DepsReader:
         return cls.try_read(next(files, None)).params()
 
     def read(self):
-        """
+        r"""
         >>> DepsReader("__requires__=['foo']").read()
         ['foo']
+        >>> DepsReader(r"__requires__='foo\nbar\n#baz'").read()
+        ['foo', 'bar']
         """
         reqs_raw = self._read('__requires__')
         strings = map(str, pkg_resources.parse_requirements(reqs_raw))
