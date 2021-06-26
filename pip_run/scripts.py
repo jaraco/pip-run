@@ -12,11 +12,6 @@ except ImportError:
     import pkg_resources  # type: ignore
 
 
-if sys.version_info < (3,):
-    filter = itertools.ifilter
-    map = itertools.imap
-
-
 class Dependencies(list):
     index_url = None
 
