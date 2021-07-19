@@ -1,3 +1,8 @@
+v8.5.1
+======
+
+Updated build to exclude 'examples', not intended to be installed.
+
 v8.5.0
 ======
 
