@@ -1,3 +1,13 @@
+v8.6.0
+======
+
+#53: ``read-deps`` script now accepts a ``--separator`` argument
+accepting arbitrary separators or any of the named separators:
+
+ - newline
+ - space
+ - null
+
 v8.5.1
 ======
 
