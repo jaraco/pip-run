@@ -1,3 +1,8 @@
+v8.7.0
+======
+
+Require Python 3.7 or later.
+
 v8.6.1
 ======
 
