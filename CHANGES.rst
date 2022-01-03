@@ -1,3 +1,8 @@
+v8.7.1
+======
+
+Restore missing ``Requires-Python`` metadata.
+
 v8.7.0
 ======
 
