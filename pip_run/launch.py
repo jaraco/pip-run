@@ -3,7 +3,6 @@ import os
 import subprocess
 import sys
 import signal
-import glob
 import itertools
 import pathlib
 
@@ -11,9 +10,9 @@ import pathlib
 class PathReader:
     @staticmethod
     def _read_file(filename):
-        root = os.path.dirname(filename)
+        root = filename.parent
         return (
-            os.path.join(root, path.rstrip())
+            str(root / path.rstrip())
             for path in open(filename)
             if path.strip()
             and not path.startswith('#')
@@ -26,7 +25,8 @@ class PathReader:
         As .pth files aren't honored except in site dirs,
         read the paths indicated by them.
         """
-        pth_files = glob.glob(os.path.join(target, '*.pth'))
+        target_path = pathlib.Path(target)
+        pth_files = target_path.glob('*.pth')
         file_items = map(cls._read_file, pth_files)
         return itertools.chain.from_iterable(file_items)
 
