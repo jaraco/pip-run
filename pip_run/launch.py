@@ -7,13 +7,18 @@ import itertools
 import pathlib
 
 
+def read_lines(path):
+    with path.open() as strm:
+        yield from strm
+
+
 class PathReader:
     @staticmethod
     def _read_file(filename):
         root = filename.parent
         return (
             str(root / path.rstrip())
-            for path in open(filename)
+            for path in read_lines(filename)
             if path.strip()
             and not path.startswith('#')
             and not path.startswith('import ')
