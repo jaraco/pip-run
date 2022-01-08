@@ -71,6 +71,8 @@ def test_build_env(clean_pythonpath):
     assert env['PYTHONPATH'] == expected
 
 
+# protect against ResourceWarning (#56)
+@pytest.mark.filterwarnings("error")
 def test_build_env_includes_pth_files(tmpdir, clean_pythonpath):
     """
     If during _build_env, there are .pth files in the target directory,
