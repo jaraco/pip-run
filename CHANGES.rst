@@ -1,3 +1,8 @@
+v8.7.2
+======
+
+#56: Prevent ResourceWarning when opening pth files.
+
 v8.7.1
 ======
 
@@ -11,7 +16,7 @@ Require Python 3.7 or later.
 v8.6.1
 ======
 
-# 55: Suppressed deprecation warning in test suite.
+#55: Suppressed deprecation warning in test suite.
 
 v8.6.0
 ======
