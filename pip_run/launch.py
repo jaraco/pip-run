@@ -36,7 +36,7 @@ class PathReader:
         return itertools.chain.from_iterable(file_items)
 
 
-def _inject_sitecustomize(target):
+def inject_sitecustomize(target):
     """
     Create a sitecustomize file in the target that will install
     the target as a sitedir.
@@ -72,7 +72,7 @@ def _build_env(target):
 
 
 def _setup_env(target):
-    _inject_sitecustomize(target)
+    inject_sitecustomize(target)
     return _build_env(target)
 
 

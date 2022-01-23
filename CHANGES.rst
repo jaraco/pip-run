@@ -1,3 +1,8 @@
+v8.8.0
+======
+
+Expose ``pip_run.launch.inject_sitecustomize``.
+
 v8.7.2
 ======
 
