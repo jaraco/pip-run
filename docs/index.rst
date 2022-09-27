@@ -6,6 +6,7 @@ Welcome to |project| documentation!
 
    history
 
+.. tidelift-referral-banner::
 
 .. automodule:: pip_run
     :members:
@@ -39,4 +40,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
