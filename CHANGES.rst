@@ -1,3 +1,8 @@
+v8.8.2
+======
+
+Packaging refresh.
+
 v8.8.1
 ======
 
