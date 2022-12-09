@@ -45,7 +45,8 @@ def _installable(args):
 def load(*args):
     target = tempfile.mkdtemp(prefix='pip-run-')
     cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
-    _installable(args) and subprocess.check_call(cmd)
+    env = dict(os.environ, PIP_QUIET="1")
+    _installable(args) and subprocess.check_call(cmd, env=env)
     try:
         yield target
     finally:

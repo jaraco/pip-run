@@ -148,7 +148,7 @@ def test_pkg_loaded_from_alternate_index(tmpdir):
     ).lstrip()
     script_file = tmpdir / 'script'
     script_file.write_text(body, 'utf-8')
-    cmd = [sys.executable, '-m', 'pip-run', '--', str(script_file)]
+    cmd = [sys.executable, '-m', 'pip-run', '-v', '--', str(script_file)]
 
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported path.py' in out
