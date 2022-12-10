@@ -22,7 +22,7 @@ def _separate_script(args):
     [['README.rst'], []]
     """
 
-    def is_extant_path(item: os.PathLike[str]):
+    def is_extant_path(item: 'os.PathLike[str]'):
         path = pathlib.Path(item)
         return path.is_file() and path.suffix == '.py'
 
