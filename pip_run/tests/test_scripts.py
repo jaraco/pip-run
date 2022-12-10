@@ -4,24 +4,33 @@ import subprocess
 
 import pytest
 import nbformat
+import jaraco.path
 
 from pip_run import scripts
 
 
-def test_pkg_imported(tmpdir):
+def DALS(str):
+    return textwrap.dedent(str).lstrip()
+
+
+def test_pkg_imported(tmp_path):
     """
     Create a script that loads cython and ensure it runs.
     """
-    body = textwrap.dedent(
-        """
-        import path
-        print("Successfully imported path.py")
-        """
-    ).lstrip()
-    script_file = tmpdir / 'script'
-    script_file.write_text(body, 'utf-8')
+    jaraco.path.build(
+        {
+            'script': DALS(
+                """
+                import path
+                print("Successfully imported path.py")
+                """
+            )
+        },
+        tmp_path,
+    )
+    script = tmp_path / 'script'
     pip_args = ['path.py']
-    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script_file)]
+    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script)]
 
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported path.py' in out
@@ -69,14 +78,14 @@ class TestSourceDepsReader:
         It should be possible to read dependencies from a script
         with f-strings on all Pythons.
         """
-        script = textwrap.dedent(
+        script = DALS(
             '''
             # coding: future_fstrings
             __requires__ = 'foo'
             f'boo'
             f'coo'
             '''
-        ).lstrip()
+        )
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo']
 
@@ -137,17 +146,20 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
     Create a script that loads cython from an alternate index
     and ensure it runs.
     """
-    body = textwrap.dedent(
-        """
-        __requires__ = ['path.py']
-        __index_url__ = 'https://devpi.net/root/pypi/+simple/'
-        import path
-        print("Successfully imported path.py")
-        """
-    ).lstrip()
-    script = tmp_path / 'script'
-    script.write_text(body, 'utf-8')
-    cmd = [sys.executable, '-m', 'pip-run', '-v', '--', script]
+    jaraco.path.build(
+        {
+            'script': DALS(
+                """
+                __requires__ = ['path.py']
+                __index_url__ = 'https://devpi.net/root/pypi/+simple/'
+                import path
+                print("Successfully imported path.py")
+                """
+            )
+        },
+        tmp_path,
+    )
+    cmd = [sys.executable, '-m', 'pip-run', '-v', '--', tmp_path / 'script']
 
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported path.py' in out
@@ -160,36 +172,35 @@ def test_pkg_loaded_from_url(tmp_path):
     from a custom url and ensure it runs.
     """
     dependency = tmp_path / 'barbazquux-1.0'
-    dependency.mkdir()
-    (dependency / 'setup.py').write_text(
-        textwrap.dedent(
-            '''
-        from setuptools import setup
-        setup(
-            name='barbazquux', version='1.0',
-            py_modules=['barbazquux'],
-        )
-        '''
-        ),
-        'utf-8',
-    )
-    (dependency / 'barbazquux.py').write_text('', 'utf-8')
     url_req = f'barbazquux @ file://{dependency.as_posix()}'
-    body = (
-        textwrap.dedent(
-            """
-        __requires__ = [{url_req!r}]
-        import barbazquux
-        print("Successfully imported barbazquux.py")
-        """
-        )
-        .lstrip()
-        .format(**locals())
+    jaraco.path.build(
+        {
+            'barbazquux-1.0': {
+                'setup.py': DALS(
+                    """
+                    from setuptools import setup
+                    setup(
+                        name='barbazquux', version='1.0',
+                        py_modules=['barbazquux'],
+                    )
+                    """
+                ),
+                'barbazquux.py': '',
+            },
+            'script_dir': {
+                'script': DALS(
+                    f"""
+                    __requires__ = [{url_req!r}]
+                    import barbazquux
+                    print("Successfully imported barbazquux.py")
+                    """
+                ),
+            },
+        },
+        tmp_path,
     )
-    scripts = tmp_path / 'script_dir'
-    scripts.mkdir()
-    script = scripts / 'script'
-    script.write_text(body, 'utf-8')
+
+    script = tmp_path.joinpath('script_dir', 'script')
     cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', script]
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported barbazquux.py' in out
