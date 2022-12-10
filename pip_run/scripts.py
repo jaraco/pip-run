@@ -3,6 +3,7 @@ import ast
 import tokenize
 import json
 import pathlib
+import abc
 
 import packaging.requirements
 
@@ -39,10 +40,17 @@ class DepsReader:
         but return an empty list if unsuccessful.
         """
         try:
-            reader = cls.load(script_path)  # type: ignore
+            reader = cls.load(script_path)
             return reader.read()
         except Exception:
             pass
+
+    @classmethod
+    @abc.abstractmethod
+    def load(cls, script: pathlib.Path):
+        """
+        Construct a DepsReader from the script path.
+        """
 
     @classmethod
     def search(cls, params):
