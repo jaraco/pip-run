@@ -1,3 +1,9 @@
+v9.1.0
+======
+
+#57: ``pip-run`` no longer requires a ``--`` separator when
+the first argument to Python is an extant Python script.
+
 v9.0.0
 ======
 
