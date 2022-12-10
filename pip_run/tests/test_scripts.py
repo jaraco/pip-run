@@ -1,4 +1,3 @@
-import os
 import textwrap
 import sys
 import subprocess
@@ -108,32 +107,32 @@ class TestNotebookDepsReader:
     def test_one_code_block(self, notebook_factory):
         notebook_factory.add_code('__requires__ = ["matplotlib"]')
         notebook_factory.write()
-        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        reqs = scripts.DepsReader.try_read(notebook_factory.path)
         assert reqs == ['matplotlib']
 
     def test_multiple_code_blocks(self, notebook_factory):
         notebook_factory.add_code('__requires__ = ["matplotlib"]')
         notebook_factory.add_code("import matplotlib")
         notebook_factory.write()
-        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        reqs = scripts.DepsReader.try_read(notebook_factory.path)
         assert reqs == ['matplotlib']
 
     def test_code_and_markdown(self, notebook_factory):
         notebook_factory.add_code('__requires__ = ["matplotlib"]')
         notebook_factory.add_markdown("Mark this down please")
         notebook_factory.write()
-        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        reqs = scripts.DepsReader.try_read(notebook_factory.path)
         assert reqs == ['matplotlib']
 
     def test_jupyter_directives(self, notebook_factory):
         notebook_factory.add_code('__requires__ = ["matplotlib"]')
         notebook_factory.add_code("%matplotlib inline\nimport matplotlib")
         notebook_factory.write()
-        reqs = scripts.DepsReader.try_read(notebook_factory.filename)
+        reqs = scripts.DepsReader.try_read(notebook_factory.path)
         assert reqs == ['matplotlib']
 
 
-def test_pkg_loaded_from_alternate_index(tmpdir):
+def test_pkg_loaded_from_alternate_index(tmp_path):
     """
     Create a script that loads cython from an alternate index
     and ensure it runs.
@@ -146,21 +145,22 @@ def test_pkg_loaded_from_alternate_index(tmpdir):
         print("Successfully imported path.py")
         """
     ).lstrip()
-    script_file = tmpdir / 'script'
-    script_file.write_text(body, 'utf-8')
-    cmd = [sys.executable, '-m', 'pip-run', '-v', '--', str(script_file)]
+    script = tmp_path / 'script'
+    script.write_text(body, 'utf-8')
+    cmd = [sys.executable, '-m', 'pip-run', '-v', '--', script]
 
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported path.py' in out
     assert 'devpi.net' in out
 
 
-def test_pkg_loaded_from_url(tmpdir):
+def test_pkg_loaded_from_url(tmp_path):
     """
     Create a script whose dependency is only installable
     from a custom url and ensure it runs.
     """
-    dependency = tmpdir.ensure_dir('barbazquux-1.0')
+    dependency = tmp_path / 'barbazquux-1.0'
+    dependency.mkdir()
     (dependency / 'setup.py').write_text(
         textwrap.dedent(
             '''
@@ -174,7 +174,7 @@ def test_pkg_loaded_from_url(tmpdir):
         'utf-8',
     )
     (dependency / 'barbazquux.py').write_text('', 'utf-8')
-    url_req = 'barbazquux @ file://%s' % (dependency.strpath.replace(os.path.sep, '/'),)
+    url_req = f'barbazquux @ file://{dependency.as_posix()}'
     body = (
         textwrap.dedent(
             """
@@ -186,8 +186,10 @@ def test_pkg_loaded_from_url(tmpdir):
         .lstrip()
         .format(**locals())
     )
-    script_file = tmpdir.ensure_dir('script_dir') / 'script'
-    script_file.write_text(body, 'utf-8')
-    cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', str(script_file)]
+    scripts = tmp_path / 'script_dir'
+    scripts.mkdir()
+    script = scripts / 'script'
+    script.write_text(body, 'utf-8')
+    cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', script]
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported barbazquux.py' in out

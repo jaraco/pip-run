@@ -1,9 +1,8 @@
-import os
 import sys
 import ast
 import tokenize
-import io
 import json
+import pathlib
 
 import packaging.requirements
 
@@ -29,18 +28,18 @@ class DepsReader:
         self.script = script
 
     @classmethod
-    def try_read(cls, script_path):
+    def try_read(cls, script_path: pathlib.Path):
         results = (subclass._try_read(script_path) for subclass in cls.__subclasses__())
         return next(filter(None, results), Dependencies())
 
     @classmethod
-    def _try_read(cls, script_path):
+    def _try_read(cls, script_path: pathlib.Path):
         """
         Attempt to load the dependencies from the script,
         but return an empty list if unsuccessful.
         """
         try:
-            reader = cls.load(script_path)
+            reader = cls.load(script_path)  # type: ignore
             return reader.read()
         except Exception:
             pass
@@ -53,7 +52,7 @@ class DepsReader:
         in a script indicated in the parameters. Only honor the
         first file found.
         """
-        files = filter(os.path.isfile, params)
+        files = filter(pathlib.Path.is_file, map(pathlib.Path, params))
         return cls.try_read(next(files, None)).params()
 
     def read(self):
@@ -89,15 +88,15 @@ class DepsReader:
 
 class SourceDepsReader(DepsReader):
     @classmethod
-    def load(cls, script_path):
-        with io.open(script_path) as stream:
-            return cls(stream.read())
+    def load(cls, script: pathlib.Path):
+        return cls(script.read_text())
 
 
 class NotebookDepsReader(DepsReader):
     @classmethod
-    def load(cls, script_path):
-        doc = json.load(open(script_path))
+    def load(cls, script: pathlib.Path):
+        with script.open() as stream:
+            doc = json.load(stream)
         lines = (
             line
             for cell in doc['cells']

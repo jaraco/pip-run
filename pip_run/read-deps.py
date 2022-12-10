@@ -2,13 +2,15 @@
 Emit parameters to pip extracted from a script.
 """
 
+import pathlib
+
 import autocommand
 import path
 
 from .scripts import DepsReader
 
 
-def separator(input):
+def separator(input) -> str:
     lookup = dict(space=' ', newline='\n', null='\0')
     return lookup.get(input, input)
 
@@ -28,4 +30,5 @@ def run(
     pytest
     jaraco.mongodb>=3.10
     """
-    print(separator.join(DepsReader.try_read(script).params()))  # type: ignore
+    joiner = separator.join  # type: ignore
+    print(joiner(DepsReader.try_read(pathlib.Path(script)).params()))
