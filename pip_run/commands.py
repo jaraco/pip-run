@@ -96,6 +96,11 @@ help_doc = textwrap.dedent(
 
         pip-run -- script.py
 
+    For simplicity, the ``--`` may be omitted and Python arguments will
+    be inferred starting with the first Python file that exists:
+
+        pip-run script.py
+
     If the `--` is ommitted or nothing is passed, the python interpreter
     will be launched in interactive mode:
 

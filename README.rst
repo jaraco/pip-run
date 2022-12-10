@@ -90,6 +90,8 @@ Following the parameters to ``pip install``, one may optionally
 include a ``--`` after which any parameters will be passed
 to a Python interpreter in the context.
 
+See ``pip-run --help`` for more details.
+
 Examples
 ========
 
@@ -121,16 +123,6 @@ executable modules and packages via
 .. image:: docs/cowsay.svg
    :alt: cowsay example animation
 
-Interactive Interpreter
------------------------
-
-``pip-run`` also offers a painless way to run a Python interactive
-interpreter in the context of certain dependencies::
-
-    $ /clean-install/python -m pip-run boto
-    >>> import boto
-    >>>
-
 
 Command Runner
 --------------
@@ -152,36 +144,47 @@ or on Windows::
 
     $ py -2.7 -m pip-run ...
 
-Experiments and Testing
------------------------
-
-Because ``pip-run`` provides a single-command invocation, it
-is great for experiments and rapid testing of various package
-specifications.
-
-Consider a scenario in which one wishes to create an environment
-where two different versions of the same package are installed,
-such as to replicate a broken real-world environment. Stack two
-invocations of pip-run to get two different versions installed::
-
-    $ pip-run keyring==21.8.0 -- -m pip-run keyring==22.0.0 -- -c "import importlib.metadata, pprint; pprint.pprint([dist._path for dist in importlib.metadata.distributions() if dist.metadata['name'] == 'keyring'])"
-    [PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-a3xvd267/keyring-22.0.0.dist-info'),
-    PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-1fdjsgfs/keyring-21.8.0.dist-info')]
-
-.. todo: illustrate example here
-
 Script Runner
 -------------
 
-Let's say you have a script that has a one-off purpose. It's either not
-part of a library, where dependencies are normally declared, or it is
-normally executed outside the context of that library. Still, that script
-probably has dependencies, say on `requests
-<https://pypi.org/project/requests>`_. Here's how you can use pip-run to
-declare the dependencies and launch the script in a context where
-those dependencies have been resolved.
+``pip-run`` can run a Python file with indicated dependencies. Because
+arguments after ``--`` are passed directly to the Python interpreter
+and because the Python interpreter will run any script, invoking a script
+with dependencies is easy. Consider this script "myscript.py":
 
-First, add a ``__requires__`` directive at the head of the script:
+.. code-block:: python
+
+    #!/usr/bin/env python
+
+    import requests
+
+    req = requests.get('https://pypi.org/project/pip-run')
+    print(req.status_code)
+
+To invoke it while making sure requests is present:
+
+    $ pip-run requests -- myscript.py
+
+``pip-run`` will make sure that requests is installed then invoke
+the script in a Python interpreter configured with requests and its
+dependencies.
+
+For added convenience when running scripts, ``pip-run`` will infer
+the beginning of Python parameters if it encounters a filename
+of a Python script that exists, allowing for omission of the ``--``
+for script invocation:
+
+    $ pip-run requests myscript.py
+
+Script-declared Dependencies
+----------------------------
+
+Building on Script Runner above, ``pip-run`` also allows
+dependencies to be declared in the script itself so that
+the user need not specify them at each invocation.
+
+To declare dependencies in a script, add a ``__requires__``
+variable to the script:
 
 .. code-block:: python
 
@@ -194,12 +197,16 @@ First, add a ``__requires__`` directive at the head of the script:
     req = requests.get('https://pypi.org/project/pip-run')
     print(req.status_code)
 
-Then, simply invoke that script with pip-run::
+With that declaration in place, one can now invoke ``pip-run`` without
+declaring any parameters to pip::
 
-    $ python -m pip-run -- myscript.py
+    $ pip-run myscript.py
     200
 
 The format for requirements must follow `PEP 508 <https://www.python.org/dev/peps/pep-0508/>`_.
+
+Other Script Directives
+-----------------------
 
 ``pip-run`` also recognizes a global ``__index_url__`` attribute. If present,
 this value will supply ``--index-url`` to pip with the attribute value,
@@ -234,6 +241,35 @@ And since `pipenv <https://docs.pipenv.org/>`_ uses the same syntax,
 the same technique works for pipenv::
 
     $ pipenv install $(python -m pip_run.read-deps script.py)
+
+Interactive Interpreter
+-----------------------
+
+``pip-run`` also offers a painless way to run a Python interactive
+interpreter in the context of certain dependencies::
+
+    $ /clean-install/python -m pip-run boto
+    >>> import boto
+    >>>
+
+Experiments and Testing
+-----------------------
+
+Because ``pip-run`` provides a single-command invocation, it
+is great for experiments and rapid testing of various package
+specifications.
+
+Consider a scenario in which one wishes to create an environment
+where two different versions of the same package are installed,
+such as to replicate a broken real-world environment. Stack two
+invocations of pip-run to get two different versions installed::
+
+    $ pip-run keyring==21.8.0 -- -m pip-run keyring==22.0.0 -- -c "import importlib.metadata, pprint; pprint.pprint([dist._path for dist in importlib.metadata.distributions() if dist.metadata['name'] == 'keyring'])"
+    [PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-a3xvd267/keyring-22.0.0.dist-info'),
+    PosixPath('/var/folders/03/7l0ffypn50b83bp0bt07xcch00n8zm/T/pip-run-1fdjsgfs/keyring-21.8.0.dist-info')]
+
+.. todo: illustrate example here
+
 
 How Does It Work
 ================
