@@ -3,7 +3,7 @@ This script demonstrates how ``pip-run`` facilitates the
 simple execution of complex tasks with their
 dependencies.
 
-Run this example with ``pip-run -- $script``.
+Run this example with ``pip-run $script``.
 
 It creates a MongoDB instance, and then runs some
 assertions against it.
