@@ -65,7 +65,7 @@ def docs_in_db(mongodb_instance):
     coll.create_index('number')
     n_records = 100
     for n in itertools.islice(itertools.count(), n_records):
-        doc = dict(number=random.randint(0, 2 ** 32 - 1), value='some value')
+        doc = dict(number=random.randint(0, 2**32 - 1), value='some value')
         conn.test_db.test_coll.insert(doc)
     return coll
 
