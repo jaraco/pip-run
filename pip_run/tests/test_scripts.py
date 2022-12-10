@@ -201,6 +201,6 @@ def test_pkg_loaded_from_url(tmp_path):
     )
 
     script = tmp_path.joinpath('script_dir', 'script')
-    cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', script]
+    cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', str(script)]
     out = subprocess.check_output(cmd, universal_newlines=True)
     assert 'Successfully imported barbazquux.py' in out
