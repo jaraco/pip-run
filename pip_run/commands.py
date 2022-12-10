@@ -101,7 +101,7 @@ help_doc = textwrap.dedent(
 
         pip-run script.py
 
-    If the `--` is ommitted or nothing is passed, the python interpreter
+    If the `--` is omitted or nothing is passed, the python interpreter
     will be launched in interactive mode:
 
         pip-run
