@@ -1,22 +1,81 @@
+import os
 import textwrap
+import pathlib
+import contextlib
+import warnings
+
+from more_itertools import split_before
+
+
+def _separate_script(args):
+    """
+    Inject a double-dash before the first arg that appears to be an
+    extant Python script.
+
+    >>> _separate_script(['foo', 'bar'])
+    [['foo', 'bar'], []]
+    >>> _separate_script(['foo', 'pip-run.py', 'bar'])
+    [['foo'], ['pip-run.py', 'bar']]
+    >>> _separate_script(['path.py', 'pip-run.py'])
+    [['path.py'], ['pip-run.py']]
+    >>> _separate_script(['README.rst'])
+    [['README.rst'], []]
+    """
+
+    def is_extant_path(item: 'os.PathLike[str]'):
+        path = pathlib.Path(item)
+        return path.is_file() and path.suffix == '.py'
+
+    groups = split_before(args, is_extant_path, maxsplit=1)
+    return [next(groups), next(groups, [])]
+
+
+def _separate_dash(args):
+    """
+    Separate args based on a dash separator.
+
+    >>> _separate_dash(['foo', '--', 'bar'])
+    (['foo'], ['bar'])
+
+    >>> _separate_dash(['foo', 'bar', '--'])
+    (['foo', 'bar'], [])
+
+    >>> _separate_dash(['foo', 'bar'])
+    Traceback (most recent call last):
+    ...
+    ValueError: '--' is not in list
+    """
+    pivot = args.index('--')
+    return args[:pivot], args[pivot + 1 :]
 
 
 def parse_script_args(args):
     """
     Separate the command line arguments into arguments for pip
     and arguments to Python.
+    """
+    with contextlib.suppress(ValueError):
+        return _separate_dash(args)
 
-    >>> parse_script_args(['foo', '--', 'bar'])
+    return _separate_script(args)
+
+
+def separate_dash(args):
+    """
+    Separate args based on dash separator.
+
+    Deprecated; retained for compatibility.
+
+    >>> separate_dash(['foo', '--', 'bar'])
     (['foo'], ['bar'])
 
-    >>> parse_script_args(['foo', 'bar'])
-    (['foo', 'bar'], [])
+    >>> separate_dash(['foo', 'bar'])
+    [['foo', 'bar'], []]
     """
-    try:
-        pivot = args.index('--')
-    except ValueError:
-        pivot = len(args)
-    return args[:pivot], args[pivot + 1 :]
+    warnings.warn("separate_dash is deprecated", DeprecationWarning)
+    with contextlib.suppress(ValueError):
+        return _separate_dash(args)
+    return [args, []]
 
 
 help_doc = textwrap.dedent(
@@ -36,6 +95,11 @@ help_doc = textwrap.dedent(
     `script.py`:
 
         pip-run -- script.py
+
+    For simplicity, the ``--`` may be omitted and Python arguments will
+    be inferred starting with the first Python file that exists:
+
+        pip-run script.py
 
     If the `--` is ommitted or nothing is passed, the python interpreter
     will be launched in interactive mode:
