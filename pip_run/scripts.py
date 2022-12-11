@@ -7,9 +7,8 @@ import abc
 import contextlib
 
 import packaging.requirements
+import jaraco.text
 from jaraco.context import suppress
-
-from . import text
 
 
 class Dependencies(list):
@@ -71,7 +70,7 @@ class DepsReader:
         ['foo', 'bar']
         """
         raw_reqs = self._read('__requires__')
-        reqs_items = text.items(raw_reqs)
+        reqs_items = jaraco.text.yield_lines(raw_reqs)
         reqs = map(packaging.requirements.Requirement, reqs_items)
         strings = map(str, reqs)
         deps = Dependencies(strings)
