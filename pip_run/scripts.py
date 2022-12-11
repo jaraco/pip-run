@@ -4,8 +4,10 @@ import tokenize
 import json
 import pathlib
 import abc
+import contextlib
 
 import packaging.requirements
+from jaraco.context import suppress
 
 from . import text
 
@@ -34,16 +36,14 @@ class DepsReader:
         return next(filter(None, results), Dependencies())
 
     @classmethod
+    @suppress(Exception)
     def _try_read(cls, script_path: pathlib.Path):
         """
         Attempt to load the dependencies from the script,
         but return an empty list if unsuccessful.
         """
-        try:
-            reader = cls.load(script_path)
-            return reader.read()
-        except Exception:
-            pass
+        reader = cls.load(script_path)
+        return reader.read()
 
     @classmethod
     @abc.abstractmethod
@@ -75,10 +75,8 @@ class DepsReader:
         reqs = map(packaging.requirements.Requirement, reqs_items)
         strings = map(str, reqs)
         deps = Dependencies(strings)
-        try:
+        with contextlib.suppress(Exception):
             deps.index_url = self._read('__index_url__')
-        except Exception:
-            pass
         return deps
 
     def _read(self, var_name):
