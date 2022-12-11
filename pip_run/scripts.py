@@ -40,7 +40,7 @@ class DepsReader:
     def _try_read(cls, script_path: pathlib.Path):
         """
         Attempt to load the dependencies from the script,
-        but return an empty list if unsuccessful.
+        but return None if unsuccessful.
         """
         reader = cls.load(script_path)
         return reader.read()
