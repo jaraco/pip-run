@@ -4,7 +4,7 @@ import pathlib
 import contextlib
 import warnings
 
-from more_itertools import split_before
+from more_itertools import split_before, split_at
 
 
 def _separate_script(args):
@@ -13,13 +13,13 @@ def _separate_script(args):
     extant Python script.
 
     >>> _separate_script(['foo', 'bar'])
-    [['foo', 'bar'], []]
+    (['foo', 'bar'], [])
     >>> _separate_script(['foo', 'pip-run.py', 'bar'])
-    [['foo'], ['pip-run.py', 'bar']]
+    (['foo'], ['pip-run.py', 'bar'])
     >>> _separate_script(['path.py', 'pip-run.py'])
-    [['path.py'], ['pip-run.py']]
+    (['path.py'], ['pip-run.py'])
     >>> _separate_script(['README.rst'])
-    [['README.rst'], []]
+    (['README.rst'], [])
     """
 
     def is_extant_path(item: 'os.PathLike[str]'):
@@ -27,7 +27,7 @@ def _separate_script(args):
         return path.is_file() and path.suffix == '.py'
 
     groups = split_before(args, is_extant_path, maxsplit=1)
-    return [next(groups), next(groups, [])]
+    return next(groups), next(groups, [])
 
 
 def _separate_dash(args):
@@ -43,10 +43,10 @@ def _separate_dash(args):
     >>> _separate_dash(['foo', 'bar'])
     Traceback (most recent call last):
     ...
-    ValueError: '--' is not in list
+    ValueError: ...
     """
-    pivot = args.index('--')
-    return args[:pivot], args[pivot + 1 :]
+    pre, post = split_at(args, '--'.__eq__, maxsplit=1)
+    return pre, post
 
 
 def parse_script_args(args):
