@@ -1,3 +1,9 @@
+v9.2.0
+======
+
+#60: ``pip-run`` additionally supports the "limited requirements"
+in comments in a script.
+
 v9.1.0
 ======
 

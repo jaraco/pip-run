@@ -5,6 +5,8 @@ import json
 import pathlib
 import abc
 import contextlib
+import itertools
+import re
 
 import packaging.requirements
 import jaraco.text
@@ -17,6 +19,15 @@ class Dependencies(list):
     def params(self):
         prefix = ['--index-url', self.index_url] if self.index_url else []
         return prefix + self
+
+    @classmethod
+    def load(cls, items):
+        """
+        Construct self from items, validated as requirements.
+        """
+        reqs = map(packaging.requirements.Requirement, items)
+        strings = map(str, reqs)
+        return cls(strings)
 
 
 class DepsReader:
@@ -63,6 +74,33 @@ class DepsReader:
         return cls.try_read(next(files, None)).params()
 
     def read(self):
+        return self.read_comments() or self.read_python()
+
+    def read_comments(self):
+        r"""
+        >>> DepsReader("# Requirements:\n# foo\n\n# baz").read()
+        ['foo']
+        >>> DepsReader("# foo\n# bar").read_comments()
+        []
+        >>> DepsReader("# Requirements:\n# foo\n# bar").read()
+        ['foo', 'bar']
+        """
+        match = re.search(
+            r'^# Requirements:\n(.*)',
+            self.script,
+            flags=re.IGNORECASE | re.MULTILINE | re.DOTALL,
+        )
+
+        try:
+            lines = match.group(1).splitlines()
+        except AttributeError:
+            lines = []
+
+        comment = re.compile(r'#\s+(.*)')
+        matches = itertools.takewhile(bool, map(comment.match, lines))
+        return Dependencies.load(match.group(1) for match in matches)
+
+    def read_python(self):
         r"""
         >>> DepsReader("__requires__=['foo']").read()
         ['foo']
@@ -71,9 +109,7 @@ class DepsReader:
         """
         raw_reqs = self._read('__requires__')
         reqs_items = jaraco.text.yield_lines(raw_reqs)
-        reqs = map(packaging.requirements.Requirement, reqs_items)
-        strings = map(str, reqs)
-        deps = Dependencies(strings)
+        deps = Dependencies.load(reqs_items)
         with contextlib.suppress(Exception):
             deps.index_url = self._read('__index_url__')
         return deps

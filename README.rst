@@ -184,13 +184,18 @@ dependencies to be declared in the script itself so that
 the user need not specify them at each invocation.
 
 To declare dependencies in a script, add a ``__requires__``
-variable to the script:
+variable or ``# Requirements:`` section to the script:
 
 .. code-block:: python
 
     #!/usr/bin/env python
 
     __requires__ = ['requests']
+
+    # or
+
+    # Requirements:
+    # requests
 
     import requests
 
@@ -226,7 +231,8 @@ Supplying parameters to Pip
 ---------------------------
 
 If you've been using ``pip-run``, you may have defined some requirements
-in the ``__requires__`` of a script, but now you wish to install those
+in the ``__requires__`` variable or ``# Requirements:`` section of a
+script, but now you wish to install those
 to a more permanent environment. pip-run provides a routine to facilitate
 this case::
 

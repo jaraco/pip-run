@@ -89,6 +89,18 @@ class TestSourceDepsReader:
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo']
 
+    def test_comment_style(self):
+        script = textwrap.dedent(
+            """
+            #! shebang
+
+            # Requirements:
+            # foo == 3.1
+            """
+        )
+        reqs = scripts.DepsReader(script).read()
+        assert reqs == ['foo==3.1']
+
 
 class TestNotebookDepsReader:
     @pytest.fixture
