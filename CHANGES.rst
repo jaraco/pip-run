@@ -1,3 +1,9 @@
+v9.2.1
+======
+
+#62: Fixed minimum dependency on ``more_itertools`` to match
+usage.
+
 v9.2.0
 ======
 
