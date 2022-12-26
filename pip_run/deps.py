@@ -16,6 +16,8 @@ try:
 except ImportError:
     import importlib_metadata as metadata  # type: ignore
 
+from ._py38compat import subprocess_path as sp
+
 
 class Install(types.SimpleNamespace):
 
@@ -67,7 +69,7 @@ def empty(path):
 @contextlib.contextmanager
 def load(*args):
     with target_mod().context(args) as target:
-        cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
+        cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
         Install.parse(args) and empty(target) and subprocess.check_call(cmd, env=env)
         yield str(target)
