@@ -30,8 +30,7 @@ class PathReader:
         As .pth files aren't honored except in site dirs,
         read the paths indicated by them.
         """
-        target_path = pathlib.Path(target)
-        pth_files = target_path.glob('*.pth')
+        pth_files = target.glob('*.pth')
         file_items = map(cls._read_file, pth_files)
         return itertools.chain.from_iterable(file_items)
 
@@ -47,8 +46,7 @@ def inject_sitecustomize(target):
         site.addsitedir({target!r})
         """
     ).lstrip()
-    sc_fn = pathlib.Path(target) / 'sitecustomize.py'
-    sc_fn.write_text(hook)
+    target.joinpath('sitecustomize.py').write_text(hook)
 
 
 def _pythonpath():
@@ -61,13 +59,12 @@ def _build_env(target):
     """
     key = _pythonpath()
     env = dict(os.environ)
-    suffix = env.get(key)
-    prefix = (target,)
-    items = itertools.chain(
-        prefix, PathReader._read(target), (suffix,) if suffix else ()
-    )
+    previous = env.get(key)
+    suffix = (previous,) * bool(previous)
+    prefix = (os.fspath(target),)
+    items = itertools.chain(prefix, PathReader._read(target), suffix)
     joined = os.pathsep.join(items)
-    env[key] = joined
+    env[key] = os.fspath(joined)
     return env
 
 
@@ -76,7 +73,7 @@ def _setup_env(target):
     return _build_env(target)
 
 
-def with_path(target, params):
+def with_path(target: pathlib.Path, params):
     """
     Launch Python with target on the path and params
     """

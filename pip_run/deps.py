@@ -72,7 +72,7 @@ def load(*args):
         cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
         Install.parse(args) and empty(target) and subprocess.check_call(cmd, env=env)
-        yield str(target)
+        yield target
 
 
 @contextlib.contextmanager

@@ -2,48 +2,49 @@ import sys
 import subprocess
 import textwrap
 import os
+import pathlib
 
 import pytest
 
 from pip_run import launch
 
 
-def test_with_path(tmpdir, capfd):
+def test_with_path(tmp_path, capfd):
     params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
-    res = launch.with_path(str(tmpdir), params)
+    res = launch.with_path(tmp_path, params)
     assert res == 0
     out, err = capfd.readouterr()
-    assert tmpdir in out.split(os.linesep)
+    assert str(tmp_path) in out.split(os.linesep)
 
 
-def test_with_path_result_code(tmpdir):
+def test_with_path_result_code(tmp_path):
     """
     result code should be non-zero on error
     """
     params = ['-c', "raise ValueError()"]
-    res = launch.with_path(str(tmpdir), params)
+    res = launch.with_path(tmp_path, params)
     assert res > 0
 
 
 @pytest.mark.xfail(reason="cleanup can't occur with execv; #4")
-def test_with_path_overlay(tmpdir, capfd):
+def test_with_path_overlay(tmp_path, capfd):
     params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
     # launch subprocess so as not to overlay the test process
     script = (
         textwrap.dedent(
             """
         import pip_run.launch
-        pip_run.launch.with_path_overlay({tmpdir!r}, {params!r})
+        pip_run.launch.with_path_overlay({temp_dir!r}, {params!r})
         print("cleanup")
     """
         )
         .strip()
         .replace('\n', '; ')
-        .format(tmpdir=str(tmpdir), params=params)
+        .format(temp_dir=str(tmp_path), params=params)
     )
     subprocess.Popen([sys.executable, '-c', script]).wait()
     out, err = capfd.readouterr()
-    assert str(tmpdir) in out.split(os.linesep)
+    assert str(tmp_path) in out.split(os.linesep)
     assert "cleanup" in out
 
 
@@ -54,30 +55,30 @@ def clean_pythonpath(monkeypatch):
 
 def test_build_env(clean_pythonpath):
     os.environ['PYTHONPATH'] = 'something'
-    env = launch._build_env('else')
+    env = launch._build_env(pathlib.Path('else'))
     expected = os.pathsep.join(('else', 'something'))
     assert env['PYTHONPATH'] == expected
 
     os.environ['PYTHONPATH'] = ''
-    env = launch._build_env('something')
+    env = launch._build_env(pathlib.Path('something'))
     assert env['PYTHONPATH'] == 'something'
 
     initial = os.pathsep.join(['something', 'else'])
     os.environ['PYTHONPATH'] = initial
-    env = launch._build_env('a')
+    env = launch._build_env(pathlib.Path('a'))
     expected = os.pathsep.join(['a', 'something', 'else'])
     assert env['PYTHONPATH'] == expected
 
 
 # protect against ResourceWarning (#56)
 @pytest.mark.filterwarnings("error")
-def test_build_env_includes_pth_files(tmpdir, clean_pythonpath):
+def test_build_env_includes_pth_files(tmp_path, clean_pythonpath):
     """
     If during _build_env, there are .pth files in the target directory,
     they should be processed to include any paths indicated there.
     See #6 for rationale.
     """
-    (tmpdir / 'foo.pth').write_text('pkg-1.0', encoding='utf-8')
-    env = launch._build_env(str(tmpdir))
-    expected = os.pathsep.join([str(tmpdir), str(tmpdir / 'pkg-1.0')])
+    (tmp_path / 'foo.pth').write_text('pkg-1.0', encoding='utf-8')
+    env = launch._build_env(tmp_path)
+    expected = os.pathsep.join([str(tmp_path), str(tmp_path / 'pkg-1.0')])
     assert env['PYTHONPATH'] == expected
