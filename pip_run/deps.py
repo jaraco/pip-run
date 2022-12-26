@@ -35,31 +35,25 @@ class Install(types.SimpleNamespace):
         parsed, unused = cls.parser.parse_known_args(args)
         return cls(**vars(parsed))
 
+    def __bool__(self):
+        """
+        Return True only if the args to pip install
+        indicate something to install.
 
-def _installable(args):
-    """
-    Return True only if the args to pip install
-    indicate something to install.
-
-    >>> _installable(['inflect'])
-    True
-    >>> _installable(['-q'])
-    False
-    >>> _installable(['-q', 'inflect'])
-    True
-    >>> _installable(['-rfoo.txt'])
-    True
-    >>> _installable(['projects/inflect'])
-    True
-    >>> _installable(['~/projects/inflect'])
-    True
-    """
-    return any(
-        not arg.startswith('-')
-        or arg.startswith('-r')
-        or arg.startswith('--requirement')
-        for arg in args
-    )
+        >>> bool(Install.parse(['inflect']))
+        True
+        >>> bool(Install.parse(['-q']))
+        False
+        >>> bool(Install.parse(['-q', 'inflect']))
+        True
+        >>> bool(Install.parse(['-rfoo.txt']))
+        True
+        >>> bool(Install.parse(['projects/inflect']))
+        True
+        >>> bool(Install.parse(['~/projects/inflect']))
+        True
+        """
+        return bool(self.requirement or self.package)
 
 
 @contextlib.contextmanager
@@ -67,7 +61,7 @@ def load(*args):
     target = tempfile.mkdtemp(prefix='pip-run-')
     cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
     env = dict(os.environ, PIP_QUIET="1")
-    _installable(args) and subprocess.check_call(cmd, env=env)
+    Install.parse(args) and subprocess.check_call(cmd, env=env)
     try:
         yield target
     finally:
