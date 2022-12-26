@@ -3,6 +3,8 @@ import textwrap
 import jaraco.path
 import pytest
 
+import pip_run.persist
+
 
 collect_ignore = ['examples']
 
@@ -28,3 +30,25 @@ def reqs_files(tmp_path):
         tmp_path,
     )
     return tmp_path.glob('reqs*.txt')
+
+
+@pytest.fixture(scope="session")
+def monkeypatch_session():
+    with pytest.MonkeyPatch.context() as mp:
+        yield mp
+
+
+@pytest.fixture(autouse=True, scope='session')
+def alt_cache_dir(monkeypatch_session, tmp_path_factory):
+    alt_cache = tmp_path_factory.mktemp('cache')
+
+    class Paths:
+        user_cache = alt_cache
+        user_cache_dir = alt_cache
+
+    monkeypatch_session.setattr(pip_run.persist, 'paths', Paths)
+
+
+@pytest.fixture(params=['persist', 'ephemeral'])
+def run_mode(monkeypatch, request):
+    monkeypatch.setenv('PIP_RUN_MODE', request.param)
