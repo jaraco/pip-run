@@ -1,3 +1,8 @@
+v9.3.0
+======
+
+#52: ``pip-run`` now honors a ``PIP_RUN_MODE``.
+
 v9.2.1
 ======
 

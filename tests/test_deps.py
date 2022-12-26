@@ -1,6 +1,8 @@
 import copy
 
-from pip_run import deps
+import pytest
+
+import pip_run.deps as deps
 
 
 class TestInstallCheck:
@@ -29,6 +31,7 @@ class TestInstallCheck:
         assert list(filtered) == expected
 
 
+@pytest.mark.usefixtures('run_mode')
 class TestLoad:
     def test_no_args_passes(self):
         """
@@ -45,3 +48,11 @@ class TestLoad:
         """
         with deps.load('-q'):
             pass
+
+
+@pytest.mark.usefixtures('run_mode')
+def test_target_module_context():
+    """Verify a target exists or can be created."""
+    mod = deps.target_mod()
+    with mod.context([]) as target:
+        target.mkdir(exist_ok=True)

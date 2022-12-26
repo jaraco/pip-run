@@ -2,10 +2,12 @@ import os
 import sys
 import contextlib
 import subprocess
-import tempfile
-import shutil
 import itertools
 import functools
+import argparse
+import pathlib
+import types
+import importlib
 
 import packaging.requirements
 
@@ -14,43 +16,63 @@ try:
 except ImportError:
     import importlib_metadata as metadata  # type: ignore
 
+from ._py38compat import subprocess_path as sp
 
-def _installable(args):
-    """
-    Return True only if the args to pip install
-    indicate something to install.
 
-    >>> _installable(['inflect'])
-    True
-    >>> _installable(['-q'])
-    False
-    >>> _installable(['-q', 'inflect'])
-    True
-    >>> _installable(['-rfoo.txt'])
-    True
-    >>> _installable(['projects/inflect'])
-    True
-    >>> _installable(['~/projects/inflect'])
-    True
-    """
-    return any(
-        not arg.startswith('-')
-        or arg.startswith('-r')
-        or arg.startswith('--requirement')
-        for arg in args
+class Install(types.SimpleNamespace):
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-r',
+        '--requirement',
+        action='append',
+        type=pathlib.Path,
+        default=[],
     )
+    parser.add_argument('package', nargs='*')
+
+    @classmethod
+    def parse(cls, args):
+        parsed, unused = cls.parser.parse_known_args(args)
+        return cls(**vars(parsed))
+
+    def __bool__(self):
+        """
+        Return True only if the args to pip install
+        indicate something to install.
+
+        >>> bool(Install.parse(['inflect']))
+        True
+        >>> bool(Install.parse(['-q']))
+        False
+        >>> bool(Install.parse(['-q', 'inflect']))
+        True
+        >>> bool(Install.parse(['-rfoo.txt']))
+        True
+        >>> bool(Install.parse(['projects/inflect']))
+        True
+        >>> bool(Install.parse(['~/projects/inflect']))
+        True
+        """
+        return bool(self.requirement or self.package)
+
+
+def target_mod():
+    mode = os.environ.get('PIP_RUN_MODE', 'ephemeral')
+    return importlib.import_module(f'.{mode}', package=__package__)
+
+
+def empty(path):
+    return not bool(list(path.iterdir()))
 
 
 @contextlib.contextmanager
 def load(*args):
-    target = tempfile.mkdtemp(prefix='pip-run-')
-    cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
-    env = dict(os.environ, PIP_QUIET="1")
-    _installable(args) and subprocess.check_call(cmd, env=env)
-    try:
-        yield target
-    finally:
-        shutil.rmtree(target)
+    with target_mod().context(args) as target:
+        cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
+        env = dict(os.environ, PIP_QUIET="1")
+        Install.parse(args) and empty(target) and subprocess.check_call(cmd, env=env)
+        yield str(target)
 
 
 @contextlib.contextmanager

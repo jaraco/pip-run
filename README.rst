@@ -289,6 +289,22 @@ How Does It Work
 For specifics, see `pip_run.run()
 <https://github.com/jaraco/pip-run/blob/master/pip_run/__init__.py#L9-L16>`_.
 
+
+Environment Persistence
+=======================
+
+``pip-run`` honors the ``PIP_RUN_MODE`` variable. If unset or
+set to ``ephemeral``, depenedncies are installed to an ephemeral
+temporary directory on each invocation (and deleted after).
+Setting this variable to ``persist`` will instead create or re-use
+a directory in the user's cache, only installing the dependencies if
+the directory doesn't already exist. A separate cache is maintained
+for each combination of requirements specified.
+
+``persist`` mode can greatly improve startup performance at the
+expense of staleness and accumulated cruft.
+
+
 Limitations
 ===========
 
