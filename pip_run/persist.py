@@ -1,17 +1,6 @@
-import argparse
-import pathlib
 import hashlib
 
-
-parser = argparse.ArgumentParser()
-parser.add_argument(
-    '-r',
-    '--requirement',
-    action='append',
-    type=pathlib.Path,
-    default=[],
-)
-parser.add_argument('package', nargs='*')
+from . import deps
 
 
 def cache_key(args):
@@ -30,7 +19,7 @@ def cache_key(args):
     >>> cache_key(['--foo', '-q'])
     'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
     """
-    parsed, unused = parser.parse_known_args(args)
+    parsed = deps.Install.parse(args)
     hash = hashlib.new('sha256')
     for req in sorted(parsed.package):
         hash.update(req.encode('utf-8') + b'\n')

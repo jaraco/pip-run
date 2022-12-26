@@ -6,6 +6,9 @@ import tempfile
 import shutil
 import itertools
 import functools
+import argparse
+import pathlib
+import types
 
 import packaging.requirements
 
@@ -13,6 +16,24 @@ try:
     from importlib import metadata  # type: ignore
 except ImportError:
     import importlib_metadata as metadata  # type: ignore
+
+
+class Install(types.SimpleNamespace):
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        '-r',
+        '--requirement',
+        action='append',
+        type=pathlib.Path,
+        default=[],
+    )
+    parser.add_argument('package', nargs='*')
+
+    @classmethod
+    def parse(cls, args):
+        parsed, unused = cls.parser.parse_known_args(args)
+        return cls(**vars(parsed))
 
 
 def _installable(args):
