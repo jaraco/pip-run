@@ -2,13 +2,12 @@ import os
 import sys
 import contextlib
 import subprocess
-import tempfile
-import shutil
 import itertools
 import functools
 import argparse
 import pathlib
 import types
+import importlib
 
 import packaging.requirements
 
@@ -56,16 +55,23 @@ class Install(types.SimpleNamespace):
         return bool(self.requirement or self.package)
 
 
+def target_context():
+    mode = os.environ.get('PIP_RUN_MODE', 'ephemeral')
+    mod = importlib.import_module(f'.{mode}', package=__package__)
+    return mod.context
+
+
+def empty(path):
+    return not bool(list(path.iterdir()))
+
+
 @contextlib.contextmanager
 def load(*args):
-    target = tempfile.mkdtemp(prefix='pip-run-')
-    cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
-    env = dict(os.environ, PIP_QUIET="1")
-    Install.parse(args) and subprocess.check_call(cmd, env=env)
-    try:
-        yield target
-    finally:
-        shutil.rmtree(target)
+    with target_context()(args) as target:
+        cmd = (sys.executable, '-m', 'pip', 'install', '-t', target) + args
+        env = dict(os.environ, PIP_QUIET="1")
+        Install.parse(args) and empty(target) and subprocess.check_call(cmd, env=env)
+        yield str(target)
 
 
 @contextlib.contextmanager

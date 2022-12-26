@@ -1,6 +1,12 @@
 import hashlib
+import contextlib
+
+import app_paths
 
 from . import deps
+
+
+paths = app_paths.AppPaths.get_paths(appname='pip run', appauthor=False)
 
 
 def cache_key(args):
@@ -26,3 +32,8 @@ def cache_key(args):
     for file in sorted(parsed.requirement):
         hash.update(b'req:\n' + file.read_bytes())
     return hash.hexdigest()
+
+
+@contextlib.contextmanager
+def context(args):
+    yield paths.user_cache.joinpath(cache_key(args))
