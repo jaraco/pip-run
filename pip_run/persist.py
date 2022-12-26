@@ -9,6 +9,21 @@ from . import deps
 paths = app_paths.AppPaths.get_paths(appname='pip run', appauthor=False)
 
 
+class Hash:
+    """
+    Hash class with support for unicode text.
+    """
+
+    def __init__(self, name):
+        self._hash = hashlib.new(name)
+
+    def update(self, text):
+        self._hash.update(text.encode('utf-8'))
+
+    def hexdigest(self):
+        return self._hash.hexdigest()
+
+
 def cache_key(args):
     """
     Generate a cache key representing the packages to be installed.
@@ -26,11 +41,11 @@ def cache_key(args):
     'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
     """
     parsed = deps.Install.parse(args)
-    hash = hashlib.new('sha256')
+    hash = Hash('sha256')
     for req in sorted(parsed.package):
-        hash.update(req.encode('utf-8') + b'\n')
+        hash.update(req + '\n')
     for file in sorted(parsed.requirement):
-        hash.update(b'req:\n' + file.read_bytes())
+        hash.update('req:\n' + file.read_text())
     return hash.hexdigest()
 
 
