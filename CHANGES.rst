@@ -27,7 +27,7 @@ v9.0.0
 #58: ``pip-run`` now sets ``PIP_QUIET=1`` when invoking
 pip to install packages. To see the pip installer output during
 installation, pass ``-v`` and in general one additional ``v``
-to achieve the prior behavior. It iss no longer necessary to pass
+to achieve the prior behavior. It is no longer necessary to pass
 ``-q`` to suppress the installer output.
 
 v8.8.2
