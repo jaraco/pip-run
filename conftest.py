@@ -43,8 +43,7 @@ def alt_cache_dir(monkeypatch_session, tmp_path_factory):
     alt_cache = tmp_path_factory.mktemp('cache')
 
     class Paths:
-        user_cache = alt_cache
-        user_cache_dir = alt_cache
+        user_cache_path = alt_cache
 
     monkeypatch_session.setattr(pip_run.persist, 'paths', Paths)
 

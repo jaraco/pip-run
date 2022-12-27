@@ -1,12 +1,12 @@
 import hashlib
 import contextlib
 
-import app_paths
+import platformdirs
 
 from . import deps
 
 
-paths = app_paths.AppPaths.get_paths(appname='pip run', appauthor=False)
+paths = platformdirs.PlatformDirs(appname='pip run', appauthor=False)
 
 
 class Hash:
@@ -51,4 +51,4 @@ def cache_key(args):
 
 @contextlib.contextmanager
 def context(args):
-    yield paths.user_cache.joinpath(cache_key(args))
+    yield paths.user_cache_path.joinpath(cache_key(args))

@@ -1,3 +1,8 @@
+v9.4.0
+======
+
+#64: Switch to ``platformdirs`` for resolving the cache dir.
+
 v9.3.0
 ======
 
