@@ -1,5 +1,5 @@
 Arguments to pip-run prior to `--` are used to specify the requirements
-to make available, just as arguments to pip install. For example,
+to make available, just as arguments to pip install. For example:
 
 	pip-run -r requirements.txt "requests>=2.0"
 
@@ -12,7 +12,7 @@ Arguments after `--` are passed to the Python interpreter. So to launch
 
 	pip-run -- script.py
 
-For simplicity, the ``--`` may be omitted and Python arguments will
+For simplicity, the `--` may be omitted and Python arguments will
 be inferred starting with the first Python file that exists:
 
 	pip-run script.py
