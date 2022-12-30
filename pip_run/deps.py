@@ -71,7 +71,8 @@ def load(*args):
     with target_mod().context(args) as target:
         cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
-        Install.parse(args) and empty(target) and subprocess.check_call(cmd, env=env)
+        if Install.parse(args) and empty(target):
+            subprocess.check_call(cmd, env=env)
         yield target
 
 
