@@ -33,8 +33,8 @@ def test_with_path_overlay(tmp_path, capfd):
     script = (
         textwrap.dedent(
             """
-            import pip_run.launch
-            pip_run.launch.with_path_overlay({temp_dir!r}, {params!r})
+            import pip_run.launch, pathlib
+            pip_run.launch.with_path_overlay(pathlib.Path({temp_dir!r}), {params!r})
             print("cleanup")
             """
         )
@@ -42,7 +42,7 @@ def test_with_path_overlay(tmp_path, capfd):
         .replace('\n', '; ')
         .format(temp_dir=str(tmp_path), params=params)
     )
-    subprocess.Popen([sys.executable, '-c', script]).wait()
+    subprocess.check_call([sys.executable, '-c', script])
     out, err = capfd.readouterr()
     assert str(tmp_path) in out.split(os.linesep)
     assert "cleanup" in out
