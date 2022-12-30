@@ -15,25 +15,25 @@ def DALS(str):
 
 def test_pkg_imported(tmp_path):
     """
-    Create a script that loads cython and ensure it runs.
+    Create a script that loads a package and ensure it runs.
     """
     jaraco.path.build(
         {
             'script': DALS(
                 """
-                import path
-                print("Successfully imported path.py")
+                import sample
+                print("Import succeeded")
                 """
             )
         },
         tmp_path,
     )
     script = tmp_path / 'script'
-    pip_args = ['path.py']
+    pip_args = ['sampleproject']
     cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script)]
 
     out = subprocess.check_output(cmd, text=True)
-    assert 'Successfully imported path.py' in out
+    assert 'Import succeeded' in out
 
 
 class TestSourceDepsReader:
@@ -162,10 +162,10 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
         {
             'script': DALS(
                 """
-                __requires__ = ['path.py']
+                __requires__ = ['sampleproject']
                 __index_url__ = 'https://devpi.net/root/pypi/+simple/'
-                import path
-                print("Successfully imported path.py")
+                import sample
+                print("Import succeeded")
                 """
             )
         },
@@ -174,7 +174,7 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
     cmd = [sys.executable, '-m', 'pip-run', '-v', '--', str(tmp_path / 'script')]
 
     out = subprocess.check_output(cmd, text=True)
-    assert 'Successfully imported path.py' in out
+    assert 'Import succeeded' in out
     assert 'devpi.net' in out
 
 
