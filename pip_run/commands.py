@@ -49,7 +49,7 @@ def _separate_dash(args):
     return pre, post
 
 
-def parse_script_args(args):
+def separate(args):
     """
     Separate the command line arguments into arguments for pip
     and arguments to Python.
