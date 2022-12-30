@@ -79,7 +79,7 @@ def with_path(target: pathlib.Path, params):
     """
 
     def null_handler(signum, frame):
-        pass
+        pass  # pragma: no cover
 
     signal.signal(signal.SIGINT, null_handler)
     cmd = [sys.executable] + params
