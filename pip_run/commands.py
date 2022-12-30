@@ -53,6 +53,11 @@ def separate(args):
     """
     Separate the command line arguments into arguments for pip
     and arguments to Python.
+
+    >>> separate(['foo', '--', 'bar'])
+    (['foo'], ['bar'])
+    >>> separate(['foo', 'bar'])
+    (['foo', 'bar'], [])
     """
     with contextlib.suppress(ValueError):
         return _separate_dash(args)
