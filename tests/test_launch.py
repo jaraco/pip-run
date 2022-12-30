@@ -33,10 +33,10 @@ def test_with_path_overlay(tmp_path, capfd):
     script = (
         textwrap.dedent(
             """
-        import pip_run.launch
-        pip_run.launch.with_path_overlay({temp_dir!r}, {params!r})
-        print("cleanup")
-    """
+            import pip_run.launch
+            pip_run.launch.with_path_overlay({temp_dir!r}, {params!r})
+            print("cleanup")
+            """
         )
         .strip()
         .replace('\n', '; ')
