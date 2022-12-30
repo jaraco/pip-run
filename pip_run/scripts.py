@@ -15,8 +15,7 @@ class Dependencies(list):
     index_url = None
 
     def params(self):
-        prefix = ['--index-url', self.index_url] if self.index_url else []
-        return prefix + self
+        return ['--index-url', self.index_url] * bool(self.index_url) + self
 
     @classmethod
     def load(cls, items):
