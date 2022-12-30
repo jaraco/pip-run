@@ -21,15 +21,11 @@ def inject_sitecustomize(target):
     target.joinpath('sitecustomize.py').write_text(hook)
 
 
-def _pythonpath():
-    return 'JYTHONPATH' if sys.platform.startswith('java') else 'PYTHONPATH'
-
-
 def _build_env(target):
     """
     Prepend target to PYTHONPATH
     """
-    key = _pythonpath()
+    key = 'PYTHONPATH'
     env = dict(os.environ)
     previous = env.get(key)
     suffix = (previous,) * bool(previous)
