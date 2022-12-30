@@ -3,7 +3,7 @@ import pathlib
 import contextlib
 import argparse
 
-from more_itertools import split_before, split_at
+from more_itertools import split_before, split_at, padded
 
 from ._py38compat import files
 
@@ -28,7 +28,7 @@ def _separate_script(args):
         return path.is_file() and path.suffix == '.py'
 
     groups = split_before(args, is_extant_path, maxsplit=1)
-    return next(groups), next(groups, [])
+    return tuple(padded(groups, [], 2))
 
 
 def _separate_dash(args):
