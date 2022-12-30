@@ -6,12 +6,10 @@ from . import launch
 from . import scripts
 
 
-def run(args=None):
+def run(args=sys.argv[1:]):
     """
     Main entry point for pip-run.
     """
-    if args is None:
-        args = sys.argv[1:]
     pip_args, py_args = commands.separate(args)
     commands.intercept(pip_args)
     pip_args.extend(scripts.DepsReader.search(py_args))
