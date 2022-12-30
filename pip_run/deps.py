@@ -10,6 +10,7 @@ import types
 import importlib
 
 import packaging.requirements
+from jaraco.context import suppress
 
 try:
     from importlib import metadata  # type: ignore
@@ -74,18 +75,6 @@ def load(*args):
         if Install.parse(args) and empty(target):
             subprocess.check_call(cmd, env=env)
         yield target
-
-
-# from jaraco.context
-class suppress(contextlib.suppress, contextlib.ContextDecorator):
-    """
-    A version of contextlib.suppress with decorator support.
-
-    >>> @suppress(KeyError)
-    ... def key_error():
-    ...     {}['']
-    >>> key_error()
-    """
 
 
 def with_prereleases(spec):
