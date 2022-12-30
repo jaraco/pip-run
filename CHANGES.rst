@@ -1,3 +1,8 @@
+v10.0.1
+=======
+
+#65: Tests that require connectivity to the Internet now are skipped.
+
 v10.0.0
 =======
 
