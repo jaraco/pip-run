@@ -1,3 +1,13 @@
+v9.5.0
+======
+
+Modernized path handling using pathlib (internal refactoring).
+
+Renamed ``commands.parse_script_args`` to ``separate``, with an
+alias for compatibility.
+
+Restored coverage in tests.
+
 v9.4.0
 ======
 
