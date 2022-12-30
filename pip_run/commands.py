@@ -3,6 +3,7 @@ import textwrap
 import pathlib
 import contextlib
 import warnings
+import argparse
 
 from more_itertools import split_before, split_at
 
@@ -83,10 +84,8 @@ def separate_dash(args):
     return [args, []]
 
 
-help_doc = textwrap.dedent(
+usage = textwrap.dedent(
     """
-    Usage:
-
     Arguments to pip-run prior to `--` are used to specify the requirements
     to make available, just as arguments to pip install. For example,
 
@@ -121,6 +120,4 @@ def intercept(args):
     """
     Detect certain args and intercept them.
     """
-    if '--help' in args or '-h' in args:
-        print(help_doc)
-        raise SystemExit(0)
+    argparse.ArgumentParser(usage=usage).parse_known_args(args)
