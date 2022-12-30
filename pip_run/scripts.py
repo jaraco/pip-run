@@ -131,14 +131,17 @@ class SourceDepsReader(DepsReader):
         return cls(script.read_text())
 
 
+def _load_json(path: pathlib.Path):
+    with path.open() as stream:
+        return json.load(stream)
+
+
 class NotebookDepsReader(DepsReader):
     @classmethod
     def load(cls, script: pathlib.Path):
-        with script.open() as stream:
-            doc = json.load(stream)
         lines = (
             line
-            for cell in doc['cells']
+            for cell in _load_json(script)['cells']
             for line in cell['source'] + ['\n']
             if cell['cell_type'] == 'code' and not line.startswith('%')
         )
