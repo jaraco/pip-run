@@ -31,8 +31,7 @@ def _build_env(target):
     suffix = (previous,) * bool(previous)
     prefix = (os.fspath(target),)
     items = itertools.chain(prefix, suffix)
-    joined = os.pathsep.join(items)
-    env[key] = os.fspath(joined)
+    env[key] = os.pathsep.join(items)
     return env
 
 
