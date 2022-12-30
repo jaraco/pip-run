@@ -84,11 +84,3 @@ def with_path(target: pathlib.Path, params):
     signal.signal(signal.SIGINT, null_handler)
     cmd = [sys.executable] + params
     return subprocess.Popen(cmd, env=_setup_env(target)).wait()
-
-
-def with_path_overlay(target, params):  # pragma: no cover
-    """
-    Overlay Python with target on the path and params
-    """
-    cmd = [sys.executable] + params
-    os.execve(sys.executable, cmd, _setup_env(target))

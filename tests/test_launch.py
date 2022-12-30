@@ -1,6 +1,3 @@
-import sys
-import subprocess
-import textwrap
 import os
 import pathlib
 
@@ -24,28 +21,6 @@ def test_with_path_result_code(tmp_path):
     params = ['-c', "raise ValueError()"]
     res = launch.with_path(tmp_path, params)
     assert res > 0
-
-
-@pytest.mark.xfail(reason="cleanup can't occur with execv; #4")
-def test_with_path_overlay(tmp_path, capfd):
-    params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
-    # launch subprocess so as not to overlay the test process
-    script = (
-        textwrap.dedent(
-            """
-            import pip_run.launch, pathlib
-            pip_run.launch.with_path_overlay(pathlib.Path({temp_dir!r}), {params!r})
-            print("cleanup")
-            """
-        )
-        .strip()
-        .replace('\n', '; ')
-        .format(temp_dir=str(tmp_path), params=params)
-    )
-    subprocess.check_call([sys.executable, '-c', script])
-    out, err = capfd.readouterr()
-    assert str(tmp_path) in out.split(os.linesep)
-    assert "cleanup" in out
 
 
 @pytest.fixture

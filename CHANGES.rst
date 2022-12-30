@@ -1,3 +1,8 @@
+v10.0.0
+=======
+
+Removed ``launch.with_path_overlay``, unused in this project.
+
 v9.5.0
 ======
 
