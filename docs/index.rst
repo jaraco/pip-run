@@ -8,10 +8,11 @@ Welcome to |project| documentation!
 
 .. tidelift-referral-banner::
 
-.. automodule:: pip_run
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. Disabled due to https://github.com/sphinx-doc/sphinx/issues/9704
+.. .. automodule:: pip_run
+..     :members:
+..     :undoc-members:
+..     :show-inheritance:
 
 .. automodule:: pip_run.commands
     :members:
