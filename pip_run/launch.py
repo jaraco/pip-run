@@ -7,34 +7,6 @@ import itertools
 import pathlib
 
 
-def read_lines(path):
-    with path.open() as strm:
-        yield from strm
-
-
-class PathReader:
-    @staticmethod
-    def _read_file(filename):
-        root = filename.parent
-        return (
-            str(root / path.rstrip())
-            for path in read_lines(filename)
-            if path.strip()
-            and not path.startswith('#')
-            and not path.startswith('import ')
-        )
-
-    @classmethod
-    def _read(cls, target):
-        """
-        As .pth files aren't honored except in site dirs,
-        read the paths indicated by them.
-        """
-        pth_files = target.glob('*.pth')
-        file_items = map(cls._read_file, pth_files)
-        return itertools.chain.from_iterable(file_items)
-
-
 def inject_sitecustomize(target):
     """
     Create a sitecustomize file in the target that will install
@@ -55,14 +27,14 @@ def _pythonpath():
 
 def _build_env(target):
     """
-    Prepend target and .pth references in target to PYTHONPATH
+    Prepend target to PYTHONPATH
     """
     key = _pythonpath()
     env = dict(os.environ)
     previous = env.get(key)
     suffix = (previous,) * bool(previous)
     prefix = (os.fspath(target),)
-    items = itertools.chain(prefix, PathReader._read(target), suffix)
+    items = itertools.chain(prefix, suffix)
     joined = os.pathsep.join(items)
     env[key] = os.fspath(joined)
     return env

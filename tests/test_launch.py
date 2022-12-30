@@ -43,15 +43,3 @@ def test_build_env(clean_pythonpath):
     env = launch._build_env(pathlib.Path('a'))
     expected = os.pathsep.join(['a', 'something', 'else'])
     assert env['PYTHONPATH'] == expected
-
-
-def test_build_env_includes_pth_files(tmp_path, clean_pythonpath):
-    """
-    If during _build_env, there are .pth files in the target directory,
-    they should be processed to include any paths indicated there.
-    See #6 for rationale.
-    """
-    (tmp_path / 'foo.pth').write_text('pkg-1.0', encoding='utf-8')
-    env = launch._build_env(tmp_path)
-    expected = os.pathsep.join([str(tmp_path), str(tmp_path / 'pkg-1.0')])
-    assert env['PYTHONPATH'] == expected
