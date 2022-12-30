@@ -9,6 +9,10 @@ import re
 import packaging.requirements
 import jaraco.text
 from jaraco.context import suppress
+from jaraco.functools import compose
+
+
+ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
 
 class Dependencies(list):
@@ -22,9 +26,7 @@ class Dependencies(list):
         """
         Construct self from items, validated as requirements.
         """
-        reqs = map(packaging.requirements.Requirement, items)
-        strings = map(str, reqs)
-        return cls(strings)
+        return cls(map(ValidRequirementString, items))
 
 
 class DepsReader:
