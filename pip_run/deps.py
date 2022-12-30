@@ -58,9 +58,9 @@ class Install(types.SimpleNamespace):
         return bool(self.requirement or self.package)
 
 
-def target_mod():
+def mode():
     mode = os.environ.get('PIP_RUN_MODE', 'ephemeral')
-    return importlib.import_module(f'.{mode}', package=__package__)
+    return importlib.import_module(f'.mode.{mode}', package=__package__)
 
 
 def empty(path):
@@ -69,7 +69,7 @@ def empty(path):
 
 @contextlib.contextmanager
 def load(*args):
-    with target_mod().context(args) as target:
+    with mode().context(args) as target:
         cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
         if Install.parse(args) and empty(target):

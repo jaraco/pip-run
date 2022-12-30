@@ -51,8 +51,8 @@ class TestLoad:
 
 
 @pytest.mark.usefixtures('run_mode')
-def test_target_module_context():
+def test_target_mode_context():
     """Verify a target exists or can be created."""
-    mod = deps.target_mod()
-    with mod.context([]) as target:
+    mode = deps.mode()
+    with mode.context([]) as target:
         target.mkdir(exist_ok=True)

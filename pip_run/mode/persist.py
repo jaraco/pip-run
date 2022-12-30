@@ -3,7 +3,7 @@ import contextlib
 
 import platformdirs
 
-from . import deps
+from .. import deps
 
 
 paths = platformdirs.PlatformDirs(appname='pip run', appauthor=False)
