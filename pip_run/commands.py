@@ -1,10 +1,11 @@
 import os
-import textwrap
 import pathlib
 import contextlib
 import argparse
 
 from more_itertools import split_before, split_at
+
+from ._py38compat import files
 
 
 def _separate_script(args):
@@ -65,40 +66,9 @@ def separate(args):
     return _separate_script(args)
 
 
-usage = textwrap.dedent(
-    """
-    Arguments to pip-run prior to `--` are used to specify the requirements
-    to make available, just as arguments to pip install. For example,
-
-        pip-run -r requirements.txt "requests>=2.0"
-
-    That will launch python after installing the deps in requirements.txt
-    and also a late requests. Packages are always installed to a temporary
-    location and cleaned up when the process exits.
-
-    Arguments after `--` are passed to the Python interpreter. So to launch
-    `script.py`:
-
-        pip-run -- script.py
-
-    For simplicity, the ``--`` may be omitted and Python arguments will
-    be inferred starting with the first Python file that exists:
-
-        pip-run script.py
-
-    If the `--` is omitted or nothing is passed, the python interpreter
-    will be launched in interactive mode:
-
-        pip-run
-        >>>
-
-    For more examples and details, see https://pypi.org/project/pip-run.
-    """
-).lstrip()
-
-
 def intercept(args):
     """
     Detect certain args and intercept them.
     """
+    usage = files(__package__).joinpath('usage.txt').read_text()
     argparse.ArgumentParser(usage=usage).parse_known_args(args)
