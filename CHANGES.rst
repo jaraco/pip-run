@@ -6,6 +6,8 @@ Removed ``launch.with_path_overlay``, unused in this project.
 Removed explicit parsing of ``.pth`` files, redundant to the
 use of ``sitecustomize``.
 
+Removed ``commands.parse_script_args`` (use ``separate`` instead).
+
 v9.5.0
 ======
 

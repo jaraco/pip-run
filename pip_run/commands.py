@@ -66,10 +66,6 @@ def separate(args):
     return _separate_script(args)
 
 
-# for compatibility
-parse_script_args = separate
-
-
 def separate_dash(args):
     """
     Separate args based on dash separator.
