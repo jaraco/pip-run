@@ -76,23 +76,6 @@ def load(*args):
         yield target
 
 
-@contextlib.contextmanager
-def _save_file(filename):
-    """
-    Capture the state of filename and restore it after the context
-    exits.
-    """
-    # For now, only supports a missing filename.
-    if os.path.exists(filename):
-        tmpl = "Unsupported with extant {filename}"
-        raise NotImplementedError(tmpl.format(**locals()))
-    try:
-        yield
-    finally:
-        if os.path.exists(filename):
-            os.remove(filename)
-
-
 # from jaraco.context
 class suppress(contextlib.suppress, contextlib.ContextDecorator):
     """
