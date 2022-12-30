@@ -10,6 +10,8 @@ Removed ``commands.parse_script_args`` (use ``separate`` instead).
 
 Removed processing of ``JYTHONPATH`` as Jython is Python 2 only.
 
+Removed ``commands.separate_dash``.
+
 v9.5.0
 ======
 

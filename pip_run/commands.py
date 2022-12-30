@@ -2,7 +2,6 @@ import os
 import textwrap
 import pathlib
 import contextlib
-import warnings
 import argparse
 
 from more_itertools import split_before, split_at
@@ -64,24 +63,6 @@ def separate(args):
         return _separate_dash(args)
 
     return _separate_script(args)
-
-
-def separate_dash(args):
-    """
-    Separate args based on dash separator.
-
-    Deprecated; retained for compatibility.
-
-    >>> separate_dash(['foo', '--', 'bar'])
-    (['foo'], ['bar'])
-
-    >>> separate_dash(['foo', 'bar'])
-    [['foo', 'bar'], []]
-    """
-    warnings.warn("separate_dash is deprecated", DeprecationWarning)
-    with contextlib.suppress(ValueError):
-        return _separate_dash(args)
-    return [args, []]
 
 
 usage = textwrap.dedent(
