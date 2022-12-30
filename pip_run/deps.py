@@ -12,11 +12,7 @@ import importlib
 import packaging.requirements
 from jaraco.context import suppress
 
-try:
-    from importlib import metadata  # type: ignore
-except ImportError:  # pragma: no cover
-    import importlib_metadata as metadata  # type: ignore
-
+from ._py37compat import metadata
 from ._py38compat import subprocess_path as sp
 
 
