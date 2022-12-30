@@ -86,7 +86,7 @@ def with_path(target: pathlib.Path, params):
     return subprocess.Popen(cmd, env=_setup_env(target)).wait()
 
 
-def with_path_overlay(target, params):
+def with_path_overlay(target, params):  # pragma: no cover
     """
     Overlay Python with target on the path and params
     """
