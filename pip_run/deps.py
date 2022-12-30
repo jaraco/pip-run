@@ -13,7 +13,7 @@ import packaging.requirements
 
 try:
     from importlib import metadata  # type: ignore
-except ImportError:
+except ImportError:  # pragma: no cover
     import importlib_metadata as metadata  # type: ignore
 
 from ._py38compat import subprocess_path as sp
