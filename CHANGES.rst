@@ -1,3 +1,9 @@
+v10.0.2
+=======
+
+#65: Tests that require connectivity are now tagged with the
+``network`` marker.
+
 v10.0.1
 =======
 

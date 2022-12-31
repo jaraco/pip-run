@@ -13,7 +13,7 @@ def DALS(str):
     return textwrap.dedent(str).lstrip()
 
 
-@pytest.mark.usefixtures('needs_internet')
+@pytest.mark.network
 def test_pkg_imported(tmp_path):
     """
     Create a script that loads a package and ensure it runs.
@@ -154,7 +154,7 @@ class TestNotebookDepsReader:
         assert reqs == ['matplotlib']
 
 
-@pytest.mark.usefixtures('needs_internet')
+@pytest.mark.network
 def test_pkg_loaded_from_alternate_index(tmp_path):
     """
     Create a script that loads cython from an alternate index
