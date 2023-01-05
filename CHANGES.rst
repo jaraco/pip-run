@@ -1,3 +1,9 @@
+v10.0.3
+=======
+
+#66: Fixed regression in sitecustomize generation where pathlib
+objects were being rendered.
+
 v10.0.2
 =======
 

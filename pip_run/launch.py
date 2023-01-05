@@ -7,15 +7,21 @@ import itertools
 import pathlib
 
 
-def inject_sitecustomize(target):
-    """
+def inject_sitecustomize(target: pathlib.Path):
+    r"""
     Create a sitecustomize file in the target that will install
     the target as a sitedir.
+
+    >>> tmp_path = getfixture('tmp_path')
+    >>> inject_sitecustomize(tmp_path)
+    >>> sc = tmp_path / 'sitecustomize.py'
+    >>> 'Path' not in sc.read_text()
+    True
     """
     hook = textwrap.dedent(
         f"""
         import site
-        site.addsitedir({target!r})
+        site.addsitedir({os.fspath(target)!r})
         """
     ).lstrip()
     target.joinpath('sitecustomize.py').write_text(hook)
