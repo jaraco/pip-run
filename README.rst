@@ -84,7 +84,14 @@ install all the requirements listed in a file called requirements.txt
 (quiet is the default).
 Any `environment variables honored by pip
 <https://pip.pypa.io/en/stable/user_guide/#environment-variables>`_
-are also honored.
+are also honored.  An exception is the case where ``ipython`` is
+specified, in which case an IPython interpreter will be started in
+interactive mode.  This is for convenience, and is equivalent to
+``pip-run ipython -- -m IPython``, unless there exist any arguments
+succeeding a ``--``, in which case the argument is equivalent
+specifying IPython as a pip dependency.  This behaviour can be
+toggled off by setting the environment variable
+``DEFAULT_TO_IPYTHON_INTERPRETER=0``.
 
 Following the parameters to ``pip install``, one may optionally
 include a ``--`` after which any parameters will be passed

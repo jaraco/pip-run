@@ -74,6 +74,26 @@ def separate(args):
     return _separate_script(args)
 
 
+def check_ipython(pip_args, py_args):
+    """
+    Check for the presence of the argument 'ipython' in pip_args.   If present
+    and py_args is empty return arguments for pip and Python which when run
+    will start an ipython interpreter.  If the argument is present and py_args
+    is nonempty py_args is not altered.
+
+    >>> check_ipython(['ipython', 'foo'], [])
+    (['ipython', 'foo'], ['-m', 'IPython'])
+    >>> check_ipython(['ipython', 'foo'], ['bar'])
+    (['ipython', 'foo'], ['bar'])
+    >>> check_ipython(['foo'], ['bar'])
+    (['foo'], ['bar'])
+    """
+    return (
+        pip_args,
+        ['-m', 'IPython'] if "ipython" in pip_args and not py_args else py_args,
+    )
+
+
 def intercept(args):
     """
     Detect certain args and intercept them.
