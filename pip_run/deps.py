@@ -60,6 +60,19 @@ def mode():
 
 
 def empty(path):
+    """
+    >>> target = getfixture('tmp_path')
+    >>> empty(target)
+    True
+    >>> _ = target.joinpath('file.txt').write_text('contents')
+    >>> empty(target)
+    False
+
+    A non-existent path is considered empty.
+
+    >>> empty(target / 'missing')
+    True
+    """
     return not bool(list(path.iterdir()))
 
 
