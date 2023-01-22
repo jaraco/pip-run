@@ -1,3 +1,8 @@
+v10.0.4
+=======
+
+#68: Fixed ``FileNotFoundError`` in persistent mode.
+
 v10.0.3
 =======
 

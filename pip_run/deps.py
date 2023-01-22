@@ -59,6 +59,11 @@ def mode():
     return importlib.import_module(f'.mode.{mode}', package=__package__)
 
 
+@suppress(FileNotFoundError)
+def contents(path):
+    return list(path.iterdir())
+
+
 def empty(path):
     """
     >>> target = getfixture('tmp_path')
@@ -73,7 +78,7 @@ def empty(path):
     >>> empty(target / 'missing')
     True
     """
-    return not bool(list(path.iterdir()))
+    return not bool(contents(path))
 
 
 @contextlib.contextmanager
