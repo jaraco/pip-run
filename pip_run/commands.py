@@ -18,8 +18,7 @@ def _is_python_arg(item: str):
 
 def _separate_script(args):
     """
-    Inject a double-dash before the first arg that appears to be an
-    extant Python script.
+    Split arguments into install and python args based on inferenece.
 
     >>> _separate_script(['foo', 'bar'])
     (['foo', 'bar'], [])
