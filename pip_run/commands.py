@@ -19,8 +19,14 @@ def _separate_script(args):
     (['foo'], ['pip-run.py', 'bar'])
     >>> _separate_script(['path.py', 'pip-run.py'])
     (['path.py'], ['pip-run.py'])
+    >>> _separate_script(['path.py', 'pip-run.py', 'pip-run.py'])
+    (['path.py'], ['pip-run.py', 'pip-run.py'])
     >>> _separate_script(['README.rst'])
     (['README.rst'], [])
+    >>> _separate_script(['pip-run.py'])
+    ([], ['pip-run.py'])
+    >>> _separate_script(['pip-run.py', 'pip-run.py'])
+    ([], ['pip-run.py', 'pip-run.py'])
     """
 
     def is_extant_path(item: 'os.PathLike[str]'):
