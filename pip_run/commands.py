@@ -1,4 +1,3 @@
-import os
 import pathlib
 import contextlib
 import argparse
@@ -6,6 +5,15 @@ import argparse
 from more_itertools import split_before, split_at, padded
 
 from ._py38compat import files
+
+
+def _is_python_arg(item: str):
+    """
+    Return True if the item can be inferred as a parameter
+    to Python and not to pip install.
+    """
+    path = pathlib.Path(item)
+    return path.is_file() and path.suffix == '.py'
 
 
 def _separate_script(args):
@@ -28,12 +36,7 @@ def _separate_script(args):
     >>> _separate_script(['pip-run.py', 'pip-run.py'])
     ([], ['pip-run.py', 'pip-run.py'])
     """
-
-    def is_extant_path(item: 'os.PathLike[str]'):
-        path = pathlib.Path(item)
-        return path.is_file() and path.suffix == '.py'
-
-    groups = split_before(args, is_extant_path, maxsplit=1)
+    groups = split_before(args, _is_python_arg, maxsplit=1)
     return tuple(padded(groups, [], 2))
 
 
