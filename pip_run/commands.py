@@ -2,7 +2,7 @@ import pathlib
 import contextlib
 import argparse
 
-from more_itertools import split_before, split_at, padded
+from more_itertools import locate, split_at
 
 from ._py38compat import files
 
@@ -36,8 +36,8 @@ def _separate_script(args):
     >>> _separate_script(['pip-run.py', 'pip-run.py'])
     ([], ['pip-run.py', 'pip-run.py'])
     """
-    groups = split_before(args, _is_python_arg, maxsplit=1)
-    return tuple(padded(groups, [], 2))
+    pivot = next(locate(args, _is_python_arg), len(args))
+    return args[:pivot], args[pivot:]
 
 
 def _separate_dash(args):

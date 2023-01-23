@@ -1,3 +1,8 @@
+v10.0.5
+=======
+
+#69: Fixed handling of inferred Python args.
+
 v10.0.4
 =======
 
