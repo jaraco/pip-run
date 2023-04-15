@@ -69,7 +69,8 @@ class DepsReader:
         in a script indicated in the parameters. Only honor the
         first file found.
         """
-        files = filter(pathlib.Path.is_file, map(pathlib.Path, params))
+        safe_is_file = suppress(OSError)(pathlib.Path.is_file)
+        files = filter(safe_is_file, map(pathlib.Path, params))
         return cls.try_read(next(files, None)).params()
 
     def read(self):

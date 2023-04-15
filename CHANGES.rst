@@ -1,3 +1,9 @@
+v10.0.7
+=======
+
+#70: Avoid OSError when a parameter to Python exceeds the
+allowed filename length.
+
 v10.0.6
 =======
 
