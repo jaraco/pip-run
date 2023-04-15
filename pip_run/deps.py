@@ -17,7 +17,6 @@ from ._py38compat import subprocess_path as sp
 
 
 class Install(types.SimpleNamespace):
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-r',
