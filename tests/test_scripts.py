@@ -102,6 +102,16 @@ class TestSourceDepsReader:
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo==3.1']
 
+    @pytest.mark.xfail(reason="#70")
+    def test_search_long_parameter(self):
+        """
+        A parameter that is too long to be a filename should not fail.
+        """
+        exes = 'x' * 248
+        command = f'print("{exes}")'
+        params = ['-c', command]
+        scripts.DepsReader.search(params)
+
 
 class TestNotebookDepsReader:
     @pytest.fixture
