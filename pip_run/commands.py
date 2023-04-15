@@ -78,5 +78,5 @@ def intercept(args):
     """
     Detect certain args and intercept them.
     """
-    usage = files(__package__).joinpath('usage.txt').read_text()
+    usage = files(__package__).joinpath('usage.txt').read_text(encoding='utf-8')
     argparse.ArgumentParser(usage=usage).parse_known_args(args)

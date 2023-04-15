@@ -129,7 +129,7 @@ class DepsReader:
 class SourceDepsReader(DepsReader):
     @classmethod
     def load(cls, script: pathlib.Path):
-        return cls(script.read_text())
+        return cls(script.read_text(encoding='utf-8'))
 
 
 def _load_json(path: pathlib.Path):

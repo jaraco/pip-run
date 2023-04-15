@@ -15,7 +15,7 @@ def inject_sitecustomize(target: pathlib.Path):
     >>> tmp_path = getfixture('tmp_path')
     >>> inject_sitecustomize(tmp_path)
     >>> sc = tmp_path / 'sitecustomize.py'
-    >>> 'Path' not in sc.read_text()
+    >>> 'Path' not in sc.read_text(encoding='utf-8')
     True
     """
     hook = textwrap.dedent(
@@ -24,7 +24,7 @@ def inject_sitecustomize(target: pathlib.Path):
         site.addsitedir({os.fspath(target)!r})
         """
     ).lstrip()
-    target.joinpath('sitecustomize.py').write_text(hook)
+    target.joinpath('sitecustomize.py').write_text(hook, encoding='utf-8')
 
 
 def _build_env(target):

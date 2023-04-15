@@ -1,3 +1,8 @@
+v10.0.6
+=======
+
+Fixed ``EncodingWarnings``.
+
 v10.0.5
 =======
 

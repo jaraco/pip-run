@@ -68,7 +68,7 @@ def empty(path):
     >>> target = getfixture('tmp_path')
     >>> empty(target)
     True
-    >>> _ = target.joinpath('file.txt').write_text('contents')
+    >>> _ = target.joinpath('file.txt').write_text('contents', encoding='utf-8')
     >>> empty(target)
     False
 

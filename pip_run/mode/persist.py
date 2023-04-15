@@ -45,7 +45,7 @@ def cache_key(args):
     for req in sorted(parsed.package):
         hash.update(req + '\n')
     for file in sorted(parsed.requirement):
-        hash.update('req:\n' + file.read_text())
+        hash.update('req:\n' + file.read_text(encoding='utf-8'))
     return hash.hexdigest()
 
 

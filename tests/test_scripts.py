@@ -33,7 +33,7 @@ def test_pkg_imported(tmp_path):
     pip_args = ['sampleproject']
     cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script)]
 
-    out = subprocess.check_output(cmd, text=True)
+    out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
 
 
@@ -175,7 +175,7 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
     )
     cmd = [sys.executable, '-m', 'pip-run', '-v', '--', str(tmp_path / 'script')]
 
-    out = subprocess.check_output(cmd, text=True)
+    out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
     assert 'devpi.net' in out
 
@@ -216,5 +216,5 @@ def test_pkg_loaded_from_url(tmp_path):
 
     script = tmp_path.joinpath('script_dir', 'script')
     cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', str(script)]
-    out = subprocess.check_output(cmd, text=True)
+    out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Successfully imported barbazquux.py' in out
