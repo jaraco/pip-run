@@ -51,9 +51,9 @@ def _build_env(target, *, orig=os.environ):
     """
     Prepend target to PYTHONPATH and add $target/bin to PATH.
 
-    >>> import pprint
     >>> orig = dict(PYTHONPATH='/orig', PATH='/orig')
-    >>> pprint.pprint(_build_env(pathlib.Path('/tmp/pip-run/target'), orig=orig))
+    >>> env = _build_env(pathlib.Path('/tmp/pip-run/target'), orig=orig)
+    >>> pprint(norm_env_paths(env))
     {'PATH': '/tmp/pip-run/target/bin:/orig',
      'PYTHONPATH': '/tmp/pip-run/target:/orig'}
     """

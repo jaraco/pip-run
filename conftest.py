@@ -1,3 +1,6 @@
+import ntpath
+import posixpath
+import pprint
 import textwrap
 
 import jaraco.path
@@ -51,3 +54,16 @@ def alt_cache_dir(monkeypatch_session, tmp_path_factory):
 @pytest.fixture(params=['persist', 'ephemeral'])
 def run_mode(monkeypatch, request):
     monkeypatch.setenv('PIP_RUN_MODE', request.param)
+
+
+@pytest.fixture
+def doctest_namespace():
+    def norm_path(path):
+        return path.replace(ntpath.sep, posixpath.sep).replace(
+            ntpath.pathsep, posixpath.pathsep
+        )
+
+    def norm_env_paths(env):
+        return {key: norm_path(value) for key, value in env.items()}
+
+    return dict(locals(), pprint=pprint.pprint)
