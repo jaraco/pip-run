@@ -49,10 +49,11 @@ def _path_insert(previous, value):
 
 def _build_env(target):
     """
-    Prepend target to PYTHONPATH
+    Prepend target to PYTHONPATH and add $target/bin to PATH.
     """
     overlay = dict(
         PYTHONPATH=_path_insert(os.environ.get('PYTHONPATH', ''), os.fspath(target)),
+        PATH=_path_insert(os.environ.get('PATH', ''), os.fspath(target / 'bin')),
     )
     return {**os.environ, **overlay}
 
