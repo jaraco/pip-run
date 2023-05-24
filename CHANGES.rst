@@ -1,3 +1,9 @@
+v10.1.1
+=======
+
+#73: Added missing implicit test dependencies on setuptools
+and wheel (revealed by virtualenv 20.23.0).
+
 v10.1.0
 =======
 
