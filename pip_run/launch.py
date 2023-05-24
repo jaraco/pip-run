@@ -27,17 +27,33 @@ def inject_sitecustomize(target: pathlib.Path):
     target.joinpath('sitecustomize.py').write_text(hook, encoding='utf-8')
 
 
+_unique = dict.fromkeys
+
+
+def _path_insert(previous, value):
+    """
+    Given a pathsep-separated env key, insert value.
+
+    >>> orig = os.pathsep.join(['foo', 'bar'])
+    >>> addl = _path_insert(orig, 'bing')
+    >>> addl.split(os.pathsep)
+    ['bing', 'foo', 'bar']
+    >>> dupl = _path_insert(orig, 'bar')
+    >>> dupl.split(os.pathsep)
+    ['bar', 'foo']
+    """
+    prefix = (value,)
+    suffix = filter(None, previous.split(os.pathsep))
+    return os.pathsep.join(_unique(itertools.chain(prefix, suffix)))
+
+
 def _build_env(target):
     """
     Prepend target to PYTHONPATH
     """
     key = 'PYTHONPATH'
     env = dict(os.environ)
-    previous = env.get(key)
-    suffix = (previous,) * bool(previous)
-    prefix = (os.fspath(target),)
-    items = itertools.chain(prefix, suffix)
-    env[key] = os.pathsep.join(items)
+    env[key] = _path_insert(env.get(key, ''), os.fspath(target))
     return env
 
 
