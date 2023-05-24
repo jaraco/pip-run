@@ -51,10 +51,10 @@ def _build_env(target):
     """
     Prepend target to PYTHONPATH
     """
-    key = 'PYTHONPATH'
-    env = dict(os.environ)
-    env[key] = _path_insert(env.get(key, ''), os.fspath(target))
-    return env
+    overlay = dict(
+        PYTHONPATH=_path_insert(os.environ.get('PYTHONPATH', ''), os.fspath(target)),
+    )
+    return {**os.environ, **overlay}
 
 
 def _setup_env(target):
