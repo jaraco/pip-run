@@ -1,3 +1,10 @@
+v10.1.0
+=======
+
+#72: Now the ``bin`` directory in the target is inserted at
+the front of the ``PATH`` variable, making scripts available
+as installed by packages.
+
 v10.0.7
 =======
 
