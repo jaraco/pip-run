@@ -91,7 +91,7 @@ def infer_ipython(sep_args):
     """
     falsey = ("false", "0")
 
-    if os.environ.get("DEFAULT_TO_IPYTHON_INTERPRETER", "1").lower() in falsey:
+    if os.environ.get("PIP_RUN_INFER_IPYTHON", "1").lower() in falsey:
         return sep_args
 
     pip_args, py_args = sep_args
