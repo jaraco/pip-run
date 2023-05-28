@@ -1,3 +1,10 @@
+v10.2.0
+=======
+
+#67: Now if ``ipython`` is included in the dependencies, it
+will be used as the default interactive interpreter
+(implying ``-m IPython``).
+
 v10.1.1
 =======
 

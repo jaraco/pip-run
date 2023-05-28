@@ -10,7 +10,7 @@ def run(args=sys.argv[1:]):
     """
     Main entry point for pip-run.
     """
-    pip_args, py_args = commands.separate(args)
+    pip_args, py_args = commands.infer_ipython(commands.separate(args))
     commands.intercept(pip_args)
     pip_args.extend(scripts.DepsReader.search(py_args))
     with deps.load(*deps.not_installed(pip_args)) as home:

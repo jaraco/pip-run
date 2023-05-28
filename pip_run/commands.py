@@ -1,3 +1,4 @@
+import os
 import pathlib
 import contextlib
 import argparse
@@ -72,6 +73,38 @@ def separate(args):
         return _separate_dash(args)
 
     return _separate_script(args)
+
+
+def infer_ipython(sep_args):
+    """
+    Check for the presence of the argument 'ipython' in pip_args.
+
+    If present and py_args is empty, return arguments for pip and
+    Python that when run will start an ipython interpreter.
+
+    >>> infer_ipython((['ipython', 'foo'], []))
+    (['ipython', 'foo'], ['-m', 'IPython'])
+    >>> infer_ipython((['ipython', 'foo'], ['bar']))
+    (['ipython', 'foo'], ['bar'])
+    >>> infer_ipython((['foo'], ['bar']))
+    (['foo'], ['bar'])
+
+    >>> getfixture('monkeypatch').setenv('PIP_RUN_INFER_IPYTHON', 'false')
+    >>> infer_ipython((['ipython', 'foo'], []))
+    (['ipython', 'foo'], [])
+    """
+    falsey = ("false", "0")
+
+    if os.environ.get("PIP_RUN_INFER_IPYTHON", "1").lower() in falsey:
+        return sep_args
+
+    pip_args, py_args = sep_args
+    use_ipython = not py_args and 'ipython' in pip_args
+
+    return (
+        pip_args,
+        ['-m', 'IPython'] * use_ipython + py_args,
+    )
 
 
 def intercept(args):
