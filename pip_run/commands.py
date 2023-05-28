@@ -88,6 +88,10 @@ def infer_ipython(sep_args):
     (['ipython', 'foo'], ['bar'])
     >>> infer_ipython((['foo'], ['bar']))
     (['foo'], ['bar'])
+
+    >>> getfixture('monkeypatch').setenv('PIP_RUN_INFER_IPYTHON', 'false')
+    >>> infer_ipython((['ipython', 'foo'], []))
+    (['ipython', 'foo'], [])
     """
     falsey = ("false", "0")
 
