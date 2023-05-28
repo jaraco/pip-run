@@ -95,10 +95,11 @@ def infer_ipython(sep_args):
         return sep_args
 
     pip_args, py_args = sep_args
+    use_ipython = not py_args and 'ipython' in pip_args
 
     return (
         pip_args,
-        ['-m', 'IPython'] if "ipython" in pip_args and not py_args else py_args,
+        ['-m', 'IPython'] * use_ipython + py_args,
     )
 
 
