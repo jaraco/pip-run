@@ -5,16 +5,10 @@ to make available, just as arguments to pip install. For example:
 
 That will launch python after installing the deps in requirements.txt
 and also a late requests. Packages are always installed to a temporary
-location and cleaned up when the process exits.  The argument
-`--ipython` may also be included, in which case an IPython interpreter
-will be started in interactive mode instead of a Python interpreter.  This
-is for convenience, and is equivalent to:
+location and cleaned up when the process exits.
 
-	pip-run ipython -- -m IPython
-
-If there exist any arguments succeeding a ``--``, the argument is equivalent
-specifying IPython as a pip dependency.  Arguments after `--` are passed to
-the Python interpreter. So to launch `script.py`:
+Arguments after `--` are passed to the Python interpreter. So to launch
+`script.py`:
 
 	pip-run -- script.py
 
