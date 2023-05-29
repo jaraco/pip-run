@@ -1,9 +1,10 @@
-import os
 import pathlib
 import contextlib
 import argparse
 
 from more_itertools import locate, split_at
+from jaraco.functools import bypass_when
+from jaraco import env
 
 from ._py38compat import files
 
@@ -75,6 +76,7 @@ def separate(args):
     return _separate_script(args)
 
 
+@bypass_when(env.Check('PIP_RUN_IPYTHON_MODE', default='infer', expect='ignore'))
 def infer_ipython(sep_args):
     """
     Check for the presence of the argument 'ipython' in pip_args.
@@ -96,9 +98,6 @@ def infer_ipython(sep_args):
     >>> infer_ipython((['ipython', 'foo'], []))
     (['ipython', 'foo'], ['-m', 'IPython'])
     """
-    if os.environ.get('PIP_RUN_IPYTHON_MODE', 'infer') == 'ignore':
-        return sep_args
-
     pip_args, py_args = sep_args
     use_ipython = not py_args and 'ipython' in pip_args
 
