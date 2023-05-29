@@ -1,3 +1,11 @@
+v11.0.0
+=======
+
+IPython inference now uses a different variable and an
+explicit string value to disable inference. Instead of
+``PIP_RUN_INFER_IPYTHON=0``, use
+``PIP_RUN_IPYTHON_MODE=ignore``.
+
 v10.2.0
 =======
 

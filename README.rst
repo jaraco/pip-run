@@ -282,7 +282,7 @@ IPython Inference
 If IPython is specified as one of the dependencies, the Python
 interpreter will be launched via IPython (using ``-m IPython``)
 for interactive mode. This behaviour may be toggled off by
-setting the environment variable ``PIP_RUN_INFER_IPYTHON=0``.
+setting the environment variable ``PIP_RUN_IPYTHON_MODE=ignore``.
 
 How Does It Work
 ================

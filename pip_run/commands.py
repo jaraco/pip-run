@@ -89,13 +89,14 @@ def infer_ipython(sep_args):
     >>> infer_ipython((['foo'], ['bar']))
     (['foo'], ['bar'])
 
-    >>> getfixture('monkeypatch').setenv('PIP_RUN_INFER_IPYTHON', 'false')
+    >>> getfixture('monkeypatch').setenv('PIP_RUN_IPYTHON_MODE', 'ignore')
     >>> infer_ipython((['ipython', 'foo'], []))
     (['ipython', 'foo'], [])
+    >>> getfixture('monkeypatch').setenv('PIP_RUN_IPYTHON_MODE', 'infer')
+    >>> infer_ipython((['ipython', 'foo'], []))
+    (['ipython', 'foo'], ['-m', 'IPython'])
     """
-    falsey = ("false", "0")
-
-    if os.environ.get("PIP_RUN_INFER_IPYTHON", "1").lower() in falsey:
+    if os.environ.get('PIP_RUN_IPYTHON_MODE', 'infer') == 'ignore':
         return sep_args
 
     pip_args, py_args = sep_args
