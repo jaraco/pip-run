@@ -1,3 +1,18 @@
+v12.0.0
+=======
+
+Features
+--------
+
+- The executable parameters now accept a ``!`` prefix, indicating to run a separate executable instead of Python in the context. (#75)
+
+
+Deprecations and Removals
+-------------------------
+
+- ``pip_run.launch.with_path`` now expects the literal command to be passed and no longer injects the ``sys.executable``. For compatibility, pass the executable in the params or wrap the params in something like ``pip_run.launch.infer_cmd``. (#75)
+
+
 v11.0.0
 =======
 
