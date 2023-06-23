@@ -25,7 +25,7 @@
    :target: https://tidelift.com/subscription/pkg/pypi-pip-run?utm_source=pypi-pip-run&utm_medium=readme
 
 ``pip-run`` provides on-demand temporary package installation
-for a single interpreter run.
+for a single execution run.
 
 It replaces this series of commands (or their Windows equivalent)::
 
@@ -36,7 +36,7 @@ It replaces this series of commands (or their Windows equivalent)::
 
 With this single-line command::
 
-    $ pythonX.X -m pip-run pkg1 pkg2 -r reqs.txt -- ...
+    $ py -X.X -m pip-run pkg1 pkg2 -r reqs.txt -- ...
 
 Features include
 
@@ -57,7 +57,7 @@ Features include
 - interactive development
 - bug triage
 
-``pip-run`` is a compliment to Pip and Virtualenv and Setuptools, intended to more
+``pip-run`` is a compliment to Pip and Virtualenv, intended to more
 readily address the on-demand needs.
 
 .. [1] Except when a requirements file is used.
@@ -114,7 +114,7 @@ executable modules and packages via
 `runpy <https://docs.python.org/3/library/runpy.html>`_ (aka
 ``python -m``)::
 
-    $ pip-run pycowsay -- -m pycowsay "moove over, pip-run"
+    $ pip-run cowsay -- -m cowsay "moove over, pip-run"
 
       -------------------
     < moove over, pip-run >
@@ -349,7 +349,7 @@ runpy scripts).
      - ✓
      - ✓
    * - invoke console scripts
-     -
+     - ✓
      - ✓
    * - invoke runpy modules
      - ✓
@@ -367,7 +367,7 @@ runpy scripts).
      - ✓
      - ✓
    * - persistent environments
-     -
+     - ✓
      - ✓
    * - PEP 582 support
      -
@@ -400,7 +400,7 @@ is transient only for the invocation of a single command, while
      - ✓
      - ✓
    * - re-usable across python invocations
-     -
+     - ✓
      - ✓
    * - portable
      -
@@ -412,7 +412,7 @@ is transient only for the invocation of a single command, while
      - ✓
      -
    * - run standalone scripts
-     -
+     - ✓
      - ✓
    * - interactive interpreter with deps
      - ✓
