@@ -91,8 +91,9 @@ Any `environment variables honored by pip
 are also honored.
 
 Following the parameters to ``pip install``, one may optionally
-include a ``--`` after which any parameters will be passed
-to a Python interpreter in the context.
+include a ``--`` after which any parameters will be executed
+by a Python interpreter in the context or directly if prefixed by
+``!``.
 
 See ``pip-run --help`` for more details.
 

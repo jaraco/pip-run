@@ -8,7 +8,7 @@ from pip_run import launch
 
 def test_with_path(tmp_path, capfd):
     params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
-    res = launch.with_path(tmp_path, params)
+    res = launch.with_path(tmp_path, launch.infer_cmd(params))
     assert res == 0
     out, err = capfd.readouterr()
     assert str(tmp_path) in out.split(os.linesep)
@@ -19,7 +19,7 @@ def test_with_path_result_code(tmp_path):
     result code should be non-zero on error
     """
     params = ['-c', "raise ValueError()"]
-    res = launch.with_path(tmp_path, params)
+    res = launch.with_path(tmp_path, launch.infer_cmd(params))
     assert res > 0
 
 

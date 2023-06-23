@@ -1,0 +1,1 @@
+``pip_run.launch.with_path`` now expects the literal command to be passed and no longer injects the ``sys.executable``. For compatibility, pass the executable in the params or wrap the params in something like ``pip_run.launch.infer_cmd``.

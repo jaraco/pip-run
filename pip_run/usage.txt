@@ -17,6 +17,11 @@ be inferred starting with the first Python file that exists:
 
 	pip-run script.py
 
+To invoke another executable instead of Python, prefix the argument
+with a `!`:
+
+	pip-run cowsay -- !cowsay "hello!"
+
 If the `--` is omitted or nothing is passed, the python interpreter
 will be launched in interactive mode:
 

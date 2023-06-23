@@ -6,6 +6,8 @@ import signal
 import itertools
 import pathlib
 
+from jaraco.context import suppress
+
 
 def inject_sitecustomize(target: pathlib.Path):
     r"""
@@ -69,14 +71,45 @@ def _setup_env(target):
     return _build_env(target)
 
 
-def with_path(target: pathlib.Path, params):
+def _ensure_remove_prefix(text: str, prefix: str) -> str:
+    start, found, rest = text.partition(prefix)
+    if start or not found:
+        raise ValueError(f"No prefix {prefix} for {text}")
+    return rest
+
+
+@suppress(KeyError, ValueError)
+def _strip_bang(params):
     """
-    Launch Python with target on the path and params
+    Strip a literal `!` from the first parameter or return None.
+    """
+    cmd, rest = params[0], params[1:]
+    return [_ensure_remove_prefix(cmd, '!')] + rest
+
+
+def infer_cmd(params):
+    """
+    From params, infer command args for a subprocess.
+
+    If the first parameter starts with a ``!``, it's a literal
+    subcommand. Otherwise, it's parameters to a Python
+    subprocess.
+
+    >>> infer_cmd(['a.py', 'param1'])
+    ['...', 'a.py', 'param1']
+    >>> infer_cmd(['!an-exe', 'param1'])
+    ['an-exe', 'param1']
+    """
+    return _strip_bang(params) or [sys.executable] + params
+
+
+def with_path(target: pathlib.Path, cmd):
+    """
+    Launch cmd with target on the path
     """
 
     def null_handler(signum, frame):
         pass  # pragma: no cover
 
     signal.signal(signal.SIGINT, null_handler)
-    cmd = [sys.executable] + params
     return subprocess.Popen(cmd, env=_setup_env(target)).wait()
