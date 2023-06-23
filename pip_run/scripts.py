@@ -134,7 +134,7 @@ class SourceDepsReader(DepsReader):
 
 
 def _load_json(path: pathlib.Path):
-    with path.open() as stream:
+    with path.open(encoding='utf-8') as stream:
         return json.load(stream)
 
 
