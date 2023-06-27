@@ -1,0 +1,1 @@
+Fix IndexError when no parameters are supplied.

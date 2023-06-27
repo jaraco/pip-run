@@ -78,7 +78,7 @@ def _ensure_remove_prefix(text: str, prefix: str) -> str:
     return rest
 
 
-@suppress(KeyError, ValueError)
+@suppress(IndexError, ValueError)
 def _strip_bang(params):
     """
     Strip a literal `!` from the first parameter or return None.
@@ -99,6 +99,8 @@ def infer_cmd(params):
     ['...', 'a.py', 'param1']
     >>> infer_cmd(['!an-exe', 'param1'])
     ['an-exe', 'param1']
+    >>> infer_cmd([]) == [sys.executable]
+    True
     """
     return _strip_bang(params) or [sys.executable] + params
 
