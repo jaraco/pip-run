@@ -1,3 +1,12 @@
+v12.0.1
+=======
+
+Bugfixes
+--------
+
+- Fix IndexError when no parameters are supplied. (#76)
+
+
 v12.0.0
 =======
 
