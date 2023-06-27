@@ -1,3 +1,18 @@
+v12.1.0
+=======
+
+Features
+--------
+
+- Require Python 3.8 or later.
+
+
+Bugfixes
+--------
+
+- Fixed EncodingWarning in scripts module.
+
+
 v12.0.1
 =======
 
