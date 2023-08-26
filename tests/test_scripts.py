@@ -199,23 +199,31 @@ def test_pkg_loaded_from_url(tmp_path):
     jaraco.path.build(
         {
             'barbazquux-1.0': {
-                'setup.py': DALS(
+                'pyproject.toml': DALS(
                     """
-                    from setuptools import setup
-                    setup(
-                        name='barbazquux', version='1.0',
-                        py_modules=['barbazquux'],
-                    )
+                    [project]
+                    name = "barbazquux"
+                    # flit requires a version
+                    version = "0"
+                    # flit requires a description
+                    description = ""
+
+                    [build-system]
+                    build-backend = "flit_core.buildapi"
+                    requires = ["flit_core"]
                     """
                 ),
-                'barbazquux.py': '',
+                'barbazquux': {
+                    # flit requires an init file
+                    '__init__.py': '',
+                },
             },
             'script_dir': {
                 'script': DALS(
                     f"""
                     __requires__ = [{url_req!r}]
                     import barbazquux
-                    print("Successfully imported barbazquux.py")
+                    print("Successfully imported barbazquux")
                     """
                 ),
             },
@@ -224,6 +232,14 @@ def test_pkg_loaded_from_url(tmp_path):
     )
 
     script = tmp_path.joinpath('script_dir', 'script')
-    cmd = [sys.executable, '-m', 'pip-run', '--no-index', '--', str(script)]
+    cmd = [
+        sys.executable,
+        '-m',
+        'pip-run',
+        '--no-index',
+        '--no-build-isolation',
+        '--',
+        str(script),
+    ]
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
-    assert 'Successfully imported barbazquux.py' in out
+    assert 'Successfully imported barbazquux' in out
