@@ -189,6 +189,29 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
     assert 'devpi.net' in out
 
 
+def _minimal_flit(name):
+    return {
+        'pyproject.toml': DALS(
+            f"""
+            [project]
+            name = "{name}"
+            # flit requires a version
+            version = "1"
+            # flit requires a description
+            description = ""
+
+            [build-system]
+            build-backend = "flit_core.buildapi"
+            requires = ["flit_core"]
+            """
+        ),
+        name: {
+            # flit requires an init file
+            '__init__.py': '',
+        },
+    }
+
+
 def test_pkg_loaded_from_url(tmp_path):
     """
     Create a script whose dependency is only installable
@@ -198,26 +221,7 @@ def test_pkg_loaded_from_url(tmp_path):
     url_req = f'barbazquux @ file://{dependency.as_posix()}'
     jaraco.path.build(
         {
-            'barbazquux-1.0': {
-                'pyproject.toml': DALS(
-                    """
-                    [project]
-                    name = "barbazquux"
-                    # flit requires a version
-                    version = "0"
-                    # flit requires a description
-                    description = ""
-
-                    [build-system]
-                    build-backend = "flit_core.buildapi"
-                    requires = ["flit_core"]
-                    """
-                ),
-                'barbazquux': {
-                    # flit requires an init file
-                    '__init__.py': '',
-                },
-            },
+            'barbazquux-1.0': _minimal_flit('barbazquux'),
             'script_dir': {
                 'script': DALS(
                     f"""
