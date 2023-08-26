@@ -4,7 +4,7 @@ import argparse
 
 from more_itertools import locate, split_at
 from jaraco.functools import bypass_when
-from jaraco import env
+from jaraco import env  # type: ignore # (python/mypy#15970)
 
 from ._py38compat import files
 
