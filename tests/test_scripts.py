@@ -7,6 +7,7 @@ import nbformat
 import jaraco.path
 
 from pip_run import scripts
+from pip_run.commands import _has_python_shebang
 
 
 def DALS(str):
@@ -247,3 +248,80 @@ def test_pkg_loaded_from_url(tmp_path):
     ]
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Successfully imported barbazquux' in out
+
+
+@pytest.mark.parametrize(
+    "shebang",
+    [
+        # env invocations
+        "#!/usr/bin/env python",
+        "#!/usr/bin/env python3",
+        "#!/usr/bin/env python3.7",
+        "#!/usr/bin/env python3.8",
+        "#!/usr/bin/env python3.9",
+        "#!/usr/bin/env python3.10",
+        "#!/usr/bin/env python3.11",
+        "#!/usr/bin/env python3.12",
+        "#!/usr/bin/env py",
+        "#!/usr/bin/env pypy",
+        "#!/usr/bin/env pypy3",
+        "#!/usr/bin/env pip-run",
+        # env -S invocations
+        "#!/usr/bin/env -S pip-run",
+        "#!/usr/bin/env -S python3.12 -W ignore::foo",
+        # direct invocations
+        "#!/usr/bin/python -W error",
+        "#!/home/user/.local/bin/python",
+        "#!/some/custom/abspath/py",
+        "#!/opt/bin/python3",
+        "#!/usr/local/bin/python3.7",
+    ],
+)
+def test_shebang_line_detection_success(tmp_path, shebang):
+    script = tmp_path / 'script'
+    script.write_text(f'{shebang}\nprint("Hello world!")')
+
+    assert _has_python_shebang(script)
+
+
+@pytest.mark.parametrize(
+    "shebang",
+    [
+        # not a proper shebang
+        "#/usr/bin/env python",
+        "!/usr/bin/env python",
+        # python2, yikes!
+        "#!/usr/bin/env python2",
+        # some other tool or command entirely
+        "#!/usr/bin/env bash",
+        "#!/bin/bash",
+        # env -S invocations with other commands
+        "#!/usr/bin/env -S bash",
+        # a command that actually could be a python invocation, but isn't
+        # reasonable to expect pip-run to detect
+        "#!/usr/bin/env -S bash -c 'python'",
+        "#!/home/user/bin/cpython",
+        "#!/home/user/bin/mypython",
+    ],
+)
+def test_shebang_line_detection_fails(tmp_path, shebang):
+    script = tmp_path / 'script'
+    script.write_text(f'{shebang}\nprint("Hello world!")')
+    assert not _has_python_shebang(script)
+
+
+def test_shebang_line_detection_fails_on_invalid_unicode(tmp_path):
+    script = tmp_path / 'script'
+    # \xf1 is not a valid codepoint in utf-8
+    script.write_bytes(b'#!/usr/bin/env -S python \xf1\nprint("Hello world!")')
+    # checking this should fail but without an exception
+    assert not _has_python_shebang(script)
+
+
+def test_shebang_line_detection_ignores_invalid_unicode_in_body(tmp_path):
+    script = tmp_path / 'script'
+    # \xf1 is not a valid codepoint in utf-8, but it's in the body and
+    # therefore should be ignored
+    script.write_bytes(b'#!/usr/bin/env -S python\nx = "\xf1"\nprint(x)')
+    # checking this should pass
+    assert _has_python_shebang(script)

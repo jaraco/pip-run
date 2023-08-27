@@ -1,6 +1,7 @@
 import pathlib
 import contextlib
 import argparse
+import shlex
 
 from more_itertools import locate, split_at
 from jaraco.functools import bypass_when
@@ -15,7 +16,44 @@ def _is_python_arg(item: str):
     to Python and not to pip install.
     """
     path = pathlib.Path(item)
-    return path.is_file() and path.suffix == '.py'
+    # start with the tests which do very minimal IO
+    if not path.exists():
+        return False
+    if path.suffix == ".py":
+        return True
+
+    # now, sniff the first line of the file and return true if it looks like a
+    # python script based on the shebang line
+    return _has_python_shebang(path)
+
+
+def _has_python_shebang(path: pathlib.Path) -> bool:
+    try:
+        with path.open('rb') as fp:
+            first_line_bytes = fp.readline()
+        first_line = first_line_bytes.decode('utf-8')
+    except UnicodeDecodeError:
+        return False
+    if not first_line.startswith('#!'):
+        return False
+
+    cmd = shlex.split(first_line[2:])
+    if cmd[0] == "/usr/bin/env":
+        cmd = cmd[1:]
+        if cmd[0] == "-S":
+            cmd = cmd[1:]
+        command_name = cmd[0]
+    else:
+        command_name = cmd[0].split('/')[-1]
+
+    return command_name in (
+        "python",
+        "pip-run",
+        "py",
+        "python3",
+        "pypy",
+        "pypy3",
+    ) or command_name.startswith("python3.")
 
 
 def _separate_script(args):
