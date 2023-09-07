@@ -1,7 +1,7 @@
+import codecs
 import pathlib
 import contextlib
 import argparse
-import shlex
 
 from more_itertools import locate, split_at
 from jaraco.functools import bypass_when
@@ -22,38 +22,27 @@ def _is_python_arg(item: str):
     if path.suffix == ".py":
         return True
 
-    # now, sniff the first line of the file and return true if it looks like a
-    # python script based on the shebang line
-    return _has_python_shebang(path)
+    # now, sniff the first line of the file and return true if it looks like
+    # a script
+    return _has_shebang(path)
 
 
-def _has_python_shebang(path: pathlib.Path) -> bool:
-    try:
-        with path.open('rb') as fp:
-            first_line_bytes = fp.readline()
-        first_line = first_line_bytes.decode('utf-8')
-    except UnicodeDecodeError:
-        return False
-    if not first_line.startswith('#!'):
-        return False
+def _has_shebang(path: pathlib.Path) -> bool:
+    with path.open('rb') as fp:
+        first_line = _strip_bom(fp.readline())
+    return first_line.startswith(b"#!")
 
-    cmd = shlex.split(first_line[2:])
-    if cmd[0] == "/usr/bin/env":
-        cmd = cmd[1:]
-        if cmd[0] == "-S":
-            cmd = cmd[1:]
-        command_name = cmd[0]
-    else:
-        command_name = cmd[0].split('/')[-1]
 
-    return command_name in (
-        "python",
-        "pip-run",
-        "py",
-        "python3",
-        "pypy",
-        "pypy3",
-    ) or command_name.startswith("python3.")
+def _strip_bom(byte_str: bytes) -> bytes:
+    # UTF-8
+    if byte_str.startswith(codecs.BOM_UTF8):
+        return byte_str[len(codecs.BOM_UTF8) :]
+    # UTF-16
+    if byte_str.startswith(codecs.BOM_LE):
+        return byte_str[len(codecs.BOM_LE) :]
+    if byte_str.startswith(codecs.BOM_BE):
+        return byte_str[len(codecs.BOM_BE) :]
+    return byte_str
 
 
 def _separate_script(args):

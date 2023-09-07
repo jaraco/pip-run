@@ -1,3 +1,4 @@
+import codecs
 import textwrap
 import sys
 import subprocess
@@ -7,7 +8,7 @@ import nbformat
 import jaraco.path
 
 from pip_run import scripts
-from pip_run.commands import _has_python_shebang
+from pip_run.commands import _has_shebang
 
 
 def DALS(str):
@@ -251,77 +252,28 @@ def test_pkg_loaded_from_url(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "shebang",
+    "shebang, expect_success",
     [
-        # env invocations
-        "#!/usr/bin/env python",
-        "#!/usr/bin/env python3",
-        "#!/usr/bin/env python3.7",
-        "#!/usr/bin/env python3.8",
-        "#!/usr/bin/env python3.9",
-        "#!/usr/bin/env python3.10",
-        "#!/usr/bin/env python3.11",
-        "#!/usr/bin/env python3.12",
-        "#!/usr/bin/env py",
-        "#!/usr/bin/env pypy",
-        "#!/usr/bin/env pypy3",
-        "#!/usr/bin/env pip-run",
-        # env -S invocations
-        "#!/usr/bin/env -S pip-run",
-        "#!/usr/bin/env -S python3.12 -W ignore::foo",
-        # direct invocations
-        "#!/usr/bin/python -W error",
-        "#!/home/user/.local/bin/python",
-        "#!/some/custom/abspath/py",
-        "#!/opt/bin/python3",
-        "#!/usr/local/bin/python3.7",
+        # simple cases
+        (b"#!/usr/bin/env python", True),
+        (b"#!/usr/bin/env -S pip-run", True),
+        (b"#!/usr/bin/python -W error", True),
+        (b"#/usr/bin/env python", False),
+        (b"!/usr/bin/env python", False),
+        # invalid start byte (not BOM)
+        (b"\xf1#!/usr/bin/env -S python", False),
+        # valid BOM start bytes
+        (codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", True),
+        (codecs.BOM_LE + b"#!/usr/bin/env -S python", True),
+        (codecs.BOM_BE + b"#!/usr/bin/env -S python", True),
+        # invalid start sequence (BOM appears multiple times)
+        (codecs.BOM_UTF8 + codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", False),
     ],
 )
-def test_shebang_line_detection_success(tmp_path, shebang):
+def test_shebang_line_detection(tmp_path, shebang, expect_success):
     script = tmp_path / 'script'
-    script.write_text(f'{shebang}\nprint("Hello world!")')
-
-    assert _has_python_shebang(script)
-
-
-@pytest.mark.parametrize(
-    "shebang",
-    [
-        # not a proper shebang
-        "#/usr/bin/env python",
-        "!/usr/bin/env python",
-        # python2, yikes!
-        "#!/usr/bin/env python2",
-        # some other tool or command entirely
-        "#!/usr/bin/env bash",
-        "#!/bin/bash",
-        # env -S invocations with other commands
-        "#!/usr/bin/env -S bash",
-        # a command that actually could be a python invocation, but isn't
-        # reasonable to expect pip-run to detect
-        "#!/usr/bin/env -S bash -c 'python'",
-        "#!/home/user/bin/cpython",
-        "#!/home/user/bin/mypython",
-    ],
-)
-def test_shebang_line_detection_fails(tmp_path, shebang):
-    script = tmp_path / 'script'
-    script.write_text(f'{shebang}\nprint("Hello world!")')
-    assert not _has_python_shebang(script)
-
-
-def test_shebang_line_detection_fails_on_invalid_unicode(tmp_path):
-    script = tmp_path / 'script'
-    # \xf1 is not a valid codepoint in utf-8
-    script.write_bytes(b'#!/usr/bin/env -S python \xf1\nprint("Hello world!")')
-    # checking this should fail but without an exception
-    assert not _has_python_shebang(script)
-
-
-def test_shebang_line_detection_ignores_invalid_unicode_in_body(tmp_path):
-    script = tmp_path / 'script'
-    # \xf1 is not a valid codepoint in utf-8, but it's in the body and
-    # therefore should be ignored
-    script.write_bytes(b'#!/usr/bin/env -S python\nx = "\xf1"\nprint(x)')
-    # checking this should pass
-    assert _has_python_shebang(script)
+    script.write_bytes(shebang + b'\nprint("Hello world!")')
+    if expect_success:
+        assert _has_shebang(script)
+    else:
+        assert not _has_shebang(script)
