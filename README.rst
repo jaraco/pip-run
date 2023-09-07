@@ -136,7 +136,7 @@ Some package tools, like `ranger <https://github.com/ranger/ranger>`_, are
 invoked with a unique executable instead of a module. ``pip-run`` can
 run an executable from a package if it is prependend by a ``!``::
 
-    $ pip-run -m ranger-fm -- '!ranger'
+    $ pip-run ranger-fm -- '!ranger'
 
 Command Runner
 --------------
