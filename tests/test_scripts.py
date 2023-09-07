@@ -16,14 +16,25 @@ def DALS(str):
 
 
 @pytest.mark.network
-def test_pkg_imported(tmp_path):
+@pytest.mark.parametrize(
+    "has_shebang, has_py_extension, use_dash",
+    [
+        (True, True, True),
+        (True, True, False),
+        (True, False, False),
+        (False, True, False),
+    ],
+)
+def test_pkg_imported(tmp_path, has_shebang, has_py_extension, use_dash):
     """
     Create a script that loads a package and ensure it runs.
     """
+    scriptname = 'script.py' if has_py_extension else 'script'
     jaraco.path.build(
         {
-            'script': DALS(
-                """
+            scriptname: DALS(
+                f"""
+                {"#!/usr/bin/env python" if has_shebang else ""}
                 import sample
                 print("Import succeeded")
                 """
@@ -31,9 +42,13 @@ def test_pkg_imported(tmp_path):
         },
         tmp_path,
     )
-    script = tmp_path / 'script'
+    script = tmp_path / scriptname
     pip_args = ['sampleproject']
-    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script)]
+    if use_dash:
+        script_args = ['--', str(script)]
+    else:
+        script_args = [str(script)]
+    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + script_args
 
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
