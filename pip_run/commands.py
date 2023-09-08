@@ -16,15 +16,7 @@ def _is_python_arg(item: str):
     to Python and not to pip install.
     """
     path = pathlib.Path(item)
-    # start with the tests which do very minimal IO
-    if not path.exists():
-        return False
-    if path.suffix == ".py":
-        return True
-
-    # now, sniff the first line of the file and return true if it looks like
-    # a script
-    return _has_shebang(path)
+    return path.is_file() and (path.suffix == '.py' or _has_shebang(path))
 
 
 @suppress(UnicodeDecodeError)
