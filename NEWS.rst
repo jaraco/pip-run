@@ -1,3 +1,12 @@
+v12.2.0
+=======
+
+Features
+--------
+
+- Presence of Python script parameters now honors files with a shebang even if no Python extension is present. (#78)
+
+
 v12.1.0
 =======
 
