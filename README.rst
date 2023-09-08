@@ -75,7 +75,7 @@ Usage
 - as runtime dependency context manager
 - as interactive interpreter in dependency context
 - as module launcher (akin to `python -m`)
-- as a shell shebang (``#!/usr/bin/env -S pip-run --``), to create single-file Python tools
+- as a shell shebang (``#!/usr/bin/env pip-run``), to create single-file Python tools
 
 Invoke ``pip-run`` from the command-line using the console entry
 script (simply ``pip-run``) or using the module executable (
@@ -234,7 +234,7 @@ as ``pip-run`` is installed on the system ``PATH``.
 
 .. code-block:: shell
 
-    #!/usr/bin/env -S pip-run --
+    #!/usr/bin/env pip-run
     __requires__ = ['requests', 'beautifulsoup4', 'cowsay']
     import requests
     from bs4 import BeautifulSoup as BS
@@ -244,8 +244,6 @@ as ``pip-run`` is installed on the system ``PATH``.
     cowsay.dragon(b.find("div", class_="introduction").get_text())
 
 Executing this script, when saved as ``myscript``, is equivalent to ``pip-run -- myscript``.
-``-S`` and ``--`` ensure that extension-less scripts (like ``myscript`` rather than ``myscript.py``)
-will be correctly identified as a script (rather than as a dependency), so don't forget them.
 
 By default, ``pip-run`` will re-install dependencies every time a script runs.
 This silently adds a variable amount of startup time depending on how many dependencies
@@ -253,7 +251,7 @@ there are (use ``pip-run -v -- myscript`` to see the list). A script may cache t
 installs via `Environment Persistence <#Environment-Persistence>`_ by setting
 ``PIP_RUN_MODE=persist``::
 
-    #!/usr/bin/env -S PIP_RUN_MODE=persist pip-run --
+    #!/usr/bin/env PIP_RUN_MODE=persist pip-run
     ...
 
 Other Script Directives
