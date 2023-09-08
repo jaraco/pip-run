@@ -5,6 +5,7 @@ import argparse
 from more_itertools import locate, split_at
 from jaraco.functools import bypass_when
 from jaraco import env  # type: ignore # (python/mypy#15970)
+from jaraco.context import suppress
 
 from ._py38compat import files
 
@@ -15,7 +16,14 @@ def _is_python_arg(item: str):
     to Python and not to pip install.
     """
     path = pathlib.Path(item)
-    return path.is_file() and path.suffix == '.py'
+    return path.is_file() and (path.suffix == '.py' or _has_shebang(path))
+
+
+@suppress(UnicodeDecodeError)
+def _has_shebang(path: pathlib.Path) -> bool:
+    with path.open(encoding='utf-8-sig') as fp:
+        first_line = fp.readline()
+    return first_line.startswith("#!")
 
 
 def _separate_script(args):

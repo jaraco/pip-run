@@ -1,3 +1,4 @@
+import itertools
 import textwrap
 import sys
 import subprocess
@@ -14,14 +15,21 @@ def DALS(str):
 
 
 @pytest.mark.network
-def test_pkg_imported(tmp_path):
+@pytest.mark.parametrize(
+    'shebang, extension, dash',
+    itertools.product(('', '#!/usr/bin/env python'), ('', '.py'), ([], ['--'])),
+)
+def test_pkg_imported(tmp_path, shebang, extension, dash):
     """
     Create a script that loads a package and ensure it runs.
     """
+    shebang or extension or dash or pytest.skip('Unable to infer script')
+    scriptname = 'script' + extension
     jaraco.path.build(
         {
-            'script': DALS(
-                """
+            scriptname: DALS(
+                f"""
+                {shebang}
                 import sample
                 print("Import succeeded")
                 """
@@ -29,9 +37,10 @@ def test_pkg_imported(tmp_path):
         },
         tmp_path,
     )
-    script = tmp_path / 'script'
+    script = tmp_path / scriptname
     pip_args = ['sampleproject']
-    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + ['--', str(script)]
+    script_args = dash + [str(script)]
+    cmd = [sys.executable, '-m', 'pip-run'] + pip_args + script_args
 
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
