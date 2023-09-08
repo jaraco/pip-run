@@ -18,8 +18,6 @@ from pip_run import commands
         (b"\xf1#!/usr/bin/env -S python", False),
         # valid BOM start bytes
         (codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", True),
-        (codecs.BOM_LE + b"#!/usr/bin/env -S python", True),
-        (codecs.BOM_BE + b"#!/usr/bin/env -S python", True),
         # invalid start sequence (BOM appears multiple times)
         (codecs.BOM_UTF8 + codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", False),
     ],

@@ -1,4 +1,3 @@
-import codecs
 import pathlib
 import contextlib
 import argparse
@@ -6,6 +5,7 @@ import argparse
 from more_itertools import locate, split_at
 from jaraco.functools import bypass_when
 from jaraco import env  # type: ignore # (python/mypy#15970)
+from jaraco.context import suppress
 
 from ._py38compat import files
 
@@ -27,22 +27,11 @@ def _is_python_arg(item: str):
     return _has_shebang(path)
 
 
+@suppress(UnicodeDecodeError)
 def _has_shebang(path: pathlib.Path) -> bool:
-    with path.open('rb') as fp:
-        first_line = _strip_bom(fp.readline())
-    return first_line.startswith(b"#!")
-
-
-def _strip_bom(byte_str: bytes) -> bytes:
-    # UTF-8
-    if byte_str.startswith(codecs.BOM_UTF8):
-        return byte_str[len(codecs.BOM_UTF8) :]
-    # UTF-16
-    if byte_str.startswith(codecs.BOM_LE):
-        return byte_str[len(codecs.BOM_LE) :]
-    if byte_str.startswith(codecs.BOM_BE):
-        return byte_str[len(codecs.BOM_BE) :]
-    return byte_str
+    with path.open(encoding='utf-8-sig') as fp:
+        first_line = fp.readline()
+    return first_line.startswith("#!")
 
 
 def _separate_script(args):
