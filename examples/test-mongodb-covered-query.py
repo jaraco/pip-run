@@ -8,12 +8,9 @@ Run this example with ``pip-run $script``.
 It creates a MongoDB instance, and then runs some
 assertions against it.
 
-As it uses `jaraco.mongodb
-<https://pypi.org/project/jaraco.mongodb>`_, MongoDB
-must be installed to a typical location or
-available on PATH; set MONGODB_HOME to
-specify the MongoDB version to use for the ephemeral
-instance.
+The script uses `jaraco.mongodb
+<https://pypi.org/project/jaraco.mongodb>`_ to (maybe)
+install and configure an ephemeral instance of MongoDB.
 
 Running this script with ``pip-run``` leaves no trace of its
 execution, other than adding packages to the pip
@@ -45,7 +42,7 @@ if __name__ == '__main__':
     import pytest
     import sys
 
-    sys.exit(pytest.main(sys.argv))
+    sys.exit(pytest.main(['--noconftest'] + sys.argv))
 
 import random
 import itertools
@@ -66,7 +63,7 @@ def docs_in_db(mongodb_instance):
     n_records = 100
     for n in itertools.islice(itertools.count(), n_records):
         doc = dict(number=random.randint(0, 2**32 - 1), value='some value')
-        conn.test_db.test_coll.insert(doc)
+        conn.test_db.test_coll.insert_one(doc)
     return coll
 
 
