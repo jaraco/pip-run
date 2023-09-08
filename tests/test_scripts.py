@@ -1,4 +1,3 @@
-import codecs
 import textwrap
 import sys
 import subprocess
@@ -8,7 +7,6 @@ import nbformat
 import jaraco.path
 
 from pip_run import scripts
-from pip_run.commands import _has_shebang
 
 
 def DALS(str):
@@ -264,31 +262,3 @@ def test_pkg_loaded_from_url(tmp_path):
     ]
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Successfully imported barbazquux' in out
-
-
-@pytest.mark.parametrize(
-    "shebang, expect_success",
-    [
-        # simple cases
-        (b"#!/usr/bin/env python", True),
-        (b"#!/usr/bin/env -S pip-run", True),
-        (b"#!/usr/bin/python -W error", True),
-        (b"#/usr/bin/env python", False),
-        (b"!/usr/bin/env python", False),
-        # invalid start byte (not BOM)
-        (b"\xf1#!/usr/bin/env -S python", False),
-        # valid BOM start bytes
-        (codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", True),
-        (codecs.BOM_LE + b"#!/usr/bin/env -S python", True),
-        (codecs.BOM_BE + b"#!/usr/bin/env -S python", True),
-        # invalid start sequence (BOM appears multiple times)
-        (codecs.BOM_UTF8 + codecs.BOM_UTF8 + b"#!/usr/bin/env -S python", False),
-    ],
-)
-def test_shebang_line_detection(tmp_path, shebang, expect_success):
-    script = tmp_path / 'script'
-    script.write_bytes(shebang + b'\nprint("Hello world!")')
-    if expect_success:
-        assert _has_shebang(script)
-    else:
-        assert not _has_shebang(script)
