@@ -1,3 +1,12 @@
+v12.2.2
+=======
+
+Bugfixes
+--------
+
+- Made pydragon example portable to Windows
+
+
 v12.2.1
 =======
 
