@@ -230,7 +230,8 @@ Single-script Tools and Shebang Support
 Combined with in-script dependencies, ``pip-run`` can be used
 as a shebang on Unix platforms to create fully self-contained
 scripts that install and run their own dependencies, as long
-as ``pip-run`` is installed on the system ``PATH``.
+as ``pip-run`` is installed on the system ``PATH``. Consider,
+for example, the ``pydragon`` script:
 
 .. code-block:: shell
 
@@ -243,16 +244,19 @@ as ``pip-run`` is installed on the system ``PATH``.
     b = BS(res.text, 'html.parser')
     cowsay.dragon(b.find("div", class_="introduction").get_text())
 
-Executing this script, when saved as ``myscript``, is equivalent to ``pip-run -- myscript``.
+This executable script is available in the repo as ``examples/pydragon``.
+Executing this script is equivalent to executing ``pip-run -- pydragon``.
 
 By default, ``pip-run`` will re-install dependencies every time a script runs.
-This silently adds a variable amount of startup time depending on how many dependencies
-there are (use ``pip-run -v -- myscript`` to see the list). A script may cache those
-installs via `Environment Persistence <#Environment-Persistence>`_ by setting
+This silently adds a variable amount of startup time depending on how many
+dependencies there are (use ``pip-run -v -- pydragon`` to see the list) and if
+they're available in the local pip cache. A script may cache those installs
+via `Environment Persistence <#Environment-Persistence>`_ by setting
 ``PIP_RUN_MODE=persist``::
 
     #!/usr/bin/env PIP_RUN_MODE=persist pip-run
     ...
+
 
 Other Script Directives
 -----------------------
