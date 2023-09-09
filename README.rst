@@ -272,21 +272,23 @@ allowing a script to specify a custom package index:
     import my_private_package
     ...
 
-Supplying parameters to Pip
----------------------------
+Extracting Requirements
+-----------------------
 
-If you've been using ``pip-run``, you may have defined some requirements
-in the ``__requires__`` variable or ``# Requirements:`` section of a
-script, but now you wish to install those
-to a more permanent environment. pip-run provides a routine to facilitate
+After having used ``pip-run`` to run scripts, it may be desirable to extract the requirements from the ``__requires__`` variable or ``# Requirements:`` section of a
+script to install those more permanently. pip-run provides a routine to facilitate
 this case::
 
-    $ python -m pip_run.read-deps script.py
-    my_dependency
+    $ py -m pip_run.read-deps examples/pydragon
+    requests beautifulsoup4 cowsay
 
-If you're on Unix, you may pipe this result directly to pip::
+On Unix, it is possible to pipe this result directly to pip::
 
-    $ pip install $(python -m pip_run.read-deps script.py)
+    $ pip install $(py -m pip_run.read-deps examples/pydragon)
+
+To generate a requirements.txt file, specify a newline separator::
+
+    $ py -m pip_run.read-deps --separator newline examples/pydragon > requirements.txt
 
 And since `pipenv <https://docs.pipenv.org/>`_ uses the same syntax,
 the same technique works for pipenv::
