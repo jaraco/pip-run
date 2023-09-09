@@ -152,11 +152,11 @@ As long as ``pip-run`` is installed in each of Python environments
 on the system, this command can be readily repeated on the other
 python environments by specifying the relevant interpreter::
 
-    $ python2.7 -m pip-run ...
+    $ python3.7 -m pip-run ...
 
-or on Windows::
+or on Windows or Unix with [pylauncher](https://python-launcher.app/)::
 
-    $ py -2.7 -m pip-run ...
+    $ py -3.7 -m pip-run ...
 
 Script Runner
 -------------
