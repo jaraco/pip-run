@@ -1,3 +1,12 @@
+v12.2.1
+=======
+
+Bugfixes
+--------
+
+- Refreshed README
+
+
 v12.2.0
 =======
 
