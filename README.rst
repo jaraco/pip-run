@@ -424,7 +424,7 @@ runpy scripts).
 Comparison with virtualenvwrapper mktmpenv
 ==========================================
 
-The `mkvirtualenv project <https://pypi.org/project/mkvirtualenv/>`_
+The `virtualenvwrapper project <https://pypi.org/project/virtualenvwrapper/>`_
 attempts to address some of the use-cases that pip-run solves,
 especially with the ``mktmpenv`` command, which destroys the
 virtualenv after deactivation. The main difference is that ``pip-run``
@@ -445,8 +445,8 @@ is transient only for the invocation of a single command, while
      - ✓
      - ✓
    * - portable
-     -
      - ✓
+     -
    * - one-line invocation
      - ✓
      -
@@ -466,7 +466,7 @@ is transient only for the invocation of a single command, while
      - ✓
      - ✓
    * - persistent environments
-     -
+     - ✓
      - ✓
 
 Integration
