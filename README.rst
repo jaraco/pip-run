@@ -227,15 +227,14 @@ The format for requirements must follow `PEP 508 <https://www.python.org/dev/pep
 Single-script Tools and Shebang Support
 ---------------------------------------
 
-Combined with in-script dependencies, ``pip-run`` can be used
-as a shebang on Unix platforms to create fully self-contained
-scripts that install and run their own dependencies, as long
-as ``pip-run`` is installed on the system ``PATH``. Consider,
-for example, the ``pydragon`` script:
+Combined with in-script dependencies, ``pip-run`` can be used as a shebang to
+create fully self-contained scripts that install and run their own
+dependencies, as long as ``pip-run`` is installed on the system ``PATH``.
+Consider, for example, the ``pydragon`` script:
 
 .. code-block:: shell
 
-    #!/usr/bin/env PIP_RUN_MODE=persist pip-run
+    #!/usr/bin/env pip-run
     __requires__ = ['requests', 'beautifulsoup4', 'cowsay']
     import requests
     from bs4 import BeautifulSoup as BS
@@ -244,16 +243,17 @@ for example, the ``pydragon`` script:
     b = BS(res.text, 'html.parser')
     cowsay.dragon(b.find("div", class_="introduction").get_text())
 
-This executable script is available in the repo as ``examples/pydragon``.
-Executing this script is equivalent to executing ``pip-run -- pydragon``.
+This executable script is available in the repo as ``examples/pydragon`` (for
+Unix) and ``examples/pydragon.py`` (for Windows [2]_). Executing this script is
+equivalent to executing ``pip-run pydragon``.
 
-Without ``PIP_RUN_MODE=persist`` (or with ``=ephemeral``), ``pip-run`` will
-re-install dependencies every time a script runs, silently adding to the
-startup time while dependencies are installed into an ephemeral environment,
-depending on how many dependencies there are (use ``pip-run -v -- pydragon``
-to see the progress) and whether the dependencies have been previously
-downloaded to the local pip cache.
+By default, the script will assemble the dependencies on each invocation,
+which may be inconvenient for a script. See `Environment Persistence
+<#Environment-Persistence>`_ for a technique to persist the assembled
+dependencies across invocations. One may inject ``PIP_RUN_MODE=persist``
+in the shebang, but be aware that doing so breaks Windows portability.
 
+.. [2] ``.PY`` must exist in the PATHEXT for Python scripts to be executable. See `this documentation <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.3#path-information>`_ for more background.
 
 Other Script Directives
 -----------------------
@@ -348,7 +348,7 @@ Environment Persistence
 =======================
 
 ``pip-run`` honors the ``PIP_RUN_MODE`` variable. If unset or
-set to ``ephemeral``, depenedncies are installed to an ephemeral
+set to ``ephemeral``, dependencies are installed to an ephemeral
 temporary directory on each invocation (and deleted after).
 Setting this variable to ``persist`` will instead create or re-use
 a directory in the user's cache, only installing the dependencies if
@@ -357,6 +357,17 @@ for each combination of requirements specified.
 
 ``persist`` mode can greatly improve startup performance at the
 expense of staleness and accumulated cruft.
+
+Without ``PIP_RUN_MODE=persist`` (or with ``=ephemeral``), ``pip-run`` will
+re-install dependencies every time a script runs, silently adding to the
+startup time while dependencies are installed into an ephemeral environment,
+depending on how many dependencies there are and whether the dependencies have
+been previously downloaded to the local pip cache. Use ``pip-run -v ...`` to
+see the installation activity.
+
+The location of the cache can be revealed with this command::
+
+    py -c 'import importlib; print(importlib.import_module("pip_run.mode.persist").paths.user_cache_path)'
 
 
 Limitations
