@@ -235,7 +235,7 @@ for example, the ``pydragon`` script:
 
 .. code-block:: shell
 
-    #!/usr/bin/env pip-run
+    #!/usr/bin/env PIP_RUN_MODE=persist pip-run
     __requires__ = ['requests', 'beautifulsoup4', 'cowsay']
     import requests
     from bs4 import BeautifulSoup as BS
@@ -247,15 +247,12 @@ for example, the ``pydragon`` script:
 This executable script is available in the repo as ``examples/pydragon``.
 Executing this script is equivalent to executing ``pip-run -- pydragon``.
 
-By default, ``pip-run`` will re-install dependencies every time a script runs.
-This silently adds a variable amount of startup time depending on how many
-dependencies there are (use ``pip-run -v -- pydragon`` to see the list) and if
-they're available in the local pip cache. A script may cache those installs
-via `Environment Persistence <#Environment-Persistence>`_ by setting
-``PIP_RUN_MODE=persist``::
-
-    #!/usr/bin/env PIP_RUN_MODE=persist pip-run
-    ...
+Without ``PIP_RUN_MODE=persist`` (or with ``=ephemeral``), ``pip-run`` will
+re-install dependencies every time a script runs, silently adding to the
+startup time while dependencies are installed into an ephemeral environment,
+depending on how many dependencies there are (use ``pip-run -v -- pydragon``
+to see the progress) and whether the dependencies have been previously
+downloaded to the local pip cache.
 
 
 Other Script Directives

@@ -1,4 +1,4 @@
-#!/usr/bin/env pip-run
+#!/usr/bin/env PIP_RUN_MODE=persist pip-run
 __requires__ = ['requests', 'beautifulsoup4', 'cowsay']
 import requests
 from bs4 import BeautifulSoup as BS
