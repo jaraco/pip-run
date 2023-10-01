@@ -60,12 +60,12 @@ def _mode_compat():
             'PIP_RUN_MODE is deprecated. Use PIP_RUN_RETENTION_STRATEGY instead.',
             DeprecationWarning,
         )
-        return mode
+        return mode.replace('ephemeral', 'destroy')
 
 
 def retention_strategy():
     strategy = (
-        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'ephemeral'
+        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'destroy'
     )
     return importlib.import_module(f'.retention.{strategy}', package=__package__)
 

@@ -51,7 +51,7 @@ def alt_cache_dir(monkeypatch_session, tmp_path_factory):
     monkeypatch_session.setattr(pip_run.retention.persist, 'paths', Paths)
 
 
-@pytest.fixture(params=['persist', 'ephemeral'])
+@pytest.fixture(params=['persist', 'destroy'])
 def retention_strategy(monkeypatch, request):
     monkeypatch.setenv('PIP_RUN_RETENTION_STRATEGY', request.param)
 

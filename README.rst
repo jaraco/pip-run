@@ -347,27 +347,26 @@ For specifics, see `pip_run.run()
 Environment Persistence
 =======================
 
-``pip-run`` honors the ``PIP_RUN_MODE`` variable. If unset or
-set to ``ephemeral``, dependencies are installed to an ephemeral
-temporary directory on each invocation (and deleted after).
-Setting this variable to ``persist`` will instead create or re-use
-a directory in the user's cache, only installing the dependencies if
-the directory doesn't already exist. A separate cache is maintained
-for each combination of requirements specified.
+``pip-run`` honors the ``PIP_RUN_RETENTION_STRATEGY`` variable. If unset or
+set to ``destroy``, dependencies are installed to a temporary directory on
+each invocation (and deleted after). Setting this variable to ``persist`` will
+instead create or re-use a directory in the user's cache, only installing the
+dependencies if the directory doesn't already exist. A separate cache is
+maintained for each combination of requirements specified.
 
-``persist`` mode can greatly improve startup performance at the
-expense of staleness and accumulated cruft.
+``persist`` strategy can greatly improve startup performance at the expense of
+staleness and accumulated cruft.
 
-Without ``PIP_RUN_MODE=persist`` (or with ``=ephemeral``), ``pip-run`` will
-re-install dependencies every time a script runs, silently adding to the
-startup time while dependencies are installed into an ephemeral environment,
-depending on how many dependencies there are and whether the dependencies have
-been previously downloaded to the local pip cache. Use ``pip-run -v ...`` to
-see the installation activity.
+Without ``PIP_RUN_RETENTION_STRATEGY=persist`` (or with ``=destroy``),
+``pip-run`` will re-install dependencies every time a script runs, silently
+adding to the startup time while dependencies are installed into an ephemeral
+environment, depending on how many dependencies there are and whether the
+dependencies have been previously downloaded to the local pip cache. Use
+``pip-run -v ...`` to see the installation activity.
 
 The location of the cache can be revealed with this command::
 
-    py -c 'import importlib; print(importlib.import_module("pip_run.mode.persist").paths.user_cache_path)'
+    py -c 'import importlib; print(importlib.import_module("pip_run.retention.persist").paths.user_cache_path)'
 
 
 Limitations
