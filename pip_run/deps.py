@@ -8,6 +8,7 @@ import argparse
 import pathlib
 import types
 import importlib
+import warnings
 
 import packaging.requirements
 from jaraco.context import suppress
@@ -53,9 +54,19 @@ class Install(types.SimpleNamespace):
         return bool(self.requirement or self.package)
 
 
-def mode():
-    mode = os.environ.get('PIP_RUN_MODE', 'ephemeral')
-    return importlib.import_module(f'.mode.{mode}', package=__package__)
+def _mode_compat():
+    if mode := os.environ.get('PIP_RUN_MODE'):  # pragma: no cover
+        warnings.warn(
+            'PIP_RUN_MODE is deprecated. Use PIP_RUN_RETENTION_STRATEGY instead.',
+        )
+        return mode.replace('ephemeral', 'destroy')
+
+
+def retention_strategy():
+    strategy = (
+        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'destroy'
+    )
+    return importlib.import_module(f'.retention.{strategy}', package=__package__)
 
 
 @suppress(FileNotFoundError)
@@ -82,7 +93,7 @@ def empty(path):
 
 @contextlib.contextmanager
 def load(*args):
-    with mode().context(args) as target:
+    with retention_strategy().context(args) as target:
         cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
         if Install.parse(args) and empty(target):

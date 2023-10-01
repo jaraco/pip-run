@@ -31,7 +31,7 @@ class TestInstallCheck:
         assert list(filtered) == expected
 
 
-@pytest.mark.usefixtures('run_mode')
+@pytest.mark.usefixtures('retention_strategy')
 class TestLoad:
     def test_no_args_passes(self):
         """
@@ -50,9 +50,8 @@ class TestLoad:
             pass
 
 
-@pytest.mark.usefixtures('run_mode')
-def test_target_mode_context():
+@pytest.mark.usefixtures('retention_strategy')
+def test_target_retention_context():
     """Verify a target exists or can be created."""
-    mode = deps.mode()
-    with mode.context([]) as target:
+    with deps.retention_strategy().context([]) as target:
         target.mkdir(exist_ok=True)

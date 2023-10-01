@@ -6,7 +6,7 @@ import textwrap
 import jaraco.path
 import pytest
 
-import pip_run.mode.persist
+import pip_run.retention.persist
 
 
 collect_ignore = ['examples']
@@ -48,12 +48,12 @@ def alt_cache_dir(monkeypatch_session, tmp_path_factory):
     class Paths:
         user_cache_path = alt_cache
 
-    monkeypatch_session.setattr(pip_run.mode.persist, 'paths', Paths)
+    monkeypatch_session.setattr(pip_run.retention.persist, 'paths', Paths)
 
 
-@pytest.fixture(params=['persist', 'ephemeral'])
-def run_mode(monkeypatch, request):
-    monkeypatch.setenv('PIP_RUN_MODE', request.param)
+@pytest.fixture(params=['persist', 'destroy'])
+def retention_strategy(monkeypatch, request):
+    monkeypatch.setenv('PIP_RUN_RETENTION_STRATEGY', request.param)
 
 
 @pytest.fixture
