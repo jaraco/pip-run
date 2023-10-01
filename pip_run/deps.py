@@ -63,9 +63,11 @@ def _mode_compat():
         return mode
 
 
-def mode():
-    mode = os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'ephemeral'
-    return importlib.import_module(f'.mode.{mode}', package=__package__)
+def retention_strategy():
+    strategy = (
+        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'ephemeral'
+    )
+    return importlib.import_module(f'.retention.{strategy}', package=__package__)
 
 
 @suppress(FileNotFoundError)
@@ -92,7 +94,7 @@ def empty(path):
 
 @contextlib.contextmanager
 def load(*args):
-    with mode().context(args) as target:
+    with retention_strategy().context(args) as target:
         cmd = (sys.executable, '-m', 'pip', 'install', '-t', sp(target)) + args
         env = dict(os.environ, PIP_QUIET="1")
         if Install.parse(args) and empty(target):
