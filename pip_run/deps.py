@@ -8,6 +8,7 @@ import argparse
 import pathlib
 import types
 import importlib
+import warnings
 
 import packaging.requirements
 from jaraco.context import suppress
@@ -53,8 +54,17 @@ class Install(types.SimpleNamespace):
         return bool(self.requirement or self.package)
 
 
+def _mode_compat():
+    if mode := os.environ.get('PIP_RUN_MODE'):
+        warnings.warn(
+            'PIP_RUN_MODE is deprecated. Use PIP_RUN_RETENTION_STRATEGY instead.',
+            DeprecationWarning,
+        )
+        return mode
+
+
 def mode():
-    mode = os.environ.get('PIP_RUN_MODE', 'ephemeral')
+    mode = os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'ephemeral'
     return importlib.import_module(f'.mode.{mode}', package=__package__)
 
 
