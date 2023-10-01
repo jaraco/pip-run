@@ -1,3 +1,12 @@
+v12.3.0
+=======
+
+Features
+--------
+
+- Renamed PIP_RUN_MODE variable to PIP_RUN_RETENTION_STRATEGY. Also renamed the default value of 'ephemeral' to 'destroy'. If PIP_RUN_MODE is used, a warning is emitted. (#84)
+
+
 v12.2.2
 =======
 
