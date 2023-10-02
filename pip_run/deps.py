@@ -15,6 +15,7 @@ import packaging.requirements
 from jaraco.context import suppress
 
 from ._py38compat import subprocess_path as sp
+from . import config
 
 
 class Install(types.SimpleNamespace):
@@ -63,7 +64,7 @@ def _mode_compat():
 
 
 def retention_strategy():
-    strategy = (
+    strategy = config.Value(
         os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'destroy'
     )
     return importlib.import_module(f'.retention.{strategy}', package=__package__)
