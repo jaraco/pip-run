@@ -9,11 +9,11 @@ import pathlib
 import types
 import importlib
 import warnings
+from importlib import metadata
 
 import packaging.requirements
 from jaraco.context import suppress
 
-from ._py37compat import metadata
 from ._py38compat import subprocess_path as sp
 
 
