@@ -1,3 +1,12 @@
+v12.3.1
+=======
+
+Bugfixes
+--------
+
+- Removed Python 3.7 compatibility code.
+
+
 v12.3.0
 =======
 
