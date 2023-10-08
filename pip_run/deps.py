@@ -115,7 +115,7 @@ def with_prereleases(spec):
 )
 def pkg_installed(spec):
     req = packaging.requirements.Requirement(spec)
-    return metadata.version(req.name) in with_prereleases(req.specifier)
+    return not req.url and metadata.version(req.name) in with_prereleases(req.specifier)
 
 
 not_installed = functools.partial(itertools.filterfalse, pkg_installed)

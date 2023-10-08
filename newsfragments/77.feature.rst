@@ -1,0 +1,1 @@
+Ensure requirements with a URL are not detected as installed.

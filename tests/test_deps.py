@@ -55,3 +55,7 @@ def test_target_retention_context():
     """Verify a target exists or can be created."""
     with deps.retention_strategy().context([]) as target:
         target.mkdir(exist_ok=True)
+
+
+def test_url_req_never_installed():
+    assert not deps.pkg_installed('pip_run @git+https://github.com/jaraco/pip-run')
