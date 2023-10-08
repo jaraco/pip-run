@@ -1,3 +1,12 @@
+v12.4.0
+=======
+
+Features
+--------
+
+- Ensure requirements with a URL are not detected as installed. (#77)
+
+
 v12.3.1
 =======
 
