@@ -14,6 +14,7 @@ from importlib import metadata
 import packaging.requirements
 from jaraco.context import suppress
 
+from . import scripts
 from ._py38compat import subprocess_path as sp
 
 
@@ -62,9 +63,12 @@ def _mode_compat():
         return mode.replace('ephemeral', 'destroy')
 
 
-def retention_strategy():
+def retention_strategy(ctx):
     strategy = (
-        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'destroy'
+        os.environ.get('PIP_RUN_RETENTION_STRATEGY')
+        or _mode_compat()
+        or ctx.retention_strategy
+        or 'destroy'
     )
     return importlib.import_module(f'.retention.{strategy}', package=__package__)
 

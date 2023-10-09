@@ -11,12 +11,15 @@ import jaraco.text
 from jaraco.context import suppress
 from jaraco.functools import compose
 
+from . import deps
+
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
 
 class Dependencies(list):
     index_url = None
+    retention_strategy = None
 
     def params(self):
         return ['--index-url', self.index_url] * bool(self.index_url) + self
@@ -27,6 +30,9 @@ class Dependencies(list):
         Construct self from items, validated as requirements.
         """
         return cls(map(ValidRequirementString, items))
+
+    def resolve(self, pip_args):
+        return deps.load(itertools.chain(pip_args, self.params()))
 
 
 class DepsReader:
@@ -71,7 +77,7 @@ class DepsReader:
         """
         safe_is_file = suppress(OSError)(pathlib.Path.is_file)
         files = filter(safe_is_file, map(pathlib.Path, params))
-        return cls.try_read(next(files, None)).params()
+        return cls.try_read(next(files, None))
 
     def read(self):
         return self.read_comments() or self.read_python()
@@ -112,6 +118,8 @@ class DepsReader:
         deps = Dependencies.load(reqs_items)
         with contextlib.suppress(Exception):
             deps.index_url = self._read('__index_url__')
+        with contextlib.suppress(Exception):
+            deps.retention_strategy = self._read('__retention_strategy__')
         return deps
 
     def _read(self, var_name):
