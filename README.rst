@@ -57,7 +57,7 @@ Features include
 - interactive development
 - bug triage
 
-``pip-run`` is a compliment to Pip and Virtualenv, intended to more
+``pip-run`` is a complement to Pip and Virtualenv, intended to more
 readily address the on-demand needs.
 
 .. [1] Except when a requirements file is used.
