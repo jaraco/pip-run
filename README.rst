@@ -38,6 +38,12 @@ With this single-line command::
 
     $ py -X.X -m pip-run pkg1 pkg2 -r reqs.txt -- ...
 
+.. note:: ``py`` is the Python Launcher for
+   `Windows <https://docs.python.org/3/using/windows.html#launcher>`_
+   or `Unix <https://python-launcher.app/>`_ and isn't required to use
+   pip-run, but is used in this guide and recommended for anyone to get
+   a portable, cruft-free Python invocation.
+
 Features include
 
 - Downloads missing dependencies and makes their packages available for import.
@@ -151,10 +157,6 @@ context::
 As long as ``pip-run`` is installed in each of Python environments
 on the system, this command can be readily repeated on the other
 python environments by specifying the relevant interpreter::
-
-    $ python3.7 -m pip-run ...
-
-or on Windows or Unix with [pylauncher](https://python-launcher.app/)::
 
     $ py -3.7 -m pip-run ...
 
