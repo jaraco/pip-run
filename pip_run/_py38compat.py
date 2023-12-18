@@ -1,5 +1,6 @@
-import sys
 import platform
+import sys
+
 from jaraco.functools import identity
 
 subprocess_path = (

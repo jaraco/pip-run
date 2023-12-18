@@ -1,10 +1,9 @@
-import hashlib
 import contextlib
+import hashlib
 
 import platformdirs
 
 from .. import deps
-
 
 paths = platformdirs.PlatformDirs(appname='pip run', appauthor=False)
 

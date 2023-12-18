@@ -1,11 +1,11 @@
-import pathlib
-import contextlib
 import argparse
+import contextlib
+import pathlib
 
-from more_itertools import locate, split_at
-from jaraco.functools import bypass_when
 from jaraco import env  # type: ignore # (python/mypy#15970)
 from jaraco.context import suppress
+from jaraco.functools import bypass_when
+from more_itertools import locate, split_at
 
 from ._py38compat import files
 

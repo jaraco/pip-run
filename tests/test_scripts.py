@@ -1,11 +1,11 @@
 import itertools
-import textwrap
-import sys
 import subprocess
+import sys
+import textwrap
 
-import pytest
-import nbformat
 import jaraco.path
+import nbformat
+import pytest
 
 from pip_run import scripts
 

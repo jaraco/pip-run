@@ -1,16 +1,15 @@
-import ast
-import json
-import pathlib
 import abc
+import ast
 import contextlib
 import itertools
+import json
+import pathlib
 import re
 
-import packaging.requirements
 import jaraco.text
+import packaging.requirements
 from jaraco.context import suppress
 from jaraco.functools import compose
-
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 

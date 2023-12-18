@@ -8,7 +8,6 @@ import pytest
 
 import pip_run.retention.persist
 
-
 collect_ignore = ['examples']
 
 

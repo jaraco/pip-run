@@ -39,13 +39,14 @@ __requires__ = ['pytest', 'jaraco.mongodb>=3.10']
 
 if __name__ == '__main__':
     # invoke pytest on this script
-    import pytest
     import sys
+
+    import pytest
 
     sys.exit(pytest.main(['--noconftest'] + sys.argv))
 
-import random
 import itertools
+import random
 
 import pytest
 from jaraco.mongodb.testing import assert_covered

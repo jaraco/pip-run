@@ -1,10 +1,10 @@
-import textwrap
+import itertools
 import os
+import pathlib
+import signal
 import subprocess
 import sys
-import signal
-import itertools
-import pathlib
+import textwrap
 
 from jaraco.context import suppress
 
