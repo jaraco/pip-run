@@ -1,9 +1,6 @@
 import sys
 
-from . import deps
-from . import commands
-from . import launch
-from . import scripts
+from . import commands, deps, launch, scripts
 
 
 def run(args=sys.argv[1:]):

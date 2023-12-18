@@ -2,7 +2,6 @@ import pytest
 
 from pip_run import commands
 
-
 valid_shebangs = [
     '#!/usr/bin/env python',
     '#!/usr/bin/env -S pip-run',
