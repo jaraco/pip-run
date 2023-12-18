@@ -1,8 +1,9 @@
 import sys
 import platform
+from jaraco.functools import identity
 
 subprocess_path = (
-    str if sys.version_info < (3, 9) and platform.system() == 'Windows' else lambda x: x
+    str if sys.version_info < (3, 9) and platform.system() == 'Windows' else identity
 )
 
 
