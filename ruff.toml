@@ -1,0 +1,4 @@
+[lint]
+extend-select = [
+	"I",  # sort imports
+]
