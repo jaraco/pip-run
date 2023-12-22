@@ -11,10 +11,6 @@
     :target: https://github.com/astral-sh/ruff
     :alt: Ruff
 
-.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
-   :target: https://github.com/psf/black
-   :alt: Code style: Black
-
 .. image:: https://readthedocs.org/projects/pip-run/badge/?version=latest
    :target: https://pip-run.readthedocs.io/en/latest/?badge=latest
 
