@@ -2,7 +2,7 @@
 extend-select = [
 	"I",  # sort imports
 ]
-extend-ignore = [
+ignore = [
 	# https://docs.astral.sh/ruff/formatter/#conflicting-lint-rules
 	"W191",
 	"E111",
