@@ -111,6 +111,19 @@ class TestSourceDepsReader:
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo==3.1']
 
+    def test_toml_style(self):
+        script = textwrap.dedent(
+            """
+            #! shebang
+
+            # /// script
+            # dependencies = ["foo == 3.1"]
+            # ///
+            """
+        )
+        reqs = scripts.DepsReader(script).read()
+        assert reqs == ['foo==3.1']
+
     def test_search_long_parameter(self):
         """
         A parameter that is too long to be a filename should not fail.
