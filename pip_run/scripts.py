@@ -13,7 +13,7 @@ from jaraco.functools import compose
 
 try:
     import tomllib  # type: ignore
-except ImportError:
+except ImportError:  # Python <3.11
     import tomli as tomllib  # type: ignore
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
