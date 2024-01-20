@@ -11,10 +11,8 @@ import packaging.requirements
 from jaraco.context import suppress
 from jaraco.functools import compose
 
-try:
-    import tomllib  # type: ignore
-except ImportError:  # Python <3.11
-    import tomli as tomllib  # type: ignore
+from .compat.py310 import tomllib
+
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
