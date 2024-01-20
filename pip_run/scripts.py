@@ -88,6 +88,10 @@ class DepsReader:
         []
         >>> DepsReader('# /// script\n# dependencies = ["foo", "bar"]\n').read_toml()
         []
+        >>> DepsReader('# /// script\n# ///\n\n# /// script\n# ///').read_toml()
+        Traceback (most recent call last):
+        ...
+        ValueError: Multiple script blocks found
         """
         TOML_BLOCK_REGEX = r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)*)^# ///$'
         name = 'script'
