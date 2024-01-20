@@ -1,3 +1,12 @@
+v12.5.0
+=======
+
+Features
+--------
+
+- Add support for script dependencies in a TOML block per PEP 723. (#96)
+
+
 v12.4.0
 =======
 

@@ -1,1 +1,0 @@
-Add support for script dependencies in a TOML block per PEP 723.
