@@ -209,6 +209,12 @@ variable or ``# Requirements:`` section to the script:
     # Requirements:
     # requests
 
+    # or (PEP 723)
+
+    # /// script
+    # dependencies = ['requests']
+    # ///
+
     import requests
 
     req = requests.get('https://pypi.org/project/pip-run')
