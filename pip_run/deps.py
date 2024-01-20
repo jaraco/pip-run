@@ -14,7 +14,7 @@ from importlib import metadata
 import packaging.requirements
 from jaraco.context import suppress
 
-from ._py38compat import subprocess_path as sp
+from .compat.py38 import subprocess_path as sp
 
 
 class Install(types.SimpleNamespace):
