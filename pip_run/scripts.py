@@ -11,6 +11,9 @@ import packaging.requirements
 from jaraco.context import suppress
 from jaraco.functools import compose
 
+from .compat.py310 import tomllib
+
+
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
 
@@ -73,7 +76,39 @@ class DepsReader:
         return cls.try_read(next(files, None)).params()
 
     def read(self):
-        return self.read_comments() or self.read_python()
+        return self.read_toml() or self.read_comments() or self.read_python()
+
+    def read_toml(self):
+        r"""
+        >>> DepsReader('# /// script\n# dependencies = ["foo", "bar"]\n# ///\n').read()
+        ['foo', 'bar']
+        >>> DepsReader('# /// pyproject\n# dependencies = ["foo", "bar"]\n# ///\n').read_toml()
+        []
+        >>> DepsReader('# /// pyproject\n#dependencies = ["foo", "bar"]\n# ///\n').read_toml()
+        []
+        >>> DepsReader('# /// script\n# dependencies = ["foo", "bar"]\n').read_toml()
+        []
+        >>> DepsReader('# /// script\n# ///\n\n# /// script\n# ///').read_toml()
+        Traceback (most recent call last):
+        ...
+        ValueError: Multiple script blocks found
+        """
+        TOML_BLOCK_REGEX = r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)*)^# ///$'
+        name = 'script'
+        matches = list(
+            filter(lambda m: m.group('type') == name, re.finditer(TOML_BLOCK_REGEX, self.script))
+        )
+        if len(matches) > 1:
+            raise ValueError(f'Multiple {name} blocks found')
+        elif len(matches) == 1:
+            content = ''.join(
+                line[2:] if line.startswith('# ') else line[1:]
+                for line in matches[0].group('content').splitlines(keepends=True)
+            )
+            deps = tomllib.loads(content).get("dependencies", [])
+        else:
+            deps = []
+        return Dependencies.load(deps)
 
     def read_comments(self):
         r"""
