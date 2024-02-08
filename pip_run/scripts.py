@@ -75,7 +75,7 @@ class DepsReader:
         return cls.try_read(next(files, None)).params()
 
     def read(self):
-        return self.read_toml() or self.read_comments() or self.read_python()
+        return self.read_toml() or self.read_python() or self.read_comments()
 
     def read_toml(self):
         r"""
@@ -145,7 +145,7 @@ class DepsReader:
         >>> DepsReader(r"__requires__='foo\nbar\n#baz'").read()
         ['foo', 'bar']
         """
-        raw_reqs = self._read('__requires__')
+        raw_reqs = suppress(ValueError)(self._read)('__requires__') or []
         reqs_items = jaraco.text.yield_lines(raw_reqs)
         deps = Dependencies.load(reqs_items)
         with contextlib.suppress(Exception):
