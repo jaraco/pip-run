@@ -49,36 +49,36 @@ def test_pkg_imported(tmp_path, shebang, extension, dash):
 class TestSourceDepsReader:
     def test_reads_files_with_attribute_assignment(self):
         script = textwrap.dedent(
-            '''
+            """
             __requires__=['foo']
             x.a = 'bar'
-            '''
+            """
         )
         assert scripts.DepsReader(script).read() == ['foo']
 
     def test_reads_files_with_multiple_assignment(self):
         script = textwrap.dedent(
-            '''
+            """
             __requires__=['foo']
             x, a = [a, x]
-            '''
+            """
         )
         assert scripts.DepsReader(script).read() == ['foo']
 
     def test_single_dep(self):
         script = textwrap.dedent(
-            '''
+            """
             __requires__='foo'
-            '''
+            """
         )
         assert scripts.DepsReader(script).read() == ['foo']
 
     def test_index_url(self):
         script = textwrap.dedent(
-            '''
+            """
             __requires__ = ['foo']
             __index_url__ = 'https://my.private.index/'
-            '''
+            """
         )
         reqs = scripts.DepsReader(script).read()
         assert reqs.index_url == 'https://my.private.index/'
@@ -89,12 +89,12 @@ class TestSourceDepsReader:
         with f-strings on all Pythons.
         """
         script = DALS(
-            '''
+            """
             # coding: future_fstrings
             __requires__ = 'foo'
             f'boo'
             f'coo'
-            '''
+            """
         )
         reqs = scripts.DepsReader(script).read()
         assert reqs == ['foo']

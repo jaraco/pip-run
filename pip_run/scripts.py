@@ -13,7 +13,6 @@ from jaraco.functools import compose
 
 from .compat.py310 import tomllib
 
-
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
 
@@ -93,10 +92,15 @@ class DepsReader:
         ...
         ValueError: Multiple script blocks found
         """
-        TOML_BLOCK_REGEX = r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)*)^# ///$'
+        TOML_BLOCK_REGEX = (
+            r'(?m)^# /// (?P<type>[a-zA-Z0-9-]+)$\s(?P<content>(^#(| .*)$\s)*)^# ///$'
+        )
         name = 'script'
         matches = list(
-            filter(lambda m: m.group('type') == name, re.finditer(TOML_BLOCK_REGEX, self.script))
+            filter(
+                lambda m: m.group('type') == name,
+                re.finditer(TOML_BLOCK_REGEX, self.script),
+            )
         )
         if len(matches) > 1:
             raise ValueError(f'Multiple {name} blocks found')
