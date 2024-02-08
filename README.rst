@@ -204,11 +204,6 @@ variable or ``# Requirements:`` section to the script:
 
     __requires__ = ['requests']
 
-    # or
-
-    # Requirements:
-    # requests
-
     # or (PEP 723)
 
     # /// script
