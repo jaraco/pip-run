@@ -5,6 +5,7 @@ import itertools
 import json
 import pathlib
 import re
+import warnings
 
 import jaraco.text
 import packaging.requirements
@@ -131,6 +132,10 @@ class DepsReader:
 
         try:
             lines = match.group(1).splitlines()
+            warnings.warn(
+                "Comment-style script declarations are deprecated. "
+                "Please use Python style or PEP 723 TOML style."
+            )
         except AttributeError:
             lines = []
 
