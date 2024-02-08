@@ -1,1 +1,0 @@
-Comment-style declarations are now deprecated in favor of Python or TOML style.

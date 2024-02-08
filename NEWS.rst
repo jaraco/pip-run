@@ -1,3 +1,12 @@
+v12.6.0
+=======
+
+Features
+--------
+
+- Comment-style declarations are now deprecated in favor of Python or TOML style. (#97)
+
+
 v12.5.0
 =======
 
