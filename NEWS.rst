@@ -1,3 +1,12 @@
+v12.6.1
+=======
+
+Bugfixes
+--------
+
+- Ensure docs/tests not unintentionally included.
+
+
 v12.6.0
 =======
 
