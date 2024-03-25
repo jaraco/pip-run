@@ -58,6 +58,7 @@ def _mode_compat():
     if mode := os.environ.get('PIP_RUN_MODE'):  # pragma: no cover
         warnings.warn(
             'PIP_RUN_MODE is deprecated. Use PIP_RUN_RETENTION_STRATEGY instead.',
+            stacklevel=1,
         )
         return mode.replace('ephemeral', 'destroy')
 

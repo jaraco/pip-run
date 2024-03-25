@@ -134,7 +134,8 @@ class DepsReader:
             lines = match.group(1).splitlines()
             warnings.warn(
                 "Comment-style script declarations are deprecated. "
-                "Please use Python style or PEP 723 TOML style."
+                "Please use Python style or PEP 723 TOML style.",
+                stacklevel=1,
             )
         except AttributeError:
             lines = []
