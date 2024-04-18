@@ -1,5 +1,87 @@
 [build-system]
-requires = ["setuptools>=56", "setuptools_scm[toml]>=3.4.1"]
+requires = ["setuptools>=61.2", "setuptools_scm[toml]>=3.4.1"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pip-run"
+authors = [
+	{ name = "Jason R. Coombs", email = "jaraco@jaraco.com" },
+]
+description = "install packages and run Python with them"
+readme = "README.rst"
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: MIT License",
+	"Programming Language :: Python :: 3",
+	"Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.8"
+dependencies = [
+	"pip >= 19.3",
+	"autocommand",
+	"path >= 15.1",
+	"packaging",
+	"more_itertools >= 8.3",
+	"jaraco.context",
+	"jaraco.text",
+	"platformdirs",
+	'tomli; python_version < "3.11"',
+	'importlib_resources; python_version < "3.9"',
+	"jaraco.functools >= 3.7",
+	"jaraco.env",
+]
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/jaraco/pip-run"
+
+[project.optional-dependencies]
+testing = [
+	# upstream
+	"pytest >= 6",
+	"pytest-checkdocs >= 2.4",
+	"pytest-cov",
+	"pytest-mypy",
+	"pytest-enabler >= 2.2",
+	"pytest-ruff >= 0.2.1",
+
+	# local
+	"nbformat",
+	"pygments",
+	"jaraco.path",
+	"jaraco.test >= 5.3",
+	"flit-core",
+]
+docs = [
+	# upstream
+	"sphinx >= 3.5",
+	"jaraco.packaging >= 9.3",
+	"rst.linker >= 1.9",
+	"furo",
+	"sphinx-lint",
+
+	# tidelift
+	"jaraco.tidelift >= 1.4",
+
+	# local
+]
+
+[project.scripts]
+pip-run = "pip_run:run"
+
+[tool.setuptools]
+py-modules = ["pip-run"]
+
+[tool.setuptools.packages.find]
+exclude = [
+	# duplicate exclusions for pypa/setuptools#2688
+	"docs",
+	"docs.*",
+	"tests",
+	"tests.*",
+	"examples",
+]
+namespaces = true
 
 [tool.setuptools_scm]
