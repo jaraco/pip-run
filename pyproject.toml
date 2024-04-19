@@ -70,9 +70,6 @@ docs = [
 [project.scripts]
 pip-run = "pip_run:run"
 
-[tool.setuptools]
-py-modules = ["pip-run"]
-
 [tool.setuptools.packages.find]
 exclude = [
 	# duplicate exclusions for pypa/setuptools#2688
