@@ -1,3 +1,3 @@
-from pip_run import run
+import runpy
 
-__name__ == '__main__' and run()
+runpy.run_module('pip_run', run_name=__name__)
