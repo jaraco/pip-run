@@ -73,6 +73,31 @@ class TestSourceDepsReader:
         )
         assert scripts.DepsReader(script).read() == ['foo']
 
+    def test_single_annotated_dep(self):
+        script = textwrap.dedent(
+            """
+            __requires__:str='foo'
+            """
+        )
+        assert scripts.DepsReader(script).read() == ['foo']
+
+    def test_multiple_annotated_deps(self):
+        script = textwrap.dedent(
+            """
+            __requires__:list[str]=['foo']
+            """
+        )
+        assert scripts.DepsReader(script).read() == ['foo']
+
+    def test_skips_on_ambiguity(self):
+        script = textwrap.dedent(
+            """
+            __requires__:list[str]=['foo']
+            __requires__='bar'
+            """
+        )
+        assert scripts.DepsReader(script).read() == []
+
     def test_index_url(self):
         script = textwrap.dedent(
             """

@@ -1,6 +1,5 @@
 import abc
 import ast
-import contextlib
 import itertools
 import json
 import pathlib
@@ -151,24 +150,28 @@ class DepsReader:
         >>> DepsReader(r"__requires__='foo\nbar\n#baz'").read()
         ['foo', 'bar']
         """
-        raw_reqs = suppress(ValueError)(self._read)('__requires__') or []
+        raw_reqs = self._read('__requires__', default=())
         reqs_items = jaraco.text.yield_lines(raw_reqs)
         deps = Dependencies.load(reqs_items)
-        with contextlib.suppress(Exception):
-            deps.index_url = self._read('__index_url__')
+        deps.index_url = self._read('__index_url__')
         return deps
 
-    def _read(self, var_name):
+    def _read(self, var_name, default=None):
         mod = ast.parse(self.script)
-        (node,) = (
-            node
-            for node in mod.body
-            if isinstance(node, ast.Assign)
-            and len(node.targets) == 1
-            and isinstance(node.targets[0], ast.Name)
-            and node.targets[0].id == var_name
-        )
-        return ast.literal_eval(node.value)
+        code = None
+        for node in mod.body:
+            if isinstance(node, ast.Assign) and len(node.targets) == 1:
+                (target,) = node.targets
+            elif isinstance(node, ast.AnnAssign):
+                target = node.target
+            else:
+                continue
+            if isinstance(target, ast.Name) and target.id == var_name:
+                if code:
+                    code = None
+                    break
+                code = node.value
+        return ast.literal_eval(code) if code else default
 
 
 class SourceDepsReader(DepsReader):
