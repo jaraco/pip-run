@@ -1,0 +1,1 @@
+Support reading annotated variables (e.g. `__requires__: list[str] = ["jaraco.functools"]`).
