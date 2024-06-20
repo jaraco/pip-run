@@ -84,10 +84,10 @@ class TestSourceDepsReader:
     def test_multiple_annotated_deps(self):
         script = textwrap.dedent(
             """
-            __requires__:list[str]=['foo']
+            __requires__:list[str]=['foo', 'bar']
             """
         )
-        assert scripts.DepsReader(script).read() == ['foo']
+        assert scripts.DepsReader(script).read() == ['foo', 'bar']
 
     def test_skips_on_ambiguity(self):
         script = textwrap.dedent(
