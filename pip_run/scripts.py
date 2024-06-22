@@ -162,7 +162,8 @@ class DepsReader:
         """
         Read a variable from self.script by parsing the AST.
 
-        Raises ValueError if the variable is not found.
+        Raises ValueError if the variable is not found or if it
+        appears more than once.
         """
         mod = ast.parse(self.script)
         (node,) = (
