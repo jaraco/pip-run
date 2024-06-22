@@ -171,15 +171,20 @@ class DepsReader:
         appears more than once.
         """
         mod = ast.parse(self.script)
-        (node,) = (
-            node
-            for node in mod.body
-            if isinstance(node, ast.Assign)
+        (node,) = (node for node in mod.body if self._is_assignment(node, var_name))
+        return ast.literal_eval(node.value)
+
+    @staticmethod
+    def _is_assignment(node, var_name):
+        """
+        Does this AST node describe an assignment to var_name?
+        """
+        return (
+            isinstance(node, ast.Assign)
             and len(node.targets) == 1
             and isinstance(node.targets[0], ast.Name)
             and node.targets[0].id == var_name
         )
-        return ast.literal_eval(node.value)
 
 
 class SourceDepsReader(DepsReader):
