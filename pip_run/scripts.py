@@ -154,11 +154,16 @@ class DepsReader:
         raw_reqs = suppress(ValueError)(self._read)('__requires__') or []
         reqs_items = jaraco.text.yield_lines(raw_reqs)
         deps = Dependencies.load(reqs_items)
-        with contextlib.suppress(Exception):
+        with contextlib.suppress(ValueError):
             deps.index_url = self._read('__index_url__')
         return deps
 
     def _read(self, var_name):
+        """
+        Read a variable from self.script by parsing the AST.
+
+        Raises ValueError if the variable is not found.
+        """
         mod = ast.parse(self.script)
         (node,) = (
             node
