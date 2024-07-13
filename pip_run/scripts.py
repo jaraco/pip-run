@@ -148,15 +148,26 @@ class DepsReader:
         r"""
         >>> DepsReader("__requires__=['foo']").read()
         ['foo']
-        >>> DepsReader(r"__requires__='foo\nbar\n#baz'").read()
-        ['foo', 'bar']
         """
-        raw_reqs = suppress(ValueError)(self._read)('__requires__') or []
-        reqs_items = jaraco.text.yield_lines(raw_reqs)
-        deps = Dependencies.load(reqs_items)
+        reqs = suppress(ValueError)(self._read)('__requires__') or []
+        deps = Dependencies.load(self._compat_process(reqs))
         with contextlib.suppress(ValueError):
             deps.index_url = self._read('__index_url__')
         return deps
+
+    def _compat_process(self, reqs):
+        """
+        Deprecated support for __requires__:str
+        """
+        processed = list(jaraco.text.yield_lines(reqs))
+        if reqs == processed:
+            return reqs
+        warnings.warn(
+            "Support for string processing in __requires__ is deprecated",
+            DeprecationWarning,
+            stacklevel=1,
+        )
+        return processed
 
     def _read(self, var_name):
         """

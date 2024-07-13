@@ -80,7 +80,8 @@ class TestSourceDepsReader:
             __requires__='foo'
             """
         )
-        assert scripts.DepsReader(script).read() == ['foo']
+        with pytest.deprecated_call():
+            assert scripts.DepsReader(script).read() == ['foo']
 
     def test_index_url(self):
         script = textwrap.dedent(
@@ -100,7 +101,7 @@ class TestSourceDepsReader:
         script = DALS(
             """
             # coding: future_fstrings
-            __requires__ = 'foo'
+            __requires__ = ['foo']
             f'boo'
             f'coo'
             """
