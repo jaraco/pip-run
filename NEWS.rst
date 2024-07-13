@@ -1,3 +1,12 @@
+v12.7.0
+=======
+
+Features
+--------
+
+- Deprecated support for non-sequence __requires__. (#109)
+
+
 v12.6.1
 =======
 

@@ -1,1 +1,0 @@
-Deprecated support for non-sequence __requires__.
