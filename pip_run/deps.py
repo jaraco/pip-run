@@ -1,17 +1,13 @@
 import argparse
 import contextlib
-import functools
 import importlib
-import itertools
 import os
 import pathlib
 import subprocess
 import sys
 import types
 import warnings
-from importlib import metadata
 
-import packaging.requirements
 from jaraco.context import suppress
 
 from .compat.py38 import subprocess_path as sp
@@ -108,15 +104,3 @@ def with_prereleases(spec):
     """
     spec.prereleases = True
     return spec
-
-
-@suppress(
-    packaging.requirements.InvalidRequirement,
-    metadata.PackageNotFoundError,  # type: ignore
-)
-def pkg_installed(spec):
-    req = packaging.requirements.Requirement(spec)
-    return not req.url and metadata.version(req.name) in with_prereleases(req.specifier)
-
-
-not_installed = functools.partial(itertools.filterfalse, pkg_installed)

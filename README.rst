@@ -47,7 +47,6 @@ Features include
 - Relies on pip to cache downloads of such packages for reuse.
 - Leaves no trace of its invocation (except files in pip's cache).
 - Supersedes installed packages when required.
-- Relies on packages already satisfied [1]_.
 - Re-uses the pip tool chain for package installation.
 
 ``pip-run`` is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
@@ -61,8 +60,6 @@ Features include
 
 ``pip-run`` is a complement to Pip and Virtualenv, intended to more
 readily address the on-demand needs.
-
-.. [1] Except when a requirements file is used.
 
 Installation
 ============
@@ -409,9 +406,6 @@ runpy scripts).
      - ✓
      -
    * - interactive interpreter with deps
-     - ✓
-     -
-   * - re-use existing environment
      - ✓
      -
    * - ephemeral environments
