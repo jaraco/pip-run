@@ -1,1 +1,0 @@
-Dropped support for filtering out satisfied requirements.

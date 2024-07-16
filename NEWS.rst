@@ -1,3 +1,12 @@
+v13.0.0
+=======
+
+Deprecations and Removals
+-------------------------
+
+- Dropped support for filtering out satisfied requirements. (#51)
+
+
 v12.7.0
 =======
 
