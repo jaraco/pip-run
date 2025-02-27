@@ -18,7 +18,7 @@ def separator(input) -> str:
 @autocommand.autocommand(__name__)
 def run(
     script: path.ExtantFile,
-    separator: separator = ' ',  # type: ignore
+    separator: separator = ' ',  # type: ignore[valid-type]
 ):
     """
     >>> run(['examples/test-mongodb-covered-query.py'])
@@ -30,5 +30,5 @@ def run(
     pytest
     jaraco.mongodb>=3.10
     """
-    joiner = separator.join  # type: ignore
+    joiner = separator.join  # type: ignore[attr-defined]
     print(joiner(DepsReader.try_read(pathlib.Path(script)).params()))
