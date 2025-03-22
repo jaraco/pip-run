@@ -10,8 +10,6 @@ import types
 
 from jaraco.context import suppress
 
-from .compat.py38 import subprocess_path as sp
-
 
 class Install(types.SimpleNamespace):
     parser = argparse.ArgumentParser()
@@ -137,7 +135,7 @@ def default_quiet(cmd):
 @contextlib.contextmanager
 def load(*args):
     with retention_strategy().context(args) as target:
-        cmd = list(installer(sp(target))) + default_quiet(args)
+        cmd = list(installer(target)) + default_quiet(args)
         if Install.parse(args) and empty(target):
             subprocess.check_call(cmd)
         yield target
