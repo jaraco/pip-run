@@ -1,5 +1,4 @@
 #!/usr/bin/env pip-run
-__requires__ = ['requests', 'beautifulsoup4', 'cowsay']
 import cowsay
 import requests
 from bs4 import BeautifulSoup as BS
