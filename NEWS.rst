@@ -1,3 +1,12 @@
+v15.1.0
+=======
+
+Features
+--------
+
+- Leverages coherent.deps to infer dependencies from scripts. Now it's possible to omit the dependencies in most cases when executing a script. (#115)
+
+
 v15.0.0
 =======
 
