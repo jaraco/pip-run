@@ -22,13 +22,13 @@ def run(
 ):
     """
     >>> run(['examples/test-mongodb-covered-query.py'])
-    pytest jaraco.mongodb>=3.10
+    pytest jaraco.mongodb
     >>> run(['does-not-exist'])
     Traceback (most recent call last):
     FileNotFoundError: does-not-exist does not exist as a file.
     >>> run(['examples/test-mongodb-covered-query.py', '--separator', 'newline'])
     pytest
-    jaraco.mongodb>=3.10
+    jaraco.mongodb
     """
     joiner = separator.join  # type: ignore[attr-defined]
     print(joiner(DepsReader.try_read(pathlib.Path(script)).params()))

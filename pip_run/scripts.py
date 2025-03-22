@@ -1,6 +1,7 @@
 import abc
 import ast
 import contextlib
+import itertools
 import json
 import pathlib
 import re
@@ -13,6 +14,8 @@ from jaraco.functools import compose
 from .compat.py310 import tomllib
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
+
+_unique = dict.fromkeys
 
 
 class EllipsisFilter:
@@ -87,7 +90,7 @@ class DepsReader:
 
     def maybe_infer(self, deps):
         if deps.inferred:
-            deps.extend(self.infer())
+            deps[:] = _unique(itertools.chain(deps, self.infer()))
         return deps
 
     def infer(self):
