@@ -1,3 +1,12 @@
+v16.0.0
+=======
+
+Deprecations and Removals
+-------------------------
+
+- Now supports and prefers uv as the installer if present. Now either 'uv' or 'pip' must be installed as commands. 'pip' has been removed as a dependency. (#100)
+
+
 v15.1.0
 =======
 
