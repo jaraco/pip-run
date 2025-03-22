@@ -64,7 +64,7 @@ class DepsReader:
         but return None if unsuccessful.
         """
         reader = cls.load(script_path)
-        return reader.read() or reader.infer()
+        return reader.maybe_infer(reader.read())
 
     @classmethod
     @abc.abstractmethod
@@ -84,6 +84,11 @@ class DepsReader:
         safe_is_file = suppress(OSError)(pathlib.Path.is_file)
         files = filter(safe_is_file, map(pathlib.Path, params))
         return cls.try_read(next(files, None)).params()
+
+    def maybe_infer(self, deps):
+        if deps.inferred:
+            deps.extend(self.infer())
+        return deps
 
     def infer(self):
         r"""
