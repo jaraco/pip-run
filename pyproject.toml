@@ -24,7 +24,6 @@ dependencies = [
 	"packaging",
 	"more_itertools >= 8.3",
 	"jaraco.context",
-	"jaraco.text",
 	"platformdirs",
 	'tomli; python_version < "3.11"',
 	'importlib_resources; python_version < "3.9"',

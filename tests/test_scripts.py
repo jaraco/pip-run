@@ -74,15 +74,6 @@ class TestSourceDepsReader:
         )
         assert scripts.DepsReader(script).read() == ['foo']
 
-    def test_single_dep(self):
-        script = textwrap.dedent(
-            """
-            __requires__='foo'
-            """
-        )
-        with pytest.deprecated_call():
-            assert scripts.DepsReader(script).read() == ['foo']
-
     def test_index_url(self):
         script = textwrap.dedent(
             """

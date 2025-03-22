@@ -7,7 +7,6 @@ import pathlib
 import re
 import warnings
 
-import jaraco.text
 import packaging.requirements
 from jaraco.context import suppress
 from jaraco.functools import compose
@@ -150,24 +149,10 @@ class DepsReader:
         ['foo']
         """
         reqs = suppress(ValueError)(self._read)('__requires__') or []
-        deps = Dependencies.load(self._compat_process(reqs))
+        deps = Dependencies.load(reqs)
         with contextlib.suppress(ValueError):
             deps.index_url = self._read('__index_url__')
         return deps
-
-    def _compat_process(self, reqs):
-        """
-        Deprecated support for __requires__:str
-        """
-        processed = list(jaraco.text.yield_lines(reqs))
-        if reqs == processed:
-            return reqs
-        warnings.warn(
-            "Support for string processing in __requires__ is deprecated",
-            DeprecationWarning,
-            stacklevel=1,
-        )
-        return processed
 
     def _read(self, var_name):
         """
