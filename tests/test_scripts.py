@@ -7,7 +7,7 @@ import jaraco.path
 import nbformat
 import pytest
 
-from pip_run import scripts
+from pip_run import deps, scripts
 
 
 def DALS(str):
@@ -181,7 +181,9 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
 
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
-    assert 'devpi.net' in out
+    if deps.installer(None)[0] == 'pip':
+        # uv won't emit the index
+        assert 'devpi.net' in out
 
 
 def _minimal_flit(name):
