@@ -15,6 +15,15 @@ from .compat.py310 import tomllib
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
 
 
+class EllipsisFilter:
+    found = False
+
+    def __call__(self, item):
+        is_ellipsis = item is Ellipsis
+        self.found |= is_ellipsis
+        return not is_ellipsis
+
+
 class Dependencies(list):
     index_url = None
 
@@ -26,7 +35,10 @@ class Dependencies(list):
         """
         Construct self from items, validated as requirements.
         """
-        return cls(map(ValidRequirementString, items))
+        ef = EllipsisFilter()
+        deps = cls(map(ValidRequirementString, filter(ef, items)))
+        deps.inferred = ef.found
+        return deps
 
 
 class DepsReader:
@@ -128,8 +140,15 @@ class DepsReader:
         r"""
         >>> DepsReader("__requires__=['foo']").read()
         ['foo']
+        >>> empty = DepsReader("").read()
+        >>> empty
+        []
+        >>> empty.inferred
+        True
         """
-        reqs = suppress(ValueError)(self._read)('__requires__') or []
+        reqs = suppress(ValueError)(self._read)('__requires__')
+        if reqs is None:
+            reqs = [...]
         deps = Dependencies.load(reqs)
         with contextlib.suppress(ValueError):
             deps.index_url = self._read('__index_url__')
