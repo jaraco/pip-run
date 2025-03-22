@@ -1,0 +1,1 @@
+Now supports and prefers uv as the installer if present. Now either 'uv' or 'pip' must be installed as commands. 'pip' has been removed as a dependency.
