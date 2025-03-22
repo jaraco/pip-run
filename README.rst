@@ -194,7 +194,7 @@ dependencies to be declared in the script itself so that
 the user need not specify them at each invocation.
 
 To declare dependencies in a script, add a ``__requires__``
-variable or ``# Requirements:`` section to the script:
+variable or `Inline Script Metadata <https://packaging.python.org/en/latest/specifications/inline-script-metadata/#inline-script-metadata>`_ section to the script:
 
 .. code-block:: python
 
@@ -202,7 +202,7 @@ variable or ``# Requirements:`` section to the script:
 
     __requires__ = ['requests']
 
-    # or (PEP 723)
+    # or inline script
 
     # /// script
     # dependencies = ['requests']
@@ -297,7 +297,7 @@ allowing a script to specify a custom package index:
 Extracting Requirements
 -----------------------
 
-After having used ``pip-run`` to run scripts, it may be desirable to extract the requirements from the ``__requires__`` variable or ``# Requirements:`` section of a
+After having used ``pip-run`` to run scripts, it may be desirable to extract the requirements from the ``__requires__`` variable or Inline Script Metadata section of a
 script to install those more permanently. pip-run provides a routine to facilitate
 this case::
 
