@@ -2,7 +2,7 @@ import argparse
 import contextlib
 import pathlib
 
-import jaraco.env as env
+from jaraco import env  # type: ignore[attr-defined] # (python/mypy#10360)
 from jaraco.context import suppress
 from jaraco.functools import bypass_when
 from more_itertools import locate, split_at
