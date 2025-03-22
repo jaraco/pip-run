@@ -89,14 +89,20 @@ installer_schemes = dict(
 
 def installer(target):
     scheme = installer_schemes[next(filter(shutil.which, installer_schemes))]
-    return scheme.cmd + ['install', '--python', sys.executable, '--target', target]
+    return scheme.cmd + [
+        'install',
+        '--quiet',
+        '--python',
+        sys.executable,
+        '--target',
+        target,
+    ]
 
 
 @contextlib.contextmanager
 def load(*args):
     with retention_strategy().context(args) as target:
         cmd = tuple(installer(sp(target))) + args
-        env = dict(os.environ, PIP_QUIET="1")
         if Install.parse(args) and empty(target):
-            subprocess.check_call(cmd, env=env)
+            subprocess.check_call(cmd)
         yield target
