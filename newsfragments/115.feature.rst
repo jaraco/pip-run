@@ -1,0 +1,1 @@
+Leverages coherent.deps to infer dependencies from scripts. Now it's possible to omit the dependencies in most cases when executing a script.
