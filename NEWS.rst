@@ -1,3 +1,12 @@
+v15.0.0
+=======
+
+Deprecations and Removals
+-------------------------
+
+- Removed support for comment style requirements.
+
+
 v14.0.0
 =======
 

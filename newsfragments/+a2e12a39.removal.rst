@@ -1,1 +1,0 @@
-Removed support for comment style requirements.
