@@ -1,11 +1,9 @@
 import abc
 import ast
 import contextlib
-import itertools
 import json
 import pathlib
 import re
-import warnings
 
 import packaging.requirements
 from jaraco.context import suppress
@@ -75,7 +73,7 @@ class DepsReader:
         return cls.try_read(next(files, None)).params()
 
     def read(self):
-        return self.read_toml() or self.read_python() or self.read_comments()
+        return self.read_toml() or self.read_python()
 
     def read_toml(self):
         r"""
@@ -113,35 +111,6 @@ class DepsReader:
         else:
             deps = []
         return Dependencies.load(deps)
-
-    def read_comments(self):
-        r"""
-        >>> DepsReader("# Requirements:\n# foo\n\n# baz").read()
-        ['foo']
-        >>> DepsReader("# foo\n# bar").read_comments()
-        []
-        >>> DepsReader("# Requirements:\n# foo\n# bar").read()
-        ['foo', 'bar']
-        """
-        match = re.search(
-            r'^# Requirements:\n(.*)',
-            self.script,
-            flags=re.IGNORECASE | re.MULTILINE | re.DOTALL,
-        )
-
-        try:
-            lines = match.group(1).splitlines()
-            warnings.warn(
-                "Comment-style script declarations are deprecated. "
-                "Please use Python style or PEP 723 TOML style.",
-                stacklevel=1,
-            )
-        except AttributeError:
-            lines = []
-
-        comment = re.compile(r'#\s+(.*)')
-        matches = itertools.takewhile(bool, map(comment.match, lines))
-        return Dependencies.load(match.group(1) for match in matches)
 
     def read_python(self):
         r"""

@@ -84,18 +84,6 @@ class TestSourceDepsReader:
         reqs = scripts.DepsReader(script).read()
         assert reqs.index_url == 'https://my.private.index/'
 
-    def test_comment_style(self):
-        script = textwrap.dedent(
-            """
-            #! shebang
-
-            # Requirements:
-            # foo == 3.1
-            """
-        )
-        reqs = scripts.DepsReader(script).read()
-        assert reqs == ['foo==3.1']
-
     def test_toml_style(self):
         script = textwrap.dedent(
             """
