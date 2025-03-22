@@ -98,6 +98,17 @@ def default_quiet(cmd):
     Parse command to determine the verbosity, then make it one bit quieter.
 
     Workaround for astral-sh/uv#12397.
+
+    >>> default_quiet(['foo', '--quiet', '--verbose', '--other'])
+    ['foo', '--other', '--quiet']
+    >>> default_quiet(['--verbose', 'foo'])
+    ['foo']
+    >>> default_quiet(['--quiet', 'bar'])
+    ['bar', '--quiet']
+    >>> default_quiet(['bar', '--verbose', '-vvv'])
+    ['bar', '--verbose', '--verbose', '--verbose']
+    >>> default_quiet(['foo', 'bar'])
+    ['foo', 'bar', '--quiet']
     """
 
     class Subtract(argparse.Action):
