@@ -1,17 +1,30 @@
 import abc
 import ast
 import contextlib
+import itertools
 import json
 import pathlib
 import re
 
 import packaging.requirements
+from coherent.deps import imports, pypi
 from jaraco.context import suppress
 from jaraco.functools import compose
 
 from .compat.py310 import tomllib
 
 ValidRequirementString = compose(str, packaging.requirements.Requirement)
+
+_unique = dict.fromkeys
+
+
+class EllipsisFilter:
+    found = False
+
+    def __call__(self, item):
+        is_ellipsis = item is Ellipsis
+        self.found |= is_ellipsis
+        return not is_ellipsis
 
 
 class Dependencies(list):
@@ -25,7 +38,10 @@ class Dependencies(list):
         """
         Construct self from items, validated as requirements.
         """
-        return cls(map(ValidRequirementString, items))
+        ef = EllipsisFilter()
+        deps = cls(map(ValidRequirementString, filter(ef, items)))
+        deps.inferred = ef.found
+        return deps
 
 
 class DepsReader:
@@ -51,7 +67,7 @@ class DepsReader:
         but return None if unsuccessful.
         """
         reader = cls.load(script_path)
-        return reader.read()
+        return reader.maybe_infer(reader.read())
 
     @classmethod
     @abc.abstractmethod
@@ -71,6 +87,22 @@ class DepsReader:
         safe_is_file = suppress(OSError)(pathlib.Path.is_file)
         files = filter(safe_is_file, map(pathlib.Path, params))
         return cls.try_read(next(files, None)).params()
+
+    def maybe_infer(self, deps):
+        if deps.inferred:
+            deps[:] = _unique(itertools.chain(deps, self.infer()))
+        return deps
+
+    def infer(self):
+        r"""
+        >>> DepsReader('import sys\nimport cowsay\nimport jaraco.text.missing\n').infer()
+        ['cowsay', 'jaraco.text']
+        """
+        return Dependencies(
+            pypi.distribution_for(imp)
+            for imp in imports.get_module_imports(self.script)
+            if not imp.excluded()
+        )
 
     def read(self):
         return self.read_toml() or self.read_python()
@@ -116,8 +148,15 @@ class DepsReader:
         r"""
         >>> DepsReader("__requires__=['foo']").read()
         ['foo']
+        >>> empty = DepsReader("").read()
+        >>> empty
+        []
+        >>> empty.inferred
+        True
         """
-        reqs = suppress(ValueError)(self._read)('__requires__') or []
+        reqs = suppress(ValueError)(self._read)('__requires__')
+        if reqs is None:
+            reqs = [...]
         deps = Dependencies.load(reqs)
         with contextlib.suppress(ValueError):
             deps.index_url = self._read('__index_url__')

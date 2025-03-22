@@ -35,8 +35,6 @@ eliminate the need for the ``__main__`` block and
 would skip the second processing of the script.
 """
 
-__requires__ = ['pytest', 'jaraco.mongodb>=3.10']
-
 if __name__ == '__main__':
     # invoke pytest on this script
     import sys
