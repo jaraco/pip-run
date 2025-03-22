@@ -84,11 +84,3 @@ def load(*args):
         if Install.parse(args) and empty(target):
             subprocess.check_call(cmd, env=env)
         yield target
-
-
-def with_prereleases(spec):
-    """
-    Allow prereleases to satisfy the spec.
-    """
-    spec.prereleases = True
-    return spec
