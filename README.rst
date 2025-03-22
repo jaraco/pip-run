@@ -42,6 +42,7 @@ With this single-line command::
 
 Features include
 
+- Automatically infers dependencies from imports.
 - Downloads missing dependencies and makes their packages available for import.
 - Installs packages to a special staging location such that they're not installed after the process exits.
 - Relies on pip to cache downloads of such packages for reuse.
@@ -51,10 +52,10 @@ Features include
 
 ``pip-run`` is not intended to solve production dependency management, but does aim to address the other, one-off scenarios around dependency management:
 
+- running scripts with dependencies
 - trials and experiments
 - build setup
 - test runners
-- just in time script running
 - interactive development
 - bug triage
 
@@ -219,6 +220,31 @@ declaring any parameters to pip::
     200
 
 The format for requirements must follow `PEP 508 <https://www.python.org/dev/peps/pep-0508/>`_.
+
+Inferred Script Dependencies
+----------------------------
+
+If no dependencies are declared, or if an ellipsis is used in a Python-based ``__requires__`` directive, ``pip-run`` will infer the dependencies from a script based on the imports using `coherent.deps <https://pypi.org/project/coherent.deps>`_.
+
+.. code-block:: python
+
+    import requests
+
+    req = requests.get('https://pypi.org/project/coherent.deps')
+    print(req.status_code)
+
+In some cases, a dependency is needed that's not implied by an import. In that case, use an ellipsis to infer in addition to the explicit requirements:
+
+.. code-block:: python
+
+    __requires__ = ['pytest', ...]
+
+    import requests
+
+    def test_something():
+        req = requests.get('https://pypi.org/project/coherent.deps')
+        assert req.status_code == 200
+
 
 Single-script Tools and Shebang Support
 ---------------------------------------
@@ -408,6 +434,9 @@ runpy scripts).
    * - interactive interpreter with deps
      - ✓
      -
+   * - dependency inference
+     - ✓
+     -
    * - re-use existing environment
      - ✓
      -
@@ -457,6 +486,9 @@ is transient only for the invocation of a single command, while
      - ✓
      -
    * - multiple interpreters in session
+     - ✓
+     -
+   * - dependency inference
      - ✓
      -
    * - run standalone scripts
