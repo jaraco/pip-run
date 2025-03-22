@@ -6,6 +6,7 @@ import pathlib
 import re
 
 import packaging.requirements
+from coherent.deps import imports, pypi
 from jaraco.context import suppress
 from jaraco.functools import compose
 
@@ -51,7 +52,7 @@ class DepsReader:
         but return None if unsuccessful.
         """
         reader = cls.load(script_path)
-        return reader.read()
+        return reader.read() or reader.infer()
 
     @classmethod
     @abc.abstractmethod
@@ -71,6 +72,17 @@ class DepsReader:
         safe_is_file = suppress(OSError)(pathlib.Path.is_file)
         files = filter(safe_is_file, map(pathlib.Path, params))
         return cls.try_read(next(files, None)).params()
+
+    def infer(self):
+        r"""
+        >>> DepsReader('import sys\nimport cowsay\nimport jaraco.text.missing\n').infer()
+        ['cowsay', 'jaraco.text']
+        """
+        return Dependencies(
+            pypi.distribution_for(imp)
+            for imp in imports.get_module_imports(self.script)
+            if not imp.excluded()
+        )
 
     def read(self):
         return self.read_toml() or self.read_python()
