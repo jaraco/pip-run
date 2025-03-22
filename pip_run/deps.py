@@ -6,7 +6,6 @@ import pathlib
 import subprocess
 import sys
 import types
-import warnings
 
 from jaraco.context import suppress
 
@@ -50,19 +49,8 @@ class Install(types.SimpleNamespace):
         return bool(self.requirement or self.package)
 
 
-def _mode_compat():
-    if mode := os.environ.get('PIP_RUN_MODE'):  # pragma: no cover
-        warnings.warn(
-            'PIP_RUN_MODE is deprecated. Use PIP_RUN_RETENTION_STRATEGY instead.',
-            stacklevel=1,
-        )
-        return mode.replace('ephemeral', 'destroy')
-
-
 def retention_strategy():
-    strategy = (
-        os.environ.get('PIP_RUN_RETENTION_STRATEGY') or _mode_compat() or 'destroy'
-    )
+    strategy = os.environ.get('PIP_RUN_RETENTION_STRATEGY') or 'destroy'
     return importlib.import_module(f'.retention.{strategy}', package=__package__)
 
 
