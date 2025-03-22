@@ -79,10 +79,10 @@ def empty(path):
 
 installer_schemes = dict(
     uv=types.SimpleNamespace(
-        cmd=['uv', 'pip'],
+        cmd=['uv', 'pip', 'install', '--python', sys.executable],
     ),
     pip=types.SimpleNamespace(
-        cmd=['pip'],
+        cmd=['pip', '--python', sys.executable, 'install'],
     ),
 )
 
@@ -90,9 +90,6 @@ installer_schemes = dict(
 def installer(target):
     scheme = installer_schemes[next(filter(shutil.which, installer_schemes))]
     return scheme.cmd + [
-        'install',
-        '--python',
-        sys.executable,
         '--target',
         target,
     ]
