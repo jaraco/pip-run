@@ -1,3 +1,13 @@
+v14.0.0
+=======
+
+Deprecations and Removals
+-------------------------
+
+- Removed support for PIP_RUN_MODE.
+- Removed support for a single string arg to ``__requires__``.
+
+
 v13.0.0
 =======
 
