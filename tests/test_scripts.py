@@ -181,7 +181,7 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
 
     out = subprocess.check_output(cmd, text=True, encoding='utf-8')
     assert 'Import succeeded' in out
-    if deps.installer(None)[0] == 'pip':
+    if deps.installer(None)[0] == 'pip':  # pragma: no cover
         # uv won't emit the index
         assert 'devpi.net' in out
 
