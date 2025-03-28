@@ -507,17 +507,6 @@ is transient only for the invocation of a single command, while
      - ✓
      - ✓
 
-Integration
-===========
-
-The author created this package with the intention of demonstrating
-the capability before integrating it directly with pip in a command
-such as ``pip run``. After proposing the change, the idea was largely
-rejected in `pip 3971 <https://github.com/pypa/pip/issues/3971>`_.
-
-If you would like to see this functionality made available in pip,
-please upvote or comment in that ticket.
-
 Versioning
 ==========
 
