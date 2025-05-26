@@ -50,4 +50,6 @@ def cache_key(args):
 
 @contextlib.contextmanager
 def context(args):
-    yield paths.user_cache_path.joinpath(cache_key(args))
+    target = paths.user_cache_path.joinpath(cache_key(args))
+    target.mkdir(parents=True, exist_ok=True)
+    yield target
