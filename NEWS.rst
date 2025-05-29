@@ -1,3 +1,12 @@
+v16.0.4
+=======
+
+Bugfixes
+--------
+
+- Declare py_modules using underscore. Avoids deprecation warning. (#118)
+
+
 v16.0.3
 =======
 
