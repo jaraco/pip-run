@@ -1,6 +1,6 @@
 import pytest
 
-import pip_run.deps as deps
+from pip_run import deps
 
 
 @pytest.mark.usefixtures('retention_strategy')
@@ -20,10 +20,3 @@ class TestLoad:
         """
         with deps.load('-q'):
             pass
-
-
-@pytest.mark.usefixtures('retention_strategy')
-def test_target_retention_context():
-    """Verify a target exists or can be created."""
-    with deps.retention_strategy().context([]) as target:
-        target.mkdir(exist_ok=True)

@@ -1,7 +1,5 @@
 import argparse
 import contextlib
-import importlib
-import os
 import pathlib
 import shutil
 import subprocess
@@ -9,6 +7,8 @@ import sys
 import types
 
 from jaraco.context import suppress
+
+from . import retention
 
 
 class Install(types.SimpleNamespace):
@@ -46,11 +46,6 @@ class Install(types.SimpleNamespace):
         True
         """
         return bool(self.requirement or self.package)
-
-
-def retention_strategy():
-    strategy = os.environ.get('PIP_RUN_RETENTION_STRATEGY') or 'destroy'
-    return importlib.import_module(f'.retention.{strategy}', package=__package__)
 
 
 @suppress(FileNotFoundError)
@@ -145,7 +140,7 @@ def default_quiet(cmd):
 
 @contextlib.contextmanager
 def load(*args):
-    with retention_strategy().context(args) as target:
+    with retention.strategy().context(args) as target:
         cmd = list(installer(target)) + default_quiet(args)
         if Install.parse(args) and empty(target):
             subprocess.check_call(cmd)
