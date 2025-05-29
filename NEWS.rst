@@ -1,3 +1,12 @@
+v16.0.3
+=======
+
+Bugfixes
+--------
+
+- Suppress FileNotFoundError when attempting to inject sitecustomize file on a degenerate install. (#123)
+
+
 v16.0.2
 =======
 

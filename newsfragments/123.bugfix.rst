@@ -1,1 +1,0 @@
-Suppress FileNotFoundError when attempting to inject sitecustomize file on a degenerate install.
