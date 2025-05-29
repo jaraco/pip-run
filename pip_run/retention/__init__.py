@@ -1,3 +1,4 @@
+import functools
 import importlib
 import json
 import os
@@ -35,4 +36,5 @@ def make_var(name):
 def strategy():
     spec = os.environ.get('PIP_RUN_RETENTION_STRATEGY') or 'destroy'
     strat = Strategy.resolve(spec)
-    return importlib.import_module(f'.{strat}', package=__package__)
+    module = importlib.import_module(f'.{strat}', package=__package__)
+    return functools.partial(module.context, **strat.params)

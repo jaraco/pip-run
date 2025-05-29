@@ -140,7 +140,7 @@ def default_quiet(cmd):
 
 @contextlib.contextmanager
 def load(*args):
-    with retention.strategy().context(args) as target:
+    with retention.strategy()(args) as target:
         cmd = list(installer(target)) + default_quiet(args)
         if Install.parse(args) and empty(target):
             subprocess.check_call(cmd)
