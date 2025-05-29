@@ -1,4 +1,5 @@
 import importlib
+import json
 import os
 import re
 
@@ -15,24 +16,20 @@ class Strategy(str):
         'destroy'
         >>> Strategy.resolve('persist').params
         {}
-        >>> Strategy.resolve('persist; max-age=86400').params
-        {'max_age': '86400'}
-        >>> Strategy.resolve('persist; max age=86400; other=true').params
-        {'max_age': '86400', 'other': 'true'}
+        >>> Strategy.resolve('persist {"max-age": 86400}').params
+        {'max_age': 86400}
+        >>> Strategy.resolve('persist {"max age": 86400, "other": true}').params
+        {'max_age': 86400, 'other': True}
         """
-        name, sep, rest = spec.partition(';')
+        name, sep, rest = spec.partition(' ')
         strat = cls(name)
-        strat.params = dict(filter(None, map(clean_param, rest.split(';'))))
+        doc = json.loads(rest.strip() or '{}')
+        strat.params = {make_var(name): value for name, value in doc.items()}
         return strat
 
 
 def make_var(name):
     return re.sub(r'[ -]+', '_', name.strip())
-
-
-def clean_param(pair):
-    name, sep, value = pair.partition('=')
-    return name and (make_var(name), value and value.strip())
 
 
 def strategy():
