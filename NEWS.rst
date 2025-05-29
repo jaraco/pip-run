@@ -1,3 +1,12 @@
+v16.0.2
+=======
+
+Bugfixes
+--------
+
+- Rely on ignore_cleanup_errors on Python 3.10+ to suppress cleanup errors. (#122)
+
+
 v16.0.1
 =======
 
