@@ -1,0 +1,1 @@
+Rely on ignore_cleanup_errors on Python 3.10+ to suppress cleanup errors.
