@@ -45,7 +45,6 @@ def test_build_env(clean_pythonpath):
     assert env['PYTHONPATH'] == expected
 
 
-@pytest.mark.xfail(reason="#123")
 def test_nonexistent_path(tmp_path):
     """
     Launching against a degenerate, nonexistent path should succeed.

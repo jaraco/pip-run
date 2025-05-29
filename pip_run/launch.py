@@ -9,6 +9,7 @@ import textwrap
 from jaraco.context import suppress
 
 
+@suppress(FileNotFoundError)
 def inject_sitecustomize(target: pathlib.Path):
     r"""
     Create a sitecustomize file in the target that will install
@@ -19,6 +20,10 @@ def inject_sitecustomize(target: pathlib.Path):
     >>> sc = tmp_path / 'sitecustomize.py'
     >>> 'Path' not in sc.read_text(encoding='utf-8')
     True
+
+    Nonexistent paths are ignored.
+
+    >>> inject_sitecustomize(tmp_path / 'missing')
     """
     hook = textwrap.dedent(
         f"""
