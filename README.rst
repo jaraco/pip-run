@@ -272,7 +272,7 @@ equivalent to executing ``pip-run pydragon``.
 By default, the script will assemble the dependencies on each invocation,
 which may be inconvenient for a script. See `Environment Persistence
 <#Environment-Persistence>`_ for a technique to persist the assembled
-dependencies across invocations. One may inject ``PIP_RUN_MODE=persist``
+dependencies across invocations. One may inject ``PIP_RUN_RETENTION_STRATEGY=persist``
 in the shebang, but be aware that doing so breaks Windows portability.
 
 .. [2] ``.PY`` must exist in the PATHEXT for Python scripts to be executable. See `this documentation <https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.3#path-information>`_ for more background.
@@ -378,6 +378,13 @@ maintained for each combination of requirements specified.
 
 ``persist`` strategy can greatly improve startup performance at the expense of
 staleness and accumulated cruft.
+
+``persist`` also accepts a parameter "max age". Setting the max age will
+delete any cached environments older than the indicated age. For example,
+``PIP_RUN_RETENTION_STRATEGY=persist {"max age": "1 day"}`` (or
+``86400``) will retain the environment for only one day or
+``PIP_RUN_RETENTION_STRATEGY=persist {"max age": "6 months"}`` will
+do the same for half a year.
 
 Without ``PIP_RUN_RETENTION_STRATEGY=persist`` (or with ``=destroy``),
 ``pip-run`` will re-install dependencies every time a script runs, silently

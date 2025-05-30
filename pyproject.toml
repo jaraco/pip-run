@@ -33,6 +33,7 @@ dependencies = [
 	"jaraco.functools >= 3.7",
 	"jaraco.env",
 	"coherent.deps",
+	"tempora",
 ]
 dynamic = ["version"]
 
@@ -50,6 +51,7 @@ test = [
 	"jaraco.path",
 	"jaraco.test >= 5.3",
 	"flit-core",
+	"pytest-freezer",
 ]
 
 doc = [

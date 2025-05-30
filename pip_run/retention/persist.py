@@ -1,7 +1,14 @@
+from __future__ import annotations
+
 import contextlib
+import datetime
+import functools
 import hashlib
+import shutil
+import time
 
 import platformdirs
+import tempora
 
 from .. import deps
 
@@ -49,5 +56,62 @@ def cache_key(args):
 
 
 @contextlib.contextmanager
-def context(args):
-    yield paths.user_cache_path.joinpath(cache_key(args))
+def context(args, max_age=float('inf')):
+    path = paths.user_cache_path.joinpath(cache_key(args))
+    yield clean_if_older(path, parse_duration(max_age))
+
+
+def clean_if_older(path, max_age):
+    """
+    >>> tmp_path = getfixture('tmp_path') / 'dir'
+    >>> tmp_path.mkdir()
+    >>> freezer = getfixture('freezer')
+    >>> freezer.move_to('2076-05-07')
+    >>> _ = clean_if_older(tmp_path, Eternity())
+    >>> tmp_path.exists()
+    True
+    >>> _ = clean_if_older(tmp_path, datetime.timedelta(days=5))
+    >>> tmp_path.exists()
+    False
+    """
+    with contextlib.suppress(FileNotFoundError):
+        age = datetime.timedelta(seconds=time.time() - path.stat().st_mtime)
+        age > max_age and shutil.rmtree(path)
+    return path
+
+
+class Eternity:
+    """
+    >>> import random
+    >>> Eternity() > datetime.timedelta(seconds=random.randint(0, 2**31))
+    True
+    """
+
+    def __gt__(self, other: datetime.timedelta):
+        return True
+
+    def __lt__(self, other: datetime.timedelta):
+        return False
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
+@functools.singledispatch
+def parse_duration(input: str | float):
+    """
+    >>> parse_duration("2 weeks")
+    datetime.timedelta(days=14)
+    >>> parse_duration(30)
+    datetime.timedelta(seconds=30)
+    >>> parse_duration(float('inf'))
+    Eternity
+    """
+    if input == float('inf'):
+        return Eternity()
+    return datetime.timedelta(seconds=input)  # type: ignore[arg-type]
+
+
+@parse_duration.register
+def _(input: str):
+    return tempora.parse_timedelta(input)
