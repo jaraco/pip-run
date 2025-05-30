@@ -51,6 +51,7 @@ test = [
 	"jaraco.path",
 	"jaraco.test >= 5.3",
 	"flit-core",
+	"pytest-freezer",
 ]
 
 doc = [

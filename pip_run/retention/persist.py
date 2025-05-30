@@ -62,6 +62,18 @@ def context(args, max_age=float('inf')):
 
 
 def clean_if_older(path, max_age):
+    """
+    >>> tmp_path = getfixture('tmp_path') / 'dir'
+    >>> tmp_path.mkdir()
+    >>> freezer = getfixture('freezer')
+    >>> freezer.move_to('2076-05-07')
+    >>> _ = clean_if_older(tmp_path, Eternity())
+    >>> tmp_path.exists()
+    True
+    >>> _ = clean_if_older(tmp_path, datetime.timedelta(days=5))
+    >>> tmp_path.exists()
+    False
+    """
     with contextlib.suppress(FileNotFoundError):
         age = datetime.timedelta(seconds=time.time() - path.stat().st_mtime)
         age > max_age and shutil.rmtree(path)
@@ -71,12 +83,15 @@ def clean_if_older(path, max_age):
 class Eternity:
     """
     >>> import random
-    >>> Eternity() > datetime.timedelta(random.randint(2**31))
+    >>> Eternity() > datetime.timedelta(seconds=random.randint(0, 2**31))
     True
     """
 
     def __gt__(self, other: datetime.timedelta):
         return True
+
+    def __lt__(self, other: datetime.timedelta):
+        return False
 
     def __repr__(self):
         return self.__class__.__name__
