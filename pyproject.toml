@@ -33,6 +33,7 @@ dependencies = [
 	"jaraco.functools >= 3.7",
 	"jaraco.env",
 	"coherent.deps",
+	"tempora",
 ]
 dynamic = ["version"]
 
