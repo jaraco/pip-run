@@ -1,3 +1,12 @@
+v16.1.0
+=======
+
+Features
+--------
+
+- Implement support for max_age in persistent environments. To set a max age on persistent environments, use ``PIP_RUN_RETENTION_STRATEGY=persist {"max age": "2 weeks"}``. Default is unchanged, but likely the default retention strategy will switch to ``persist {"max age": "1 day"}`` (or multiple days) in a future release. (#85)
+
+
 v16.0.4
 =======
 
