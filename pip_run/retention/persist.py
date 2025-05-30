@@ -1,5 +1,7 @@
 import contextlib
 import hashlib
+import shutil
+import time
 
 import platformdirs
 
@@ -49,5 +51,13 @@ def cache_key(args):
 
 
 @contextlib.contextmanager
-def context(args):
-    yield paths.user_cache_path.joinpath(cache_key(args))
+def context(args, max_age=float('inf')):
+    path = paths.user_cache_path.joinpath(cache_key(args))
+    yield clean_if_older(path, max_age)
+
+
+def clean_if_older(path, max_age):
+    with contextlib.suppress(FileNotFoundError):
+        age = time.time() - path.stat().st_mtime
+        age > max_age and shutil.rmtree(path)
+    return path
