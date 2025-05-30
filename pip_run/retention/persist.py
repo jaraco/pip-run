@@ -69,6 +69,12 @@ def clean_if_older(path, max_age):
 
 
 class Eternity:
+    """
+    >>> import random
+    >>> Eternity() > datetime.timedelta(random.randint(2**31))
+    True
+    """
+
     def __gt__(self, other: datetime.timedelta):
         return True
 
