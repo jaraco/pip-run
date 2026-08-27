@@ -1,3 +1,5 @@
+import sys
+
 import pytest
 
 from pip_run import deps
@@ -20,3 +22,16 @@ class TestLoad:
         """
         with deps.load('-q'):
             pass
+
+
+def test_installer_falls_back_to_interpreter(monkeypatch):
+    monkeypatch.setattr(deps.shutil, 'which', lambda name: None)
+
+    assert deps.installer('target') == [
+        sys.executable,
+        '-m',
+        'pip',
+        'install',
+        '--target',
+        'target',
+    ]

@@ -78,10 +78,20 @@ installer_schemes = dict(
         cmd=['pip', '--python', sys.executable, 'install'],
     ),
 )
+interpreter_scheme = types.SimpleNamespace(
+    cmd=[sys.executable, '-m', 'pip', 'install'],
+)
 
 
 def installer(target):
-    scheme = installer_schemes[next(filter(shutil.which, installer_schemes))]
+    scheme = next(
+        (
+            scheme
+            for name, scheme in installer_schemes.items()
+            if shutil.which(name)
+        ),
+        interpreter_scheme,
+    )
     return scheme.cmd + [
         '--target',
         target,
