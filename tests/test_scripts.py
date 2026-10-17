@@ -254,7 +254,7 @@ def test_pkg_loaded_from_url(tmp_path):
     from a custom url and ensure it runs.
     """
     dependency = tmp_path / 'barbazquux-1.0'
-    url_req = f'barbazquux @ file://{dependency.as_posix()}'
+    url_req = f'barbazquux @ {dependency.as_uri()}'
     jaraco.path.build(
         {
             'barbazquux-1.0': _minimal_flit('barbazquux'),
