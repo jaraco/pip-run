@@ -1,7 +1,10 @@
+import base64
+import hashlib
 import itertools
 import subprocess
 import sys
 import textwrap
+import zipfile
 
 import jaraco.path
 import nbformat
@@ -158,19 +161,55 @@ class TestNotebookDepsReader:
         assert reqs == ['matplotlib']
 
 
-@pytest.mark.network
+def _minimal_wheel(path, name):
+    """
+    Write a minimal, pure-Python wheel for a package called ``name``
+    to the directory ``path`` and return the filename.
+    """
+    dist_info = f'{name}-1.dist-info'
+    files = {
+        f'{name}/__init__.py': '',
+        f'{dist_info}/METADATA': f'Metadata-Version: 2.1\nName: {name}\nVersion: 1\n',
+        f'{dist_info}/WHEEL': (
+            'Wheel-Version: 1.0\nGenerator: pip-run-tests\n'
+            'Root-Is-Purelib: true\nTag: py3-none-any\n'
+        ),
+    }
+
+    def record_line(arcname, content):
+        digest = hashlib.sha256(content.encode()).digest()
+        b64 = base64.urlsafe_b64encode(digest).rstrip(b'=').decode()
+        return f'{arcname},sha256={b64},{len(content.encode())}\n'
+
+    record = ''.join(itertools.starmap(record_line, files.items()))
+    files[f'{dist_info}/RECORD'] = record + f'{dist_info}/RECORD,,\n'
+    filename = f'{name}-1-py3-none-any.whl'
+    with zipfile.ZipFile(path / filename, 'w') as whl:
+        for arcname, content in files.items():
+            whl.writestr(arcname, content)
+    return filename
+
+
 def test_pkg_loaded_from_alternate_index(tmp_path):
     """
-    Create a script that loads cython from an alternate index
-    and ensure it runs.
+    Create a script that loads a package from an alternate
+    (local, PEP 503) index and ensure it runs.
     """
+    index = tmp_path / 'index'
+    project = index / 'barbazquux'
+    project.mkdir(parents=True)
+    filename = _minimal_wheel(index, 'barbazquux')
+    project.joinpath('index.html').write_text(
+        f'<a href="../{filename}">{filename}</a>\n', encoding='utf-8'
+    )
+    index_url = index.as_uri() + '/'
     jaraco.path.build(
         {
             'script': DALS(
-                """
-                __requires__ = ['sampleproject']
-                __index_url__ = 'https://devpi.net/root/pypi/+simple/'
-                import sample
+                f"""
+                __requires__ = ['barbazquux']
+                __index_url__ = {index_url!r}
+                import barbazquux
                 print("Import succeeded")
                 """
             )
@@ -183,7 +222,7 @@ def test_pkg_loaded_from_alternate_index(tmp_path):
     assert 'Import succeeded' in out
     if deps.installer(None)[0] == 'pip':  # pragma: no cover
         # uv won't emit the index
-        assert 'devpi.net' in out
+        assert index_url in out
 
 
 def _minimal_flit(name):
