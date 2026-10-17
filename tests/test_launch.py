@@ -10,7 +10,7 @@ def test_with_path(tmp_path, capfd):
     params = ['-c', 'import sys; sys.stdout.write("\\n".join(sys.path))']
     res = launch.with_path(tmp_path, launch.infer_cmd(params))
     assert res == 0
-    out, err = capfd.readouterr()
+    out, _ = capfd.readouterr()
     assert str(tmp_path) in out.split(os.linesep)
 
 

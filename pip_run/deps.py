@@ -24,7 +24,7 @@ class Install(types.SimpleNamespace):
 
     @classmethod
     def parse(cls, args):
-        parsed, unused = cls.parser.parse_known_args(args)
+        parsed, _ = cls.parser.parse_known_args(args)
         return cls(**vars(parsed))
 
     def __bool__(self):

@@ -22,7 +22,7 @@ class Strategy(str):
         >>> Strategy.resolve('persist {"max age": 86400, "other": true}').params
         {'max_age': 86400, 'other': True}
         """
-        name, sep, rest = spec.partition(' ')
+        name, _, rest = spec.partition(' ')
         strat = cls(name)
         doc = json.loads(rest.strip() or '{}')
         strat.params = {make_var(name): value for name, value in doc.items()}
